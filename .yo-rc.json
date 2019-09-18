@@ -1,0 +1,47 @@
+{
+  "generator-jhipster": {
+    "applicationType": "monolith",
+    "gitCompany": "",
+    "baseName": "Gifu",
+    "packageName": "com.coffee.gifu",
+    "packageFolder": "com/coffee/gifu",
+    "serverPort": 8888,
+    "serviceDiscoveryType": "eureka",
+    "authenticationType": "jwt",
+    "uaaBaseName": "../uaa",
+    "cacheProvider": "ehcache",
+    "enableHibernateCache": true,
+    "websocket": false,
+    "databaseType": "sql",
+    "devDatabaseType": "h2Memory",
+    "prodDatabaseType": "postgresql",
+    "searchEngine": false,
+    "enableSwaggerCodegen": false,
+    "messageBroker": false,
+    "buildTool": "maven",
+    "useSass": true,
+    "clientPackageManager": "npm",
+    "testFrameworks": [
+      "cucumber"
+    ],
+    "enableTranslation": true,
+    "nativeLanguage": "fr",
+    "languages": [
+      "en",
+      "fr"
+    ],
+    "clientFramework": "react",
+    "jhiPrefix": "jhi",
+    "jhipsterVersion": "6.3.0",
+    "jwtSecretKey": "MzA2MDg3NWExOGQyYTExMDJlNWEyYzJkMzE4NTBhMDJhYjkxMDQwODc3MDAxYTc4ZGRjYmU2ZDgyZTZlYTEzOTNmNzNmNGZjMjg4MGU1NzNjNzdlNTliNTM5NTk2OWYxNGE1MjIyNjFiNTgyM2VkODI2YTRiYmZlOWY1Y2Y2YmM=",
+    "embeddableLaunchScript": false,
+    "clientTheme": "none",
+    "entitySuffix": "",
+    "dtoSuffix": "DTO",
+    "otherModules": [],
+    "blueprints": []
+  },
+  "git-provider": "GitHub",
+  "git-company": "Senrokai",
+  "repository-name": "gifu-application"
+}
