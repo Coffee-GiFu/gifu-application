@@ -42,6 +42,13 @@ script:
   - ./mvnw -ntp clean verify
   - ./mvnw -ntp com.github.eirslett:frontend-maven-plugin:npm -Dfrontend.npm.arguments='run test-ci' -Dmaven.repo.local=$MAVEN_USER_HOME
   - ./mvnw -ntp verify -Pprod -DskipTests
+  # the following command line builds the project, runs the tests with coverage and then execute the SonarCloud analysis
+  - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar
+addons:
+  sonarcloud:
+    organization: 'senrokai-github'
+    token:
+      secure: 'I/wL5yd23iEr7/HXnCbfhd+lQVjEIqmcZAuVaiv/00xM/KWBLhodu7pAVSDTXhmRiTCuqkb+OxGo/M6MytJrZJc/XKzW8g7OtiBBN3M2gIfbfWiT02SA6RqBKEz3gbImEC5ahqVOEFTEhIXEQbfk03FeJTc5HiNmr+F8QIQVnEgYqcG6WZwubnM/Df6aR/KOWZcV9oaA6ZJgkrJqaDg5lxT/kjF5zm4YFmpGYlAzlRBmCzrvPoGhd4SCUKJ0Ca GousgF6fsrWbBhoWIC7B5ePQsOZBX8ODbZ2zGgTQbeCRqB5QRq9IGQAa+9UoEgHhRUmmaf8qPfKAFnjqxKwLTIzsyc9xcw+25EI/bxL/ui5vC1yo+F0nPTluB+S6qb4oUKCgLR1oPyjFbrax6Xo0W9s4tkgqV6Z77VWzI9wxI8Yla4m4ydIPb2XLWJaKUfG8cCGRxbBp8/M/KNaN+gpzJ0egSDQT2t3RGur0CS9Wi6sMLUvCR1yfyMbeWC+cdFH2A1m83o6mvqlZ0Bs0UeYIvloaXTydv22YF7Jyk23zk1jgrMSN/9nbkyWdfM3e5lqU8So2CYt/6Mnf2SY1e7cIpBqnw6DSJNkkDRn36e48a6fzier5zaQZUWqh6bPrXoWW6bogCTHofwIX/0QVpuouYK1Kytz13xNFH36fBeRfsDzcY='
 notifications:
   webhooks:
     on_success: change # options: [always|never|change] default: always
