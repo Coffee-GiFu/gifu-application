@@ -43,7 +43,8 @@ script:
   - ./mvnw -ntp com.github.eirslett:frontend-maven-plugin:npm -Dfrontend.npm.arguments='run test-ci' -Dmaven.repo.local=$MAVEN_USER_HOME
   - ./mvnw -ntp verify -Pprod -DskipTests
   # the following command line builds the project, runs the tests with coverage and then execute the SonarCloud analysis
-  - ./mvnw -ntp clean org.jacoco:jacoco-maven-plugin:prepare-agent install verify sonar:sonar -Pcoverage
+  - npm run test
+  - ./mvnw -ntp  org.jacoco:jacoco-maven-plugin:prepare-agent install  sonar:sonar -Pcoverage
 addons:
   sonarcloud:
     organization: 'senrokai-github'
