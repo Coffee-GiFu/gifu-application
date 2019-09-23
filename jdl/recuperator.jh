@@ -1,0 +1,7 @@
+entity Recuperator {
+	name String required
+	phoneNumber String required
+}
+
+dto * with mapstruct
+service all with serviceImpl

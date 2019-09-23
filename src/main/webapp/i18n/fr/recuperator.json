@@ -1,0 +1,23 @@
+{
+  "gifuApp": {
+    "recuperator": {
+      "home": {
+        "title": "Recuperators",
+        "createLabel": "Créer un nouveau Recuperator",
+        "createOrEditLabel": "Créer ou éditer un Recuperator",
+        "notFound": "Aucun Recuperator trouvé"
+      },
+      "created": "Un nouveau Recuperator a été créé avec l'identifiant {{ param }}",
+      "updated": "Le Recuperator avec l'identifiant {{ param }} a été mis à jour",
+      "deleted": "Le Recuperator avec l'identifiant {{ param }} a été supprimé",
+      "delete": {
+        "question": "Etes-vous certain de vouloir supprimer le Recuperator {{ id }} ?"
+      },
+      "detail": {
+        "title": "Recuperator"
+      },
+      "name": "Name",
+      "phoneNumber": "Phone Number"
+    }
+  }
+}

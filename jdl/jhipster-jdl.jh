@@ -1,0 +1,28 @@
+entity Location {
+	streetAddress String required,
+	postalCode String required,
+	city String required
+}
+
+entity Recuperator {
+	name String required
+	phoneNumber String required
+}
+
+entity Offer {
+	description String required,
+    isCold Boolean,
+	availabilityBegin LocalDate,
+	availabilityEnd LocalDate,
+    title String
+}
+
+relationship OneToMany {
+	Offer{recuperator} to Recuperator
+}
+relationship OneToOne {
+	Recuperator{location} to Location,
+	Offer{location} to Location
+}
+
+service all with serviceImpl except Location
