@@ -44,7 +44,7 @@ script:
   - ./mvnw -ntp verify -Pprod -DskipTests
   # the following command line builds the project, runs the tests with coverage and then execute the SonarCloud analysis
   - npm run test
-  - ./mvnw -ntp  org.jacoco:jacoco-maven-plugin:prepare-agent install  sonar:sonar -Pcoverage
+  - ./mvnw -ntp  org.jacoco:jacoco-maven-plugin:prepare-agent install  sonar:sonar
 addons:
   sonarcloud:
     organization: 'senrokai-github'
