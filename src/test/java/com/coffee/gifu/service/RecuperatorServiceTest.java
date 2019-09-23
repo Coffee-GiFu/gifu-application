@@ -19,7 +19,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
-public class RecuparatorServiceTest {
+public class RecuperatorServiceTest {
 
     @Mock
     RecuperatorRepository recuperatorRepository;
