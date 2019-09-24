@@ -1,5 +1,6 @@
 package com.coffee.gifu.web.rest;
 
+import com.coffee.gifu.security.AuthoritiesConstants;
 import com.coffee.gifu.service.OfferService;
 import com.coffee.gifu.web.rest.errors.BadRequestAlertException;
 import com.coffee.gifu.service.dto.OfferDTO;
@@ -10,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -47,6 +49,7 @@ public class OfferResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/offers")
+    @PreAuthorize("hasRole(\"" + AuthoritiesConstants.COMPANY + "\")")
     public ResponseEntity<OfferDTO> createOffer(@Valid @RequestBody OfferDTO offerDTO) throws URISyntaxException {
         log.debug("REST request to save Offer : {}", offerDTO);
         if (offerDTO.getId() != null) {
@@ -68,6 +71,7 @@ public class OfferResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/offers")
+    @PreAuthorize("hasRole(\"" + AuthoritiesConstants.COMPANY + "\")")
     public ResponseEntity<OfferDTO> updateOffer(@Valid @RequestBody OfferDTO offerDTO) throws URISyntaxException {
         log.debug("REST request to update Offer : {}", offerDTO);
         if (offerDTO.getId() == null) {
@@ -111,6 +115,7 @@ public class OfferResource {
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
     @DeleteMapping("/offers/{id}")
+    @PreAuthorize("hasRole(\"" + AuthoritiesConstants.COMPANY + "\")")
     public ResponseEntity<Void> deleteOffer(@PathVariable Long id) {
         log.debug("REST request to delete Offer : {}", id);
         offerService.delete(id);
