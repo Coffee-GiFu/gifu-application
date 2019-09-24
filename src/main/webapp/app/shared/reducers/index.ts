@@ -20,6 +20,10 @@ import location, {
 import recuperator, {
   RecuperatorState
 } from 'app/entities/recuperator/recuperator.reducer';
+// prettier-ignore
+import offer, {
+  OfferState
+} from 'app/entities/offer/offer.reducer';
 /* jhipster-needle-add-reducer-import - JHipster will add reducer here */
 
 export interface IRootState {
@@ -35,6 +39,7 @@ export interface IRootState {
   readonly settings: SettingsState;
   readonly location: LocationState;
   readonly recuperator: RecuperatorState;
+  readonly offer: OfferState;
   /* jhipster-needle-add-reducer-type - JHipster will add reducer type here */
   readonly loadingBar: any;
 }
@@ -52,6 +57,7 @@ const rootReducer = combineReducers<IRootState>({
   settings,
   location,
   recuperator,
+  offer,
   /* jhipster-needle-add-reducer-combine - JHipster will add reducer here */
   loadingBar
 });
