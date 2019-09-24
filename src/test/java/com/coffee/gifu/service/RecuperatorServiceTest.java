@@ -37,7 +37,7 @@ public class RecuperatorServiceTest {
     }
 
     @Test
-    public void testSave() {
+    public void should_Save_then_return_saved_object() {
         //Given
         RecuperatorDTO recuperatorDTO = buildRecuperatorDto();
 
