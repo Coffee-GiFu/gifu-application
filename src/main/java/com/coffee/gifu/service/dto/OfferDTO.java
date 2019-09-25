@@ -1,7 +1,9 @@
 package com.coffee.gifu.service.dto;
-import java.time.ZonedDateTime;
-import javax.validation.constraints.*;
+
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.time.ZonedDateTime;
 import java.util.Objects;
 
 /**
@@ -28,10 +30,10 @@ public class OfferDTO implements Serializable {
     @Size(min = 10, max = 100)
     private String title;
 
+    @NotNull
+    private LocationDTO locationDTO;
 
-    private Long locationId;
-
-    private Long recuperatorId;
+    private RecuperatorDTO recuperatorDTO;
 
     public Long getId() {
         return id;
@@ -81,20 +83,20 @@ public class OfferDTO implements Serializable {
         this.title = title;
     }
 
-    public Long getLocationId() {
-        return locationId;
+    public LocationDTO getLocationDTO() {
+        return locationDTO;
     }
 
-    public void setLocationId(Long locationId) {
-        this.locationId = locationId;
+    public void setLocationDTO(LocationDTO locationDTO) {
+        this.locationDTO = locationDTO;
     }
 
-    public Long getRecuperatorId() {
-        return recuperatorId;
+    public RecuperatorDTO getRecuperatorDTO() {
+        return recuperatorDTO;
     }
 
-    public void setRecuperatorId(Long recuperatorId) {
-        this.recuperatorId = recuperatorId;
+    public void setRecuperatorDTO(RecuperatorDTO recuperatorDTO) {
+        this.recuperatorDTO = recuperatorDTO;
     }
 
     @Override
@@ -127,8 +129,8 @@ public class OfferDTO implements Serializable {
             ", availabilityBegin='" + getAvailabilityBegin() + "'" +
             ", availabilityEnd='" + getAvailabilityEnd() + "'" +
             ", title='" + getTitle() + "'" +
-            ", location=" + getLocationId() +
-            ", recuperator=" + getRecuperatorId() +
+            ", location=" + getLocationDTO() +
+            ", recuperator=" + getRecuperatorDTO() +
             "}";
     }
 }

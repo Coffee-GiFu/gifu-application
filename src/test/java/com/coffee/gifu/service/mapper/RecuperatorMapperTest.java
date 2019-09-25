@@ -44,7 +44,7 @@ public class RecuperatorMapperTest {
         assertThat(recuperatorDTO.getPhoneNumber()).isEqualTo(recuperator.getPhoneNumber());
         assertThat(recuperatorDTO.getName()).isEqualTo(recuperator.getName());
         assertThat(recuperatorDTO.getId()).isEqualTo(recuperator.getId());
-        assertThat(recuperatorDTO.getLocation()).isEqualTo(locationMapper.toDto(recuperator.getLocation()));
+        assertThat(recuperatorDTO.getLocationDTO()).isEqualTo(locationMapper.toDto(recuperator.getLocation()));
     }
 
     @Test
@@ -58,7 +58,7 @@ public class RecuperatorMapperTest {
         locationDTO.setStreetAddress("AREGDGJFJDSDGNG");
         locationDTO.setCity("arhsgjdhgkfjlgkh");
         locationDTO.setId(132452L);
-        recuperatorDTO.setLocation(locationDTO);
+        recuperatorDTO.setLocationDTO(locationDTO);
 
         //When
         Recuperator recuperator = recuperatorMapper.toEntity(recuperatorDTO);
@@ -67,7 +67,7 @@ public class RecuperatorMapperTest {
         assertThat(recuperator).isNotNull();
         assertThat(recuperator.getPhoneNumber()).isEqualTo(recuperatorDTO.getPhoneNumber());
         assertThat(recuperator.getName()).isEqualTo(recuperatorDTO.getName());
-        assertThat(recuperator.getLocation()).isEqualTo(locationMapper.toEntity(recuperatorDTO.getLocation()));
+        assertThat(recuperator.getLocation()).isEqualTo(locationMapper.toEntity(recuperatorDTO.getLocationDTO()));
     }
 
 }
