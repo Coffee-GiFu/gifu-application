@@ -104,26 +104,14 @@ public class RecuperatorServiceTest {
     }
 
     @Test
-    public void update_repo_should_return_new_value() {
-        // Given
-        RecuperatorDTO expectedDTO = buildRecuperatorDto();
-
-        // When
-
-        /** TODO Update **/
-    }
-
-    @Test
     public void delete_should_return_null_if_it_called() {
-        // Given
-        Recuperator expected = buildRecuperator();
-
         // When
-        //when(recuperatorRepository.delete(expected)).thenReturn(null);
+        doNothing().when(recuperatorRepository).deleteById(1L);
 
+        recuperatorService.delete(1L);
+
+        verify(recuperatorRepository, times(1)).deleteById(1L);
         // Then
-
-        /** TODO Delete **/
     }
 
     private Recuperator buildRecuperator() {
