@@ -59,10 +59,10 @@ public class RecuperatorServiceTest {
         assertThat(actualResult).isNotNull();
         assertThat(actualResult.getName()).isEqualTo(recuperatorDTO.getName());
         assertThat(actualResult.getPhoneNumber()).isEqualTo(recuperatorDTO.getPhoneNumber());
-        assertThat(actualResult.getLocation()).isNotNull();
-        assertThat(actualResult.getLocation().getCity()).isEqualTo(recuperatorDTO.getLocation().getCity());
-        assertThat(actualResult.getLocation().getPostalCode()).isEqualTo(recuperatorDTO.getLocation().getPostalCode());
-        assertThat(actualResult.getLocation().getStreetAddress()).isEqualTo(recuperatorDTO.getLocation().getStreetAddress());
+        assertThat(actualResult.getLocationDTO()).isNotNull();
+        assertThat(actualResult.getLocationDTO().getCity()).isEqualTo(recuperatorDTO.getLocationDTO().getCity());
+        assertThat(actualResult.getLocationDTO().getPostalCode()).isEqualTo(recuperatorDTO.getLocationDTO().getPostalCode());
+        assertThat(actualResult.getLocationDTO().getStreetAddress()).isEqualTo(recuperatorDTO.getLocationDTO().getStreetAddress());
     }
 
     @Test
@@ -97,10 +97,10 @@ public class RecuperatorServiceTest {
         assertThat(actual.get().getName()).isEqualTo(expected.get().getName());
         assertThat(actual.get().getId()).isEqualTo(expected.get().getId());
         assertThat(actual.get().getPhoneNumber()).isEqualTo(expected.get().getPhoneNumber());
-        assertThat(actual.get().getLocation().getId()).isEqualTo(expected.get().getLocation().getId());
-        assertThat(actual.get().getLocation().getPostalCode()).isEqualTo(expected.get().getLocation().getPostalCode());
-        assertThat(actual.get().getLocation().getStreetAddress()).isEqualTo(expected.get().getLocation().getStreetAddress());
-        assertThat(actual.get().getLocation().getCity()).isEqualTo(expected.get().getLocation().getCity());
+        assertThat(actual.get().getLocationDTO().getId()).isEqualTo(expected.get().getLocation().getId());
+        assertThat(actual.get().getLocationDTO().getPostalCode()).isEqualTo(expected.get().getLocation().getPostalCode());
+        assertThat(actual.get().getLocationDTO().getStreetAddress()).isEqualTo(expected.get().getLocation().getStreetAddress());
+        assertThat(actual.get().getLocationDTO().getCity()).isEqualTo(expected.get().getLocation().getCity());
     }
 
     @Test
@@ -138,7 +138,7 @@ public class RecuperatorServiceTest {
         locationDTO.setStreetAddress("AREGDGJFJDSDGNG");
         locationDTO.setCity("arhsgjdhgkfjlgkh");
         locationDTO.setId(1345L);
-        recuperatorDTO.setLocation(locationDTO);
+        recuperatorDTO.setLocationDTO(locationDTO);
         return recuperatorDTO;
     }
 }
