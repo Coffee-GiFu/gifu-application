@@ -44,11 +44,11 @@ public class RecuperatorDTO implements Serializable {
         this.phoneNumber = phoneNumber;
     }
 
-    public LocationDTO getLocation() {
+    public LocationDTO getLocationDTO() {
         return locationDTO;
     }
 
-    public void setLocation(LocationDTO locationDTO) {
+    public void setLocationDTO(LocationDTO locationDTO) {
         this.locationDTO = locationDTO;
     }
 
@@ -79,7 +79,7 @@ public class RecuperatorDTO implements Serializable {
             "id=" + getId() +
             ", name='" + getName() + "'" +
             ", phoneNumber='" + getPhoneNumber() + "'" +
-            ", location=" + getLocation() +
+            ", location=" + getLocationDTO() +
             "}";
     }
 }

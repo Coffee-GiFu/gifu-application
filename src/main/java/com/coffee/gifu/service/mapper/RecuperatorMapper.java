@@ -11,6 +11,12 @@ import org.mapstruct.*;
 @Mapper(componentModel = "spring", uses = {LocationMapper.class})
 public interface RecuperatorMapper extends EntityMapper<RecuperatorDTO, Recuperator> {
 
+    @Mapping(source = "location", target = "locationDTO")
+    RecuperatorDTO toDto(Recuperator offer);
+
+    @Mapping(source = "locationDTO", target = "location")
+    Recuperator toEntity(RecuperatorDTO offerDTO);
+
     default Recuperator fromId(Long id) {
         if (id == null) {
             return null;
