@@ -1,0 +1,8 @@
+entity Location {
+	streetAddress String required,
+	postalCode String required,
+	city String required
+}
+
+dto * with mapstruct
+service all with serviceImpl
