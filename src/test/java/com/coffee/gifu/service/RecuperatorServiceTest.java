@@ -15,6 +15,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -70,12 +71,59 @@ public class RecuperatorServiceTest {
         when(recuperatorRepository.findAll()).thenReturn(Arrays.asList(buildRecuperator(),buildRecuperator()));
 
         // When
-        recuperatorService.findAll();
+        List<RecuperatorDTO> actualrecuperatorDTOS = recuperatorService.findAll();
 
         // Then
         verify(recuperatorRepository, times(1)).findAll();
         verify(recuperatorMapper, times(2)).toDto(any(Recuperator.class));
 
+        assertThat(actualrecuperatorDTOS.size()).isNotNull();
+    }
+
+    @Test
+    public void findOne_should_call_the_repo_and_return_the_correctly_result() {
+        // Given
+        Optional<Recuperator> expected = Optional.ofNullable(buildRecuperator());
+        when(recuperatorRepository.findById(1L)).thenReturn(expected);
+        when(recuperatorMapper.toDto(any(Recuperator.class))).thenReturn(buildRecuperatorDto());
+
+        // When
+        java.util.Optional<RecuperatorDTO> actual = recuperatorService.findOne(1L);
+
+        // Then
+        verify(recuperatorRepository, times(1)).findById(1L);
+
+        assertThat(actual).isNotNull();
+        assertThat(actual.get().getName()).isEqualTo(expected.get().getName());
+        assertThat(actual.get().getId()).isEqualTo(expected.get().getId());
+        assertThat(actual.get().getPhoneNumber()).isEqualTo(expected.get().getPhoneNumber());
+        assertThat(actual.get().getLocation().getId()).isEqualTo(expected.get().getLocation().getId());
+        assertThat(actual.get().getLocation().getPostalCode()).isEqualTo(expected.get().getLocation().getPostalCode());
+        assertThat(actual.get().getLocation().getStreetAddress()).isEqualTo(expected.get().getLocation().getStreetAddress());
+        assertThat(actual.get().getLocation().getCity()).isEqualTo(expected.get().getLocation().getCity());
+    }
+
+    @Test
+    public void update_repo_should_return_new_value() {
+        // Given
+        RecuperatorDTO expectedDTO = buildRecuperatorDto();
+
+        // When
+
+        /** TODO Update **/
+    }
+
+    @Test
+    public void delete_should_return_null_if_it_called() {
+        // Given
+        Recuperator expected = buildRecuperator();
+
+        // When
+        //when(recuperatorRepository.delete(expected)).thenReturn(null);
+
+        // Then
+
+        /** TODO Delete **/
     }
 
     private Recuperator buildRecuperator() {
@@ -94,13 +142,14 @@ public class RecuperatorServiceTest {
 
     private RecuperatorDTO buildRecuperatorDto() {
         RecuperatorDTO recuperatorDTO = new RecuperatorDTO();
-        recuperatorDTO.setName("Toot");
-        recuperatorDTO.setPhoneNumber("1432625233");
+        recuperatorDTO.setName("Toto");
+        recuperatorDTO.setId(134526L);
+        recuperatorDTO.setPhoneNumber("13456475");
         LocationDTO locationDTO = new LocationDTO();
         locationDTO.setPostalCode("675679");
         locationDTO.setStreetAddress("AREGDGJFJDSDGNG");
         locationDTO.setCity("arhsgjdhgkfjlgkh");
-        locationDTO.setId(132452L);
+        locationDTO.setId(1345L);
         recuperatorDTO.setLocation(locationDTO);
         return recuperatorDTO;
     }
