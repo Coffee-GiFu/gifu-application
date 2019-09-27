@@ -18,7 +18,7 @@ public interface RecuperatorMapper extends EntityMapper<RecuperatorDTO, Recupera
     Recuperator toEntity(RecuperatorDTO offerDTO);
 
     default Recuperator fromId(Long id) {
-        if (id == null) {
+        if (id == null || id == -5) {
             return null;
         }
         Recuperator recuperator = new Recuperator();

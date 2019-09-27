@@ -70,4 +70,27 @@ public class RecuperatorMapperTest {
         assertThat(recuperator.getLocation()).isEqualTo(locationMapper.toEntity(recuperatorDTO.getLocationDTO()));
     }
 
+    @Test
+    public void when_id_equal_null_return_null(){
+        // Given
+        Long id = null;
+
+        // When
+        Recuperator actual = recuperatorMapper.fromId(id);
+
+        // Then
+        assertThat(actual).isNull();
+    }
+
+    @Test
+    public void when_id_equal_1_return_recuperator(){
+        // Given
+        Long id = 1L;
+
+        // When
+        Recuperator actual = recuperatorMapper.fromId(id);
+
+        // Then
+        assertThat(actual).isNotNull();
+    }
 }
