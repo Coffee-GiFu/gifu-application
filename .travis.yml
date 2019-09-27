@@ -32,8 +32,8 @@ before_install:
     fi
   - java -version
   - sudo apt-get install python3
-  - pip3 install awscli --upgrade --user
-  - pip3 install awsebcli --upgrade --user
+  - pip install awscli --upgrade --user
+  - pip install awsebcli --upgrade --user
   - sudo apt-get install docker
   - sudo /etc/init.d/mysql stop
   - sudo /etc/init.d/postgresql stop
