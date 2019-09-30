@@ -17,8 +17,7 @@ public class OfferDTO implements Serializable {
     @Size(min = 10, max = 255)
     private String description;
 
-    @NotNull
-    private Boolean isCold;
+    private boolean isCold;
 
     @NotNull
     private ZonedDateTime availabilityBegin;
@@ -51,11 +50,11 @@ public class OfferDTO implements Serializable {
         this.description = description;
     }
 
-    public Boolean isIsCold() {
+    public boolean isIsCold() {
         return isCold;
     }
 
-    public void setIsCold(Boolean isCold) {
+    public void setIsCold(boolean isCold) {
         this.isCold = isCold;
     }
 

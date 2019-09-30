@@ -220,25 +220,6 @@ public class OfferResourceIT {
 
     @Test
     @Transactional
-    public void checkIsColdIsRequired() throws Exception {
-        int databaseSizeBeforeTest = offerRepository.findAll().size();
-        // set the field null
-        offer.setIsCold(null);
-
-        // Create the Offer, which fails.
-        OfferDTO offerDTO = offerMapper.toDto(offer);
-
-        restOfferMockMvc.perform(post("/api/offers")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(offerDTO)))
-            .andExpect(status().isBadRequest());
-
-        List<Offer> offerList = offerRepository.findAll();
-        assertThat(offerList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
     public void checkAvailabilityBeginIsRequired() throws Exception {
         int databaseSizeBeforeTest = offerRepository.findAll().size();
         // set the field null
@@ -311,7 +292,7 @@ public class OfferResourceIT {
             .andExpect(jsonPath("$.[*].availabilityEnd").value(hasItem(sameInstant(DEFAULT_AVAILABILITY_END))))
             .andExpect(jsonPath("$.[*].title").value(hasItem(DEFAULT_TITLE.toString())));
     }
-    
+
     @Test
     @Transactional
     public void getOffer() throws Exception {

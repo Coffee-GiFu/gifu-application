@@ -29,9 +29,8 @@ public class Offer implements Serializable {
     @Column(name = "description", nullable = false)
     private String description;
 
-    @NotNull
     @Column(name = "is_cold", nullable = false)
-    private Boolean isCold;
+    private boolean isCold;
 
     @NotNull
     @Column(name = "availability_begin", nullable = false)
@@ -75,16 +74,16 @@ public class Offer implements Serializable {
         this.description = description;
     }
 
-    public Boolean isIsCold() {
+    public boolean isIsCold() {
         return isCold;
     }
 
-    public Offer isCold(Boolean isCold) {
+    public Offer isCold(boolean isCold) {
         this.isCold = isCold;
         return this;
     }
 
-    public void setIsCold(Boolean isCold) {
+    public void setIsCold(boolean isCold) {
         this.isCold = isCold;
     }
 
