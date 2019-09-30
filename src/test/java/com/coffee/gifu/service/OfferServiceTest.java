@@ -1,6 +1,5 @@
 package com.coffee.gifu.service;
 
-
 import com.coffee.gifu.domain.Location;
 import com.coffee.gifu.domain.Offer;
 import com.coffee.gifu.domain.Recuperator;
@@ -9,20 +8,12 @@ import com.coffee.gifu.service.dto.LocationDTO;
 import com.coffee.gifu.service.dto.OfferDTO;
 import com.coffee.gifu.service.dto.RecuperatorDTO;
 import com.coffee.gifu.service.impl.OfferServiceImpl;
-import com.coffee.gifu.service.mapper.LocationMapper;
 import com.coffee.gifu.service.mapper.OfferMapper;
-import com.coffee.gifu.service.mapper.OfferMapperImpl;
-import com.coffee.gifu.service.mapper.RecuperatorMapper;
-import io.cucumber.java.en.When;
-import net.bytebuddy.description.ModifierReviewable;
-import org.assertj.core.api.Assertions;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
@@ -33,9 +24,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
-
-@RunWith(SpringRunner.class)
-@SpringBootTest
+@RunWith(MockitoJUnitRunner.class)
 public class OfferServiceTest {
 
     @Mock
@@ -54,19 +43,21 @@ public class OfferServiceTest {
     public void setup(){
         offerService = new OfferServiceImpl(offerRepository,offerMapper);
 
+        ZonedDateTime begin = ZonedDateTime.now();
+        ZonedDateTime end = ZonedDateTime.now();
+
         offer = new Offer();
         offer.setDescription("Coucou");
         offer.setTitle("Hello");
         offer.setIsCold(true);
-        offer.setAvailabilityBegin(ZonedDateTime.now());
-        offer.setAvailabilityEnd(ZonedDateTime.now());
+        offer.setAvailabilityBegin(begin);
+        offer.setAvailabilityEnd(end);
 
         Location location = new Location();
         location.setCity("fsdfgsdfg");
         location.setId(1325434L);
         location.setPostalCode("453647897");
         location.setStreetAddress("qrsytuyuklh");
-        location.setCity("qdsfgjhk");
         offer.setLocation(location);
 
         Recuperator recuperator = new Recuperator();
@@ -80,15 +71,14 @@ public class OfferServiceTest {
         offerDTO.setDescription("Coucou");
         offerDTO.setTitle("Hello");
         offerDTO.setIsCold(true);
-        offerDTO.setAvailabilityBegin(ZonedDateTime.now());
-        offerDTO.setAvailabilityEnd(ZonedDateTime.now());
+        offerDTO.setAvailabilityBegin(begin);
+        offerDTO.setAvailabilityEnd(end);
 
         LocationDTO locationDTO = new LocationDTO();
         locationDTO.setCity("fsdfgsdfg");
         locationDTO.setId(1325434L);
         locationDTO.setPostalCode("453647897");
         locationDTO.setStreetAddress("qrsytuyuklh");
-        locationDTO.setCity("qdsfgjhk");
         offerDTO.setLocationDTO(locationDTO);
 
         RecuperatorDTO recuperatorDTO = new RecuperatorDTO();

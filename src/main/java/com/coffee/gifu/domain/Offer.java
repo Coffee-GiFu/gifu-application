@@ -1,11 +1,11 @@
 package com.coffee.gifu.domain;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
-import javax.validation.constraints.*;
-
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.time.ZonedDateTime;
 
@@ -26,7 +26,7 @@ public class Offer implements Serializable {
 
     @NotNull
     @Size(min = 10, max = 255)
-    @Column(name = "description", length = 255, nullable = false)
+    @Column(name = "description", nullable = false)
     private String description;
 
     @NotNull
@@ -46,9 +46,8 @@ public class Offer implements Serializable {
     @Column(name = "title", length = 100, nullable = false)
     private String title;
 
-    @OneToOne(optional = false)    @NotNull
-
-    @JoinColumn(unique = true)
+    @OneToOne(optional = false)
+    @NotNull
     private Location location;
 
     @ManyToOne

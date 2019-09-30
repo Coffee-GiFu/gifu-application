@@ -6,10 +6,12 @@ import com.coffee.gifu.repository.RecuperatorRepository;
 import com.coffee.gifu.service.dto.LocationDTO;
 import com.coffee.gifu.service.dto.RecuperatorDTO;
 import com.coffee.gifu.service.impl.RecuperatorServiceImpl;
+import com.coffee.gifu.service.mapper.LocationMapperImpl;
 import com.coffee.gifu.service.mapper.RecuperatorMapper;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
@@ -25,7 +27,7 @@ import static org.mockito.Mockito.*;
 public class RecuperatorServiceTest {
 
     @Mock
-    RecuperatorRepository recuperatorRepository;
+    private RecuperatorRepository recuperatorRepository;
 
     @Mock
     private RecuperatorMapper recuperatorMapper;
@@ -83,7 +85,7 @@ public class RecuperatorServiceTest {
     @Test
     public void findOne_should_call_the_repo_and_return_the_correctly_result() {
         // Given
-        Optional<Recuperator> expected = Optional.ofNullable(buildRecuperator());
+        Optional<Recuperator> expected = Optional.of(buildRecuperator());
         when(recuperatorRepository.findById(1L)).thenReturn(expected);
         when(recuperatorMapper.toDto(any(Recuperator.class))).thenReturn(buildRecuperatorDto());
 
