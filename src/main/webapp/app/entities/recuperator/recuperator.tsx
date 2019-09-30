@@ -60,7 +60,7 @@ export class Recuperator extends React.Component<IRecuperatorProps> {
                     <td>{recuperator.name}</td>
                     <td>{recuperator.phoneNumber}</td>
                     <td>
-                      {recuperator.locationCity ? <Link to={`location/${recuperator.locationId}`}>{recuperator.locationCity}</Link> : ''}
+                      {recuperator.location ? <Link to={`location/${recuperator.location.id}`}>{recuperator.location.city}</Link> : ''}
                     </td>
                     <td className="text-right">
                       <div className="btn-group flex-btn-group-container">

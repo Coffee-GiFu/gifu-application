@@ -1,4 +1,6 @@
 import { Moment } from 'moment';
+import { ILocation } from 'app/shared/model/location.model';
+import { IRecuperator } from 'app/shared/model/recuperator.model';
 
 export interface IOffer {
   id?: number;
@@ -7,8 +9,8 @@ export interface IOffer {
   availabilityBegin?: Moment;
   availabilityEnd?: Moment;
   title?: string;
-  locationId?: number;
-  recuperatorId?: number;
+  location?: ILocation;
+  recuperator?: IRecuperator;
 }
 
 export const defaultValue: Readonly<IOffer> = {

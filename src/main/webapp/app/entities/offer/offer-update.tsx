@@ -1,35 +1,33 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import { Link, RouteComponentProps } from 'react-router-dom';
-import { Button, Row, Col, Label } from 'reactstrap';
-import { AvFeedback, AvForm, AvGroup, AvInput, AvField } from 'availity-reactstrap-validation';
-import { Translate, translate, ICrudGetAction, ICrudGetAllAction, ICrudPutAction } from 'react-jhipster';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { IRootState } from 'app/shared/reducers';
+import {connect} from 'react-redux';
+import {Link, RouteComponentProps} from 'react-router-dom';
+import {Button, Col, Label, Row} from 'reactstrap';
+import {AvField, AvForm, AvGroup, AvInput} from 'availity-reactstrap-validation';
+import {Translate, translate} from 'react-jhipster';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {IRootState} from 'app/shared/reducers';
 
-import { ILocation } from 'app/shared/model/location.model';
-import { getEntities as getLocations } from 'app/entities/location/location.reducer';
-import { IRecuperator } from 'app/shared/model/recuperator.model';
-import { getEntities as getRecuperators } from 'app/entities/recuperator/recuperator.reducer';
-import { getEntity, updateEntity, createEntity, reset } from './offer.reducer';
-import { IOffer } from 'app/shared/model/offer.model';
-import { convertDateTimeFromServer, convertDateTimeToServer } from 'app/shared/util/date-utils';
-import { mapIdList } from 'app/shared/util/entity-utils';
+import {ILocation} from 'app/shared/model/location.model';
+import {getEntities as getLocations} from 'app/entities/location/location.reducer';
+import {IRecuperator} from 'app/shared/model/recuperator.model';
+import {getEntities as getRecuperators} from 'app/entities/recuperator/recuperator.reducer';
+import {createEntity, getEntity, reset, updateEntity} from './offer.reducer';
+import {convertDateTimeFromServer, convertDateTimeToServer} from 'app/shared/util/date-utils';
 
 export interface IOfferUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
 
 export interface IOfferUpdateState {
   isNew: boolean;
-  locationId: string;
-  recuperatorId: string;
+  location: ILocation;
+  recuperator: IRecuperator;
 }
 
 export class OfferUpdate extends React.Component<IOfferUpdateProps, IOfferUpdateState> {
   constructor(props) {
     super(props);
     this.state = {
-      locationId: '0',
-      recuperatorId: '0',
+      location: this.props.offerEntity.location,
+      recuperator: this.props.offerEntity.recuperator,
       isNew: !this.props.match.params || !this.props.match.params.id
     };
   }
@@ -47,7 +45,6 @@ export class OfferUpdate extends React.Component<IOfferUpdateProps, IOfferUpdate
       this.props.getEntity(this.props.match.params.id);
     }
 
-    this.props.getLocations();
     this.props.getRecuperators();
   }
 
@@ -75,7 +72,7 @@ export class OfferUpdate extends React.Component<IOfferUpdateProps, IOfferUpdate
   };
 
   render() {
-    const { offerEntity, locations, recuperators, loading, updating } = this.props;
+    const { offerEntity, recuperators, loading, updating } = this.props;
     const { isNew } = this.state;
 
     return (
@@ -173,16 +170,16 @@ export class OfferUpdate extends React.Component<IOfferUpdateProps, IOfferUpdate
                   <Label for="offer-location">
                     <Translate contentKey="gifuApp.offer.location">Location</Translate>
                   </Label>
-                  <AvInput id="offer-location" type="select" className="form-control" name="locationId">
-                    <option value="" key="0" />
-                    {locations
-                      ? locations.map(otherEntity => (
-                          <option value={otherEntity.id} key={otherEntity.id}>
-                            {otherEntity.id}
-                          </option>
-                        ))
-                      : null}
-                  </AvInput>
+                  {/*<AvInput id="offer-location" type="select" className="form-control" name="locationId">*/}
+                  {/*  <option value="" key="0" />*/}
+                  {/*  {locations*/}
+                  {/*    ? locations.map(otherEntity => (*/}
+                  {/*        <option value={otherEntity.id} key={otherEntity.id}>*/}
+                  {/*          {otherEntity.id}*/}
+                  {/*        </option>*/}
+                  {/*      ))*/}
+                  {/*    : null}*/}
+                  {/*</AvInput>*/}
                 </AvGroup>
                 <AvGroup>
                   <Label for="offer-recuperator">
