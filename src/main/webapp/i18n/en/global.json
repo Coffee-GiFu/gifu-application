@@ -10,6 +10,7 @@
         "location": "Location",
         "recuperator": "Recuperator",
         "offer": "Offer",
+        "organisation": "Organisation",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "account": {

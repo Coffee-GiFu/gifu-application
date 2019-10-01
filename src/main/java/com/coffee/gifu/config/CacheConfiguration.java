@@ -48,6 +48,7 @@ public class CacheConfiguration {
             createCache(cm, com.coffee.gifu.domain.Location.class.getName());
             createCache(cm, com.coffee.gifu.domain.Recuperator.class.getName());
             createCache(cm, com.coffee.gifu.domain.Offer.class.getName());
+            createCache(cm, com.coffee.gifu.domain.Organisation.class.getName());
             // jhipster-needle-ehcache-add-entry
         };
     }

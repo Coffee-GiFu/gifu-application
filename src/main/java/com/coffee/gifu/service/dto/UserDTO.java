@@ -31,6 +31,8 @@ public class UserDTO {
 
     private boolean activated = false;
 
+    private Long organisationID;
+
     @Size(min = 2, max = 10)
     private String langKey;
 
@@ -53,6 +55,7 @@ public class UserDTO {
         this.login = user.getLogin();
         this.email = user.getEmail();
         this.activated = user.getActivated();
+        this.organisationID = user.getOrganisationID();
         this.langKey = user.getLangKey();
         this.createdBy = user.getCreatedBy();
         this.createdDate = user.getCreatedDate();
@@ -93,6 +96,14 @@ public class UserDTO {
 
     public void setActivated(boolean activated) {
         this.activated = activated;
+    }
+
+    public Long getOrganisationID() {
+        return organisationID;
+    }
+
+    public void setOrganisationID(Long organisationID) {
+        this.organisationID = organisationID;
     }
 
     public String getLangKey() {
