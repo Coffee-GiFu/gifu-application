@@ -45,7 +45,7 @@ public class Offer implements Serializable {
     @Column(name = "title", length = 100, nullable = false)
     private String title;
 
-    @OneToOne(optional = false)
+    @OneToOne(optional = false, cascade = CascadeType.ALL)
     @NotNull
     private Location location;
 

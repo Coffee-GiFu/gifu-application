@@ -90,11 +90,6 @@
         </loadData>
         <dropDefaultValue tableName="jhi_user" columnName="created_date" columnDataType="datetime"/>
         <loadData
-            file="config/liquibase/data/authority.csv"
-            separator=";"
-            tableName="jhi_authority"/>
-
-        <loadData
             file="config/liquibase/data/user_authority.csv"
             separator=";"
             tableName="jhi_user_authority"/>

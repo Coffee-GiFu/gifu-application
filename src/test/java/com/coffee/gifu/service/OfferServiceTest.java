@@ -107,6 +107,8 @@ public class OfferServiceTest {
 
     @Test
     public void should_find_all_object() {
+
+        //TODO : Redo this test with toDTO(List) not toDTO(Entity)
         //Given
         List<Offer> offers = new ArrayList<>();
         offers.add(offer);

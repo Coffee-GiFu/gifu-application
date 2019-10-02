@@ -2,19 +2,21 @@ package com.coffee.gifu.web.rest;
 
 import com.coffee.gifu.config.Constants;
 import com.coffee.gifu.domain.User;
+import com.coffee.gifu.repository.OrganisationRepository;
 import com.coffee.gifu.repository.UserRepository;
 import com.coffee.gifu.security.AuthoritiesConstants;
 import com.coffee.gifu.service.MailService;
 import com.coffee.gifu.service.UserService;
+import com.coffee.gifu.service.dto.OrganisationDTO;
 import com.coffee.gifu.service.dto.UserDTO;
 import com.coffee.gifu.web.rest.errors.BadRequestAlertException;
 import com.coffee.gifu.web.rest.errors.EmailAlreadyUsedException;
+import com.coffee.gifu.web.rest.errors.IdentificationCodeAlreadyUsedException;
 import com.coffee.gifu.web.rest.errors.LoginAlreadyUsedException;
-
+import com.coffee.gifu.web.rest.wrapper.CreateUserRequest;
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.PaginationUtil;
 import io.github.jhipster.web.util.ResponseUtil;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -30,7 +32,8 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.*;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * REST controller for managing users.
@@ -69,13 +72,17 @@ public class UserResource {
 
     private final UserRepository userRepository;
 
+    private final OrganisationRepository organisationRepository;
+
     private final MailService mailService;
 
-    public UserResource(UserService userService, UserRepository userRepository, MailService mailService) {
+    public UserResource(UserService userService, UserRepository userRepository, MailService mailService,
+                        OrganisationRepository organisationRepository) {
 
         this.userService = userService;
         this.userRepository = userRepository;
         this.mailService = mailService;
+        this.organisationRepository = organisationRepository;
     }
 
     /**
@@ -92,7 +99,10 @@ public class UserResource {
      */
     @PostMapping("/users")
     @PreAuthorize("hasRole(\"" + AuthoritiesConstants.ADMIN + "\")")
-    public ResponseEntity<User> createUser(@Valid @RequestBody UserDTO userDTO) throws URISyntaxException {
+    public ResponseEntity<User> createUser( @RequestBody CreateUserRequest createUserRequest) throws URISyntaxException {
+        UserDTO userDTO = createUserRequest.getUserDTO();
+        OrganisationDTO organisationDTO = createUserRequest.getOrganisationDTO();
+
         log.debug("REST request to save User : {}", userDTO);
 
         if (userDTO.getId() != null) {
@@ -102,8 +112,10 @@ public class UserResource {
             throw new LoginAlreadyUsedException();
         } else if (userRepository.findOneByEmailIgnoreCase(userDTO.getEmail()).isPresent()) {
             throw new EmailAlreadyUsedException();
+        }  else if (organisationRepository.findByIdentificationCode(organisationDTO.getIdentificationCode()).isPresent()) {
+            throw new IdentificationCodeAlreadyUsedException();
         } else {
-            User newUser = userService.createUser(userDTO);
+            User newUser = userService.createUser(userDTO, organisationDTO);
             mailService.sendCreationEmail(newUser);
             return ResponseEntity.created(new URI("/api/users/" + newUser.getLogin()))
                 .headers(HeaderUtil.createAlert(applicationName,  "userManagement.created", newUser.getLogin()))

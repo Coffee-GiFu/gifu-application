@@ -11,11 +11,10 @@ import org.mapstruct.*;
 @Mapper(componentModel = "spring", uses = {LocationMapper.class})
 public interface OrganisationMapper extends EntityMapper<OrganisationDTO, Organisation> {
 
-    @Mapping(source = "location.id", target = "locationId")
-    @Mapping(source = "location.city", target = "locationCity")
+    @Mapping(source = "location", target = "locationDTO")
     OrganisationDTO toDto(Organisation organisation);
 
-    @Mapping(source = "locationId", target = "location")
+    @Mapping(source = "locationDTO", target = "location")
     Organisation toEntity(OrganisationDTO organisationDTO);
 
     default Organisation fromId(Long id) {

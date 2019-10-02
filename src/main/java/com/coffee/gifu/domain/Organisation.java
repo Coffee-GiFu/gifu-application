@@ -53,9 +53,8 @@ public class Organisation implements Serializable {
     @Column(name = "type", nullable = false)
     private String type;
 
-    @OneToOne(optional = false)    @NotNull
-
-    @JoinColumn(unique = true)
+    @OneToOne(optional = false, cascade = CascadeType.ALL)
+    @NotNull
     private Location location;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove

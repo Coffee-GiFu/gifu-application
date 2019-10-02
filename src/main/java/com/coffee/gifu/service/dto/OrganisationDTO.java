@@ -34,10 +34,8 @@ public class OrganisationDTO implements Serializable {
     @NotNull
     private String type;
 
-
-    private Long locationId;
-
-    private String locationCity;
+    @NotNull
+    private LocationDTO locationDTO;
 
     public Long getId() {
         return id;
@@ -103,20 +101,12 @@ public class OrganisationDTO implements Serializable {
         this.type = type;
     }
 
-    public Long getLocationId() {
-        return locationId;
+    public LocationDTO getLocationDTO() {
+        return locationDTO;
     }
 
-    public void setLocationId(Long locationId) {
-        this.locationId = locationId;
-    }
-
-    public String getLocationCity() {
-        return locationCity;
-    }
-
-    public void setLocationCity(String locationCity) {
-        this.locationCity = locationCity;
+    public void setLocationDTO(LocationDTO locationDTO) {
+        this.locationDTO = locationDTO;
     }
 
     @Override
@@ -151,8 +141,7 @@ public class OrganisationDTO implements Serializable {
             ", description='" + getDescription() + "'" +
             ", identificationCode='" + getIdentificationCode() + "'" +
             ", type='" + getType() + "'" +
-            ", location=" + getLocationId() +
-            ", location='" + getLocationCity() + "'" +
+            ", location='" + getLocationDTO()+ "'" +
             "}";
     }
 }

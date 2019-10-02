@@ -3,14 +3,18 @@ package com.coffee.gifu.web.rest;
 import com.coffee.gifu.GifuApp;
 import com.coffee.gifu.domain.Authority;
 import com.coffee.gifu.domain.User;
+import com.coffee.gifu.repository.OrganisationRepository;
 import com.coffee.gifu.repository.UserRepository;
 import com.coffee.gifu.security.AuthoritiesConstants;
 import com.coffee.gifu.service.MailService;
 import com.coffee.gifu.service.UserService;
+import com.coffee.gifu.service.dto.LocationDTO;
+import com.coffee.gifu.service.dto.OrganisationDTO;
 import com.coffee.gifu.service.dto.UserDTO;
 import com.coffee.gifu.service.mapper.UserMapper;
 import com.coffee.gifu.web.rest.errors.ExceptionTranslator;
 import com.coffee.gifu.web.rest.vm.ManagedUserVM;
+import com.coffee.gifu.web.rest.wrapper.CreateUserRequest;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Ignore;
 import org.junit.jupiter.api.BeforeEach;
@@ -48,7 +52,7 @@ public class UserResourceIT {
     private static final String UPDATED_LOGIN = "jhipster";
 
     private static final Long DEFAULT_ID = 1L;
-    private static final Long DEFAULT_ORGANISATION_ID = 1L;
+    private static final Long DEFAULT_ORGANISATION_ID = 99L;
 
     private static final String DEFAULT_PASSWORD = "passjohndoe";
     private static final String UPDATED_PASSWORD = "passjhipster";
@@ -67,6 +71,9 @@ public class UserResourceIT {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private OrganisationRepository organisationRepository;
 
     @Autowired
     private UserMapper userMapper;
@@ -94,7 +101,7 @@ public class UserResourceIT {
     public void setup() {
         cacheManager.getCache(UserRepository.USERS_BY_LOGIN_CACHE).clear();
         cacheManager.getCache(UserRepository.USERS_BY_EMAIL_CACHE).clear();
-        UserResource userResource = new UserResource(userService, userRepository, mailService);
+        UserResource userResource = new UserResource(userService, userRepository, mailService, organisationRepository);
 
         this.restUserMockMvc = MockMvcBuilders.standaloneSetup(userResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
@@ -127,7 +134,6 @@ public class UserResourceIT {
         user.setEmail(DEFAULT_EMAIL);
     }
 
-    @Ignore
     @Test
     @Transactional
     public void createUser() throws Exception {
@@ -143,9 +149,26 @@ public class UserResourceIT {
         managedUserVM.setLangKey(DEFAULT_LANGKEY);
         managedUserVM.setAuthorities(Collections.singleton(AuthoritiesConstants.USER));
 
+        LocationDTO locationDTO = new LocationDTO();
+        locationDTO.setCity("Test");
+        locationDTO.setPostalCode("77777");
+        locationDTO.setStreetAddress("Test");
+
+        OrganisationDTO organisationDTO = new OrganisationDTO();
+        organisationDTO.setDescription("Test");
+        organisationDTO.setContactMail(DEFAULT_EMAIL);
+        organisationDTO.setIdentificationCode("0123456789");
+        organisationDTO.setLogo("Test");
+        organisationDTO.setName("Test");
+        organisationDTO.setPhoneNumber("0123456789");
+        organisationDTO.setType("Test");
+        organisationDTO.setLocationDTO(locationDTO);
+
+        CreateUserRequest createUserRequest = new CreateUserRequest(managedUserVM, organisationDTO);
+
         restUserMockMvc.perform(post("/api/users")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(managedUserVM)))
+            .content(TestUtil.convertObjectToJsonBytes(createUserRequest)))
             .andExpect(status().isCreated());
 
         // Validate the User in the database
@@ -154,7 +177,7 @@ public class UserResourceIT {
         User testUser = userList.get(userList.size() - 1);
         assertThat(testUser.getLogin()).isEqualTo(DEFAULT_LOGIN);
         assertThat(testUser.getEmail()).isEqualTo(DEFAULT_EMAIL);
-        assertThat(testUser.getOrganisationID()).isEqualTo(DEFAULT_ORGANISATION_ID);
+        assertThat(testUser.getOrganisationID()).isNotNull();
         assertThat(testUser.getLangKey()).isEqualTo(DEFAULT_LANGKEY);
     }
 
@@ -173,10 +196,27 @@ public class UserResourceIT {
         managedUserVM.setLangKey(DEFAULT_LANGKEY);
         managedUserVM.setAuthorities(Collections.singleton(AuthoritiesConstants.USER));
 
+        LocationDTO locationDTO = new LocationDTO();
+        locationDTO.setCity("Test");
+        locationDTO.setPostalCode("77777");
+        locationDTO.setStreetAddress("Test");
+
+        OrganisationDTO organisationDTO = new OrganisationDTO();
+        organisationDTO.setDescription("Test");
+        organisationDTO.setContactMail(DEFAULT_EMAIL);
+        organisationDTO.setIdentificationCode("0123456789");
+        organisationDTO.setLogo("Test");
+        organisationDTO.setName("Test");
+        organisationDTO.setPhoneNumber("0123456789");
+        organisationDTO.setType("Test");
+        organisationDTO.setLocationDTO(locationDTO);
+
+        CreateUserRequest createUserRequest = new CreateUserRequest(managedUserVM, organisationDTO);
+
         // An entity with an existing ID cannot be created, so this API call must fail
         restUserMockMvc.perform(post("/api/users")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(managedUserVM)))
+            .content(TestUtil.convertObjectToJsonBytes(createUserRequest)))
             .andExpect(status().isBadRequest());
 
         // Validate the User in the database
@@ -200,10 +240,27 @@ public class UserResourceIT {
         managedUserVM.setLangKey(DEFAULT_LANGKEY);
         managedUserVM.setAuthorities(Collections.singleton(AuthoritiesConstants.USER));
 
+        LocationDTO locationDTO = new LocationDTO();
+        locationDTO.setCity("Test");
+        locationDTO.setPostalCode("77777");
+        locationDTO.setStreetAddress("Test");
+
+        OrganisationDTO organisationDTO = new OrganisationDTO();
+        organisationDTO.setDescription("Test");
+        organisationDTO.setContactMail(DEFAULT_EMAIL);
+        organisationDTO.setIdentificationCode("0123456789");
+        organisationDTO.setLogo("Test");
+        organisationDTO.setName("Test");
+        organisationDTO.setPhoneNumber("0123456789");
+        organisationDTO.setType("Test");
+        organisationDTO.setLocationDTO(locationDTO);
+
+        CreateUserRequest createUserRequest = new CreateUserRequest(managedUserVM, organisationDTO);
+
         // Create the User
         restUserMockMvc.perform(post("/api/users")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(managedUserVM)))
+            .content(TestUtil.convertObjectToJsonBytes(createUserRequest)))
             .andExpect(status().isBadRequest());
 
         // Validate the User in the database
@@ -227,10 +284,27 @@ public class UserResourceIT {
         managedUserVM.setLangKey(DEFAULT_LANGKEY);
         managedUserVM.setAuthorities(Collections.singleton(AuthoritiesConstants.USER));
 
+        LocationDTO locationDTO = new LocationDTO();
+        locationDTO.setCity("Test");
+        locationDTO.setPostalCode("77777");
+        locationDTO.setStreetAddress("Test");
+
+        OrganisationDTO organisationDTO = new OrganisationDTO();
+        organisationDTO.setDescription("Test");
+        organisationDTO.setContactMail(DEFAULT_EMAIL);
+        organisationDTO.setIdentificationCode("0123456789");
+        organisationDTO.setLogo("Test");
+        organisationDTO.setName("Test");
+        organisationDTO.setPhoneNumber("0123456789");
+        organisationDTO.setType("Test");
+        organisationDTO.setLocationDTO(locationDTO);
+
+        CreateUserRequest createUserRequest = new CreateUserRequest(managedUserVM, organisationDTO);
+
         // Create the User
         restUserMockMvc.perform(post("/api/users")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(managedUserVM)))
+            .content(TestUtil.convertObjectToJsonBytes(createUserRequest)))
             .andExpect(status().isBadRequest());
 
         // Validate the User in the database
@@ -238,7 +312,6 @@ public class UserResourceIT {
         assertThat(userList).hasSize(databaseSizeBeforeCreate);
     }
 
-    @Ignore
     @Test
     @Transactional
     public void getAllUsers() throws Exception {
@@ -251,7 +324,7 @@ public class UserResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].login").value(hasItem(DEFAULT_LOGIN)))
-            .andExpect(jsonPath("$.[*].organisationID").value(DEFAULT_ORGANISATION_ID.toString()))
+            .andExpect(jsonPath("$.[*].organisationID").value(99))
             .andExpect(jsonPath("$.[*].email").value(hasItem(DEFAULT_EMAIL)))
             .andExpect(jsonPath("$.[*].langKey").value(hasItem(DEFAULT_LANGKEY)));
     }
@@ -358,18 +431,17 @@ public class UserResourceIT {
         assertThat(testUser.getLangKey()).isEqualTo(UPDATED_LANGKEY);
     }
 
-    @Ignore
     @Test
     @Transactional
     public void updateUserExistingEmail() throws Exception {
-        // Initialize the database with 2 users
+        // Initialize the database with 2 users (5 users already in base at app init)
         userRepository.saveAndFlush(user);
 
         User anotherUser = new User();
         anotherUser.setLogin("jhipster");
         anotherUser.setPassword(RandomStringUtils.random(60));
         anotherUser.setActivated(true);
-        anotherUser.setOrganisationID(1L);
+        anotherUser.setOrganisationID(100L);
         anotherUser.setEmail("jhipster@localhost");
         anotherUser.setLangKey("en");
         userRepository.saveAndFlush(anotherUser);
@@ -453,7 +525,6 @@ public class UserResourceIT {
         assertThat(userList).hasSize(databaseSizeBeforeDelete - 1);
     }
 
-    @Ignore
     @Test
     @Transactional
     public void getAllAuthorities() throws Exception {
@@ -463,7 +534,8 @@ public class UserResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$").isArray())
-            .andExpect(jsonPath("$").value(hasItems(AuthoritiesConstants.USER, AuthoritiesConstants.ADMIN)));
+            .andExpect(jsonPath("$").value(hasItems(AuthoritiesConstants.USER, AuthoritiesConstants.ADMIN,
+                AuthoritiesConstants.ASSOCIATION, AuthoritiesConstants.COMPANY)));
     }
 
     @Test
