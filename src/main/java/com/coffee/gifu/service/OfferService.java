@@ -1,6 +1,7 @@
 package com.coffee.gifu.service;
 
 import com.coffee.gifu.service.dto.OfferDTO;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -35,9 +36,29 @@ public interface OfferService {
     Optional<OfferDTO> findOne(Long id);
 
     /**
+     * Get the offer by account.
+     *
+     * @param id the id of the account.
+     * @return an entity list.
+     */
+    Optional<OfferDTO> findOnebyAccount(Long id);
+
+    /**
      * Delete the "id" offer.
      *
      * @param id the id of the entity.
      */
     void delete(Long id);
+
+
+    List<OfferDTO> findAllSelect(boolean freez);
+
+    Optional<OfferDTO> findAllCreate();
+
+    /**
+     * Get all the available offers.
+     *
+     * @return the list of available entities.
+     */
+    Optional<OfferDTO> findAllAvailable();
 }

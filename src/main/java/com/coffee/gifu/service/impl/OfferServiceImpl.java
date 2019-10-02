@@ -87,4 +87,51 @@ public class OfferServiceImpl implements OfferService {
         log.debug("Request to delete Offer : {}", id);
         offerRepository.deleteById(id);
     }
+
+    /*////////////////////////////////////////////////////////////////////*/
+    /*////////////////////////////////////////////////////////////////////*/
+    /*////////////////////////////////////////////////////////////////////*/
+    /*////////////////////////////////////////////////////////////////////*/
+    /*////////////////////////////////////////////////////////////////////*/
+
+    /**
+     * Get the offer selected.
+     *
+     * @return an entity list.
+     */
+    @Override
+    @Transactional(readOnly = true)
+    public List<OfferDTO> findAllSelect(boolean freez) {
+        log.debug("Request to get Offer by account");
+        return offerRepository.findAll().stream()
+            .map(offerMapper::toDto)
+            .collect(Collectors.toCollection(LinkedList::new));
+    }
+
+    /**
+     * Get the offer create.
+     *
+     * @return an entity list.
+     */
+    @Override
+    @Transactional(readOnly = true)
+    public Optional<OfferDTO> findAllCreate() {
+        log.debug("Request to get Offer by account");
+        return offerRepository.findById()
+            .map(offerMapper::toDto);
+    }
+
+    /**
+     * Get all the available offers.
+     *
+     * @return the list of available entities.
+     */
+    @Override
+    @Transactional(readOnly = true)
+    public Optional<OfferDTO> findAllAvailable() {
+        log.debug("Request to get all available Offers");
+        return offerRepository.findAll().stream()
+            .map(offerMapper::toDto)
+            .collect(Collectors.toCollection(LinkedList::new));
+    }
 }
