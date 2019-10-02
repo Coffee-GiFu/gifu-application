@@ -1,9 +1,11 @@
 package com.coffee.gifu.cucumber.stepdefs;
 
+import com.coffee.gifu.security.AuthoritiesConstants;
 import cucumber.api.java.Before;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
+import io.cucumber.java.en.And;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
@@ -39,9 +41,8 @@ public class UserStepDefs extends StepDefs {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE));
     }
 
-    @Then("his last name is {string}")
-    public void his_last_name_is(String lastName) throws Throwable {
-        actions.andExpect(jsonPath("$.lastName").value(lastName));
+    @Then("his login is {string}")
+    public void his_role_is(String login) throws Throwable {
+        actions.andExpect(jsonPath("$.login").value(login));
     }
-
 }
