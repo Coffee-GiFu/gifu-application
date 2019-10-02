@@ -51,7 +51,6 @@ public class ExternalResource {
      * or with status {@code 500 (Internal Error)} (InterruptedException, ParseException, IOException).
      */
     @GetMapping("/external/RNA/{rnaCode}")
-    @PreAuthorize("hasRole(\"" + AuthoritiesConstants.USER + "\")")
     public ResponseEntity<JSONObject> getRNA(@PathVariable String rnaCode) throws InterruptedException, NotFoundException, ParseException, IOException {
         log.debug("REST request to get RNA : {}", rnaCode);
         JSONObject json = rnaService.callApi(rnaCode);
@@ -67,7 +66,6 @@ public class ExternalResource {
      * or with status {@code 500 (Internal Error)} (InterruptedException, ParseException, IOException).
      */
     @GetMapping("/external/SIRET/{siretCode}")
-    @PreAuthorize("hasRole(\"" + AuthoritiesConstants.USER + "\")")
     public ResponseEntity<JSONObject> getSIRET(@PathVariable String siretCode) throws InterruptedException, NotFoundException, ParseException, IOException {
         log.debug("REST request to get SIRET : {}", siretCode);
         JSONObject json = siretService.callApi(siretCode);
