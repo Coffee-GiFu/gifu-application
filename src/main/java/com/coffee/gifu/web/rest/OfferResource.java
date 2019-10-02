@@ -122,48 +122,38 @@ public class OfferResource {
         return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString())).build();
     }
 
-    /*////////////////////////////////////////////////////////////////////*/
-    /*////////////////////////////////////////////////////////////////////*/
-    /*////////////////////////////////////////////////////////////////////*/
-    /*////////////////////////////////////////////////////////////////////*/
-    /*////////////////////////////////////////////////////////////////////*/
     /**
-     * {@code GET  /offers/:id} : get the "id" offer.
+     * {@code GET  /offers/selected} : get the selecte offer.
      *
-     * @param id the id of the offerDTO to retrieve.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the offerDTO,
      * or with status {@code 404 (Not Found)}.
      */
-    @GetMapping("/offers/{id}")
-    public ResponseEntity<OfferDTO> getSelectedOffer() {
-        log.debug("REST request to get Offer : {}");
-        Optional<OfferDTO> offerDTO = offerService.findOne(id);
-        return ResponseUtil.wrapOrNotFound(offerDTO);
+    @GetMapping("/offers/selected")
+    public List<OfferDTO> searchChosenOffer() {
+        log.debug("REST request to get Offer.");
+        return offerService.searchChosenOffer();
     }
     /**
-     * {@code GET  /offers/:id} : get the "id" offer.
+     * {@code GET  /offers/create} : get the create offer.
      *
-     * @param id the id of the offerDTO to retrieve.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the offerDTO,
      * or with status {@code 404 (Not Found)}.
      */
-    @GetMapping("/offers/{id}")
-    public ResponseEntity<OfferDTO> getCreatedOffer(@PathVariable Long id) {
-        log.debug("REST request to get Offer : {}", id);
-        Optional<OfferDTO> offerDTO = offerService.findOne(id);
-        return ResponseUtil.wrapOrNotFound(offerDTO);
+    @GetMapping("/offers/create")
+    public List<OfferDTO> searchCreatedOffer() {
+        log.debug("REST request to get Offer.");
+        return offerService.searchCreatedOffer();
     }
     /**
-     * {@code GET  /offers/:id} : get the "id" offer.
+     * {@code GET  /offers/available : get the available offer.
      *
-     * @param id the id of the offerDTO to retrieve.
+     * @param isColdFilter (facultatif)
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the offerDTO,
      * or with status {@code 404 (Not Found)}.
      */
-    @GetMapping("/offers/{id}")
-    public ResponseEntity<OfferDTO> getAvailableOffer(@PathVariable boolean isCold) {
-        log.debug("REST request to get available Offer : {}", isCold);
-        Optional<OfferDTO> offerDTO = offerService.findOne(1);
-        return ResponseUtil.wrapOrNotFound(offerDTO);
+    @GetMapping("/offers/available")
+    public List<OfferDTO> searchAvailableOffer(@PathVariable boolean isColdFilter) {
+        log.debug("REST request to get available Offer : {}", isColdFilter);
+        return offerService.searchAvailableOffer(isColdFilter);
     }
 }

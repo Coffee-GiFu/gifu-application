@@ -88,24 +88,15 @@ public class OfferServiceImpl implements OfferService {
         offerRepository.deleteById(id);
     }
 
-    /*////////////////////////////////////////////////////////////////////*/
-    /*////////////////////////////////////////////////////////////////////*/
-    /*////////////////////////////////////////////////////////////////////*/
-    /*////////////////////////////////////////////////////////////////////*/
-    /*////////////////////////////////////////////////////////////////////*/
-
     /**
      * Get the offer selected.
      *
      * @return an entity list.
      */
-    @Override
     @Transactional(readOnly = true)
-    public List<OfferDTO> findAllSelect(boolean freez) {
+    public List<OfferDTO> searchChosenOffer() {
         log.debug("Request to get Offer by account");
-        return offerRepository.findAll().stream()
-            .map(offerMapper::toDto)
-            .collect(Collectors.toCollection(LinkedList::new));
+        return offerRepository.searchChosenOffer();
     }
 
     /**
@@ -113,12 +104,10 @@ public class OfferServiceImpl implements OfferService {
      *
      * @return an entity list.
      */
-    @Override
     @Transactional(readOnly = true)
-    public Optional<OfferDTO> findAllCreate() {
+    public List<OfferDTO> searchCreatedOffer() {
         log.debug("Request to get Offer by account");
-        return offerRepository.findById()
-            .map(offerMapper::toDto);
+        return offerRepository.searchCreatedOffer();
     }
 
     /**
@@ -126,12 +115,9 @@ public class OfferServiceImpl implements OfferService {
      *
      * @return the list of available entities.
      */
-    @Override
     @Transactional(readOnly = true)
-    public Optional<OfferDTO> findAllAvailable() {
+    public List<OfferDTO> searchAvailableOffer(Boolean isColdFilter) {
         log.debug("Request to get all available Offers");
-        return offerRepository.findAll().stream()
-            .map(offerMapper::toDto)
-            .collect(Collectors.toCollection(LinkedList::new));
+        return offerRepository.searchAvailableOffer(isColdFilter);
     }
 }
