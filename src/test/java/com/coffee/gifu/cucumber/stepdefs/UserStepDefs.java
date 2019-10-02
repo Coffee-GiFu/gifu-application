@@ -42,7 +42,7 @@ public class UserStepDefs extends StepDefs {
     }
 
     @Then("his login is {string}")
-    public void his_role_is(String login) throws Throwable {
+    public void his_login_is(String login) throws Throwable {
         actions.andExpect(jsonPath("$.login").value(login));
     }
 }
