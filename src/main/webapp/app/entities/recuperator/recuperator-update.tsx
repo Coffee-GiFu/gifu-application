@@ -18,14 +18,14 @@ export interface IRecuperatorUpdateProps extends StateProps, DispatchProps, Rout
 
 export interface IRecuperatorUpdateState {
   isNew: boolean;
-  locationId: string;
+  location: ILocation;
 }
 
 export class RecuperatorUpdate extends React.Component<IRecuperatorUpdateProps, IRecuperatorUpdateState> {
   constructor(props) {
     super(props);
     this.state = {
-      locationId: '0',
+      location: this.props.recuperatorEntity.location,
       isNew: !this.props.match.params || !this.props.match.params.id
     };
   }
@@ -43,7 +43,6 @@ export class RecuperatorUpdate extends React.Component<IRecuperatorUpdateProps, 
       this.props.getEntity(this.props.match.params.id);
     }
 
-    this.props.getLocations();
   }
 
   saveEntity = (event, errors, values) => {
@@ -67,7 +66,7 @@ export class RecuperatorUpdate extends React.Component<IRecuperatorUpdateProps, 
   };
 
   render() {
-    const { recuperatorEntity, locations, loading, updating } = this.props;
+    const { recuperatorEntity, loading, updating } = this.props;
     const { isNew } = this.state;
 
     return (
@@ -127,16 +126,16 @@ export class RecuperatorUpdate extends React.Component<IRecuperatorUpdateProps, 
                   <Label for="recuperator-location">
                     <Translate contentKey="gifuApp.recuperator.location">Location</Translate>
                   </Label>
-                  <AvInput id="recuperator-location" type="select" className="form-control" name="locationId">
-                    <option value="" key="0" />
-                    {locations
-                      ? locations.map(otherEntity => (
-                          <option value={otherEntity.id} key={otherEntity.id}>
-                            {otherEntity.city}
-                          </option>
-                        ))
-                      : null}
-                  </AvInput>
+                  {/*<AvInput id="recuperator-location" type="select" className="form-control" name="locationId">*/}
+                  {/*  <option value="" key="0" />*/}
+                  {/*  {locations*/}
+                  {/*    ? locations.map(otherEntity => (*/}
+                  {/*        <option value={otherEntity.id} key={otherEntity.id}>*/}
+                  {/*          {otherEntity.city}*/}
+                  {/*        </option>*/}
+                  {/*      ))*/}
+                  {/*    : null}*/}
+                  {/*</AvInput>*/}
                 </AvGroup>
                 <Button tag={Link} id="cancel-save" to="/entity/recuperator" replace color="info">
                   <FontAwesomeIcon icon="arrow-left" />

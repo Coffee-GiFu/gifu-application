@@ -1,9 +1,10 @@
+import { ILocation } from 'app/shared/model/location.model';
+
 export interface IRecuperator {
   id?: number;
   name?: string;
   phoneNumber?: string;
-  locationCity?: string;
-  locationId?: number;
+  location?: ILocation;
 }
 
 export const defaultValue: Readonly<IRecuperator> = {};

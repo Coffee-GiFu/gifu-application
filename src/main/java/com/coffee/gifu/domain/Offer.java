@@ -1,11 +1,11 @@
 package com.coffee.gifu.domain;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
-import javax.validation.constraints.*;
-
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.time.ZonedDateTime;
 
@@ -26,12 +26,11 @@ public class Offer implements Serializable {
 
     @NotNull
     @Size(min = 10, max = 255)
-    @Column(name = "description", length = 255, nullable = false)
+    @Column(name = "description", nullable = false)
     private String description;
 
-    @NotNull
     @Column(name = "is_cold", nullable = false)
-    private Boolean isCold;
+    private boolean isCold;
 
     @NotNull
     @Column(name = "availability_begin", nullable = false)
@@ -46,9 +45,8 @@ public class Offer implements Serializable {
     @Column(name = "title", length = 100, nullable = false)
     private String title;
 
-    @OneToOne(optional = false)    @NotNull
-
-    @JoinColumn(unique = true)
+    @OneToOne(optional = false)
+    @NotNull
     private Location location;
 
     @ManyToOne
@@ -76,16 +74,16 @@ public class Offer implements Serializable {
         this.description = description;
     }
 
-    public Boolean isIsCold() {
+    public boolean isIsCold() {
         return isCold;
     }
 
-    public Offer isCold(Boolean isCold) {
+    public Offer isCold(boolean isCold) {
         this.isCold = isCold;
         return this;
     }
 
-    public void setIsCold(Boolean isCold) {
+    public void setIsCold(boolean isCold) {
         this.isCold = isCold;
     }
 

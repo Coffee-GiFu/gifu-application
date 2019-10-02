@@ -63,11 +63,11 @@ export class OfferDetail extends React.Component<IOfferDetailProps> {
             <dt>
               <Translate contentKey="gifuApp.offer.location">Location</Translate>
             </dt>
-            <dd>{offerEntity.locationId ? offerEntity.locationId : ''}</dd>
+            <dd>{offerEntity.location ? offerEntity.location.city : ''}</dd>
             <dt>
               <Translate contentKey="gifuApp.offer.recuperator">Recuperator</Translate>
             </dt>
-            <dd>{offerEntity.recuperatorId ? offerEntity.recuperatorId : ''}</dd>
+            <dd>{offerEntity.recuperator ? offerEntity.recuperator.name : ''}</dd>
           </dl>
           <Button tag={Link} to="/entity/offer" replace color="info">
             <FontAwesomeIcon icon="arrow-left" />{' '}
