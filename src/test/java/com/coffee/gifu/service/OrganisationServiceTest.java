@@ -1,18 +1,11 @@
 package com.coffee.gifu.service;
 
 import com.coffee.gifu.domain.Location;
-import com.coffee.gifu.domain.Offer;
 import com.coffee.gifu.domain.Organisation;
-import com.coffee.gifu.domain.Recuperator;
-import com.coffee.gifu.repository.OfferRepository;
 import com.coffee.gifu.repository.OrganisationRepository;
 import com.coffee.gifu.service.dto.LocationDTO;
-import com.coffee.gifu.service.dto.OfferDTO;
 import com.coffee.gifu.service.dto.OrganisationDTO;
-import com.coffee.gifu.service.dto.RecuperatorDTO;
-import com.coffee.gifu.service.impl.OfferServiceImpl;
 import com.coffee.gifu.service.impl.OrganisationServiceImpl;
-import com.coffee.gifu.service.mapper.OfferMapper;
 import com.coffee.gifu.service.mapper.OrganisationMapper;
 import org.junit.Before;
 import org.junit.Test;
@@ -20,9 +13,6 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import java.time.ZonedDateTime;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;

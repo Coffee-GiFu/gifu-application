@@ -1,20 +1,14 @@
 package com.coffee.gifu.service.mapper;
 
 import com.coffee.gifu.domain.Location;
-import com.coffee.gifu.domain.Offer;
 import com.coffee.gifu.domain.Organisation;
-import com.coffee.gifu.domain.Recuperator;
 import com.coffee.gifu.service.dto.LocationDTO;
-import com.coffee.gifu.service.dto.OfferDTO;
 import com.coffee.gifu.service.dto.OrganisationDTO;
-import com.coffee.gifu.service.dto.RecuperatorDTO;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-
-import java.time.ZonedDateTime;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
