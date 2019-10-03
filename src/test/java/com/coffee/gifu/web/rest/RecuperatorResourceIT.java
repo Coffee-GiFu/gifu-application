@@ -94,13 +94,7 @@ public class RecuperatorResourceIT {
             .phoneNumber(DEFAULT_PHONE_NUMBER);
         // Add required entity
         Location location;
-        if (TestUtil.findAll(em, Location.class).isEmpty()) {
-            location = LocationResourceIT.createEntity(em);
-            em.persist(location);
-            em.flush();
-        } else {
-            location = TestUtil.findAll(em, Location.class).get(0);
-        }
+        location = LocationResourceIT.createEntity(em);
         recuperator.setLocation(location);
         return recuperator;
     }

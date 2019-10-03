@@ -1,14 +1,13 @@
 package com.coffee.gifu.web.rest;
 
 import com.coffee.gifu.GifuApp;
-import com.coffee.gifu.domain.Organisation;
 import com.coffee.gifu.domain.Location;
+import com.coffee.gifu.domain.Organisation;
 import com.coffee.gifu.repository.OrganisationRepository;
 import com.coffee.gifu.service.OrganisationService;
 import com.coffee.gifu.service.dto.OrganisationDTO;
 import com.coffee.gifu.service.mapper.OrganisationMapper;
 import com.coffee.gifu.web.rest.errors.ExceptionTranslator;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockitoAnnotations;
@@ -27,7 +26,6 @@ import java.util.List;
 
 import static com.coffee.gifu.web.rest.TestUtil.createFormattingConversionService;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -115,13 +113,7 @@ public class OrganisationResourceIT {
             .type(DEFAULT_TYPE);
         // Add required entity
         Location location;
-        if (TestUtil.findAll(em, Location.class).isEmpty()) {
-            location = LocationResourceIT.createEntity(em);
-            em.persist(location);
-            em.flush();
-        } else {
-            location = TestUtil.findAll(em, Location.class).get(0);
-        }
+        location = LocationResourceIT.createEntity(em);
         organisation.setLocation(location);
         return organisation;
     }
@@ -301,26 +293,6 @@ public class OrganisationResourceIT {
 
     @Test
     @Transactional
-    public void getAllOrganisations() throws Exception {
-        // Initialize the database
-        organisationRepository.saveAndFlush(organisation);
-
-        // Get all the organisationList
-        restOrganisationMockMvc.perform(get("/api/organisations?sort=id,desc"))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(organisation.getId().intValue())))
-            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
-            .andExpect(jsonPath("$.[*].phoneNumber").value(hasItem(DEFAULT_PHONE_NUMBER.toString())))
-            .andExpect(jsonPath("$.[*].contactMail").value(hasItem(DEFAULT_CONTACT_MAIL.toString())))
-            .andExpect(jsonPath("$.[*].logo").value(hasItem(DEFAULT_LOGO.toString())))
-            .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION.toString())))
-            .andExpect(jsonPath("$.[*].identificationCode").value(hasItem(DEFAULT_IDENTIFICATION_CODE.toString())))
-            .andExpect(jsonPath("$.[*].type").value(hasItem(DEFAULT_TYPE.toString())));
-    }
-    
-    @Test
-    @Transactional
     public void getOrganisation() throws Exception {
         // Initialize the database
         organisationRepository.saveAndFlush(organisation);
@@ -404,24 +376,6 @@ public class OrganisationResourceIT {
         // Validate the Organisation in the database
         List<Organisation> organisationList = organisationRepository.findAll();
         assertThat(organisationList).hasSize(databaseSizeBeforeUpdate);
-    }
-
-    @Test
-    @Transactional
-    public void deleteOrganisation() throws Exception {
-        // Initialize the database
-        organisationRepository.saveAndFlush(organisation);
-
-        int databaseSizeBeforeDelete = organisationRepository.findAll().size();
-
-        // Delete the organisation
-        restOrganisationMockMvc.perform(delete("/api/organisations/{id}", organisation.getId())
-            .accept(TestUtil.APPLICATION_JSON_UTF8))
-            .andExpect(status().isNoContent());
-
-        // Validate the database contains one less item
-        List<Organisation> organisationList = organisationRepository.findAll();
-        assertThat(organisationList).hasSize(databaseSizeBeforeDelete - 1);
     }
 
     @Test
