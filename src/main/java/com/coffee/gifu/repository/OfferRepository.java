@@ -15,17 +15,17 @@ import java.util.Optional;
 @SuppressWarnings("unused")
 @Repository
 public interface OfferRepository extends JpaRepository<Offer, Long> {
-    @Query("SELECT Offer FROM Offer WHERE Offer.id = 2")
+    @Query("SELECT o FROM Offer o WHERE Offer.id = 2")
     List<OfferDTO> searchCreatedOffer();
 
-    @Query("SELECT Offer FROM Offer WHERE Offer.id = 1")
+    @Query("SELECT o FROM Offer o WHERE Offer.id = 1")
     List<OfferDTO> searchChosenOffer();
 
     @Query(
-        "SELECT Offer FROM Offer " +
-        "WHERE Offer.recuperator = NULL " +
-            "AND Offer.availabilityEnd >= CURRENT_DATE " +
-            "AND :isColdFilter = Offer.isCold OR :isColdFilter = NULL " +
-        "ORDER BY Offer.availabilityEnd ASC ")
+        "SELECT o FROM Offer o " +
+        "WHERE o.recuperator = NULL " +
+            "AND o.availabilityEnd >= CURRENT_DATE " +
+            "AND :isColdFilter = o.isCold OR :isColdFilter = NULL " +
+        "ORDER BY o.availabilityEnd ASC ")
     List<OfferDTO> searchAvailableOffer(Boolean isColdFilter);
 }
