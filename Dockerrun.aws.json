@@ -1,0 +1,11 @@
+{
+  "Image": {
+    "Name": "gifu"
+  },
+  "Ports": [
+    {
+      "ContainerPort": 8888,
+      "HostPort": 8000
+    }
+  ]
+}
