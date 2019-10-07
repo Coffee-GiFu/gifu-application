@@ -15,10 +15,13 @@ import java.util.Optional;
 @SuppressWarnings("unused")
 @Repository
 public interface OfferRepository extends JpaRepository<Offer, Long> {
-    @Query("SELECT o FROM Offer o")
+    @Query("SELECT o FROM Offer o " +
+            "ORDER BY case when o.recuperator is null then 1 else 0 end, " +
+            "o.availabilityEnd ASC")
     List<Offer> searchCreatedOffer();
 
-    @Query("SELECT o FROM Offer o")
+    @Query("SELECT o FROM Offer o " +
+        "ORDER BY o.availabilityEnd ASC")
     List<Offer> searchChosenOffer();
 
     @Query(
@@ -28,6 +31,7 @@ public interface OfferRepository extends JpaRepository<Offer, Long> {
             "AND o.isCold = FALSE " +
             "ORDER BY o.availabilityEnd ASC ")
     List<Offer> searchAvailableOfferCold();
+
     @Query(
         "SELECT o FROM Offer o " +
             "WHERE o.recuperator = NULL " +
