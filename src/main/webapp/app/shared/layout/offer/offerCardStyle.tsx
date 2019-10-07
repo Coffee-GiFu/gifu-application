@@ -6,22 +6,20 @@ export const StyledOfferCardWrapper  = styled.section`
   margin: 2rem 0 0 2rem;
 `
 export const StyledOfferCard  = styled.button`
-  border-color: ${props => (props.selected
-    ? props.theme.colors.yellow
-    : props.theme.colors.white)};
-  color: ${props => props.theme.colors.white};
+  border-color: rgb(0,0,0);
+  color: rgb(0,0,0);
 
   background: transparent;
   border-style: solid;
   border-width: 4px;
   cursor: pointer;
   display: inline-block;
-  height: 8rem;
+  height: 16rem;
   font-size: 4rem;
   margin: 0 2rem 2rem 0;
   outline: none;
   transition: border-color ease 150ms;
-  width: 8rem;
+  width: 16rem;
   .mdi {
     transition: opacity ease 150ms;
   }

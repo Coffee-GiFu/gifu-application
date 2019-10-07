@@ -15,7 +15,7 @@ export type IHomeProp = StateProps;
 
 export const Home = (props: IHomeProp) => {
   const { account } = props;
-  const fnc = (id)=>{console.log(id)};
+  const fnc = (id)=>{window.console.log(id)};
   const off= {
     id: 21,
     description: "eeeeee",
@@ -32,7 +32,7 @@ export const Home = (props: IHomeProp) => {
         <h2>
           <Translate contentKey="home.title">Welcome, Java Hipster!</Translate>
         </h2>
-        <OfferCard offer={off} handleClick={fnc}/>
+        <OfferCard offer={off} handleClick={fnc} />
         <p className="lead">
           <Translate contentKey="home.subtitle">This is your homepage</Translate>
         </p>

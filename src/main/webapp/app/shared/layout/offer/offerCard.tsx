@@ -2,8 +2,6 @@
 import React from 'react'
 
 import { OfferCarousel } from "./offerCarousel";
-import "react-responsive-carousel/lib/styles/carousel.min.css";
-import '../../../../node_modules/@mdi/font/css/materialdesignicons.min.css'
 import { StyledOfferCard } from './offerCardStyle'
 import { IOffer } from '../../model/offer.model'
 
