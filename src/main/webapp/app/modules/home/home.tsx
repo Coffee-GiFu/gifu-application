@@ -8,17 +8,31 @@ import { Row, Col, Alert } from 'reactstrap';
 
 import { IRootState } from 'app/shared/reducers';
 
+import { OfferCard } from '../../shared/layout/offer/offerCard';
+import { IOffer } from '../../shared/model/offer.model';
+
 export type IHomeProp = StateProps;
 
 export const Home = (props: IHomeProp) => {
   const { account } = props;
-
+  const fnc = (id)=>{console.log(id)};
+  const off= {
+    id: 21,
+    description: "eeeeee",
+    isCold: true,
+    availabilityBegin: null,
+    availabilityEnd: null,
+    title: "titre",
+    location: null,
+    recuperator: null
+  };
   return (
     <Row>
       <Col md="9">
         <h2>
           <Translate contentKey="home.title">Welcome, Java Hipster!</Translate>
         </h2>
+        <OfferCard offer={off} handleClick={fnc}/>
         <p className="lead">
           <Translate contentKey="home.subtitle">This is your homepage</Translate>
         </p>
