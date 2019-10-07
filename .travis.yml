@@ -69,6 +69,7 @@ deploy:
   region: eu-west-1
   app: gifu-application
   env: GifuApplicationEnv
+  bucket_name: gifu
   on:
     repo: Coffee-GiFu/gifu-application
     branch: master
