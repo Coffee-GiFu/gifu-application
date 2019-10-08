@@ -113,7 +113,7 @@ public class OrganisationResourceIT {
             .type(DEFAULT_TYPE);
         // Add required entity
         Location location;
-        location = LocationResourceIT.createEntity(em);
+        location = LocationITResource.createEntity(em);
         organisation.setLocation(location);
         return organisation;
     }
@@ -135,7 +135,7 @@ public class OrganisationResourceIT {
         // Add required entity
         Location location;
         if (TestUtil.findAll(em, Location.class).isEmpty()) {
-            location = LocationResourceIT.createUpdatedEntity(em);
+            location = LocationITResource.createUpdatedEntity(em);
             em.persist(location);
             em.flush();
         } else {

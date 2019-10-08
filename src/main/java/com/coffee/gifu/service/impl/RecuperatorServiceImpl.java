@@ -1,13 +1,13 @@
 package com.coffee.gifu.service.impl;
 
-import com.coffee.gifu.service.RecuperatorService;
+import com.coffee.gifu.domain.OrganisationType;
 import com.coffee.gifu.domain.Recuperator;
 import com.coffee.gifu.repository.RecuperatorRepository;
+import com.coffee.gifu.service.RecuperatorService;
 import com.coffee.gifu.service.dto.RecuperatorDTO;
 import com.coffee.gifu.service.mapper.RecuperatorMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -41,7 +41,10 @@ public class RecuperatorServiceImpl implements RecuperatorService {
      * @return the persisted entity.
      */
     @Override
-    public RecuperatorDTO save(RecuperatorDTO recuperatorDTO) {
+    public RecuperatorDTO save(RecuperatorDTO recuperatorDTO) throws Exception {
+        if (recuperatorDTO.getAssociation().getType() != OrganisationType.ASSOCIATION) {
+            throw new Exception("Big Problema");
+        }
         log.debug("Request to save Recuperator : {}", recuperatorDTO);
         Recuperator recuperator = recuperatorMapper.toEntity(recuperatorDTO);
         recuperator = recuperatorRepository.save(recuperator);

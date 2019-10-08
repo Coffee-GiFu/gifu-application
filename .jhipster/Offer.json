@@ -15,10 +15,22 @@
             "otherEntityRelationshipName": "offer"
         },
         {
-            "relationshipName": "recuperator",
+            "relationshipName": "recuperators",
             "otherEntityName": "recuperator",
+            "relationshipType": "many-to-many",
+            "otherEntityField": "name",
+            "ownerSide": true,
+            "otherEntityRelationshipName": "offers"
+        },
+        {
+            "relationshipName": "organisation",
+            "otherEntityName": "organisation",
             "relationshipType": "many-to-one",
-            "otherEntityField": "id"
+            "relationshipValidateRules": [
+                "required"
+            ],
+            "otherEntityField": "name",
+            "otherEntityRelationshipName": "offer"
         }
     ],
     "fields": [

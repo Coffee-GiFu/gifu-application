@@ -22,7 +22,8 @@
       "availabilityEnd": "Availability End",
       "title": "Title",
       "location": "Location",
-      "recuperator": "Recuperator"
+      "recuperators": "Recuperators",
+      "organisation": "Organisation"
     }
   }
 }

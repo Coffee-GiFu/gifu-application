@@ -16,7 +16,7 @@ public interface OfferService {
      * @param offerDTO the entity to save.
      * @return the persisted entity.
      */
-    OfferDTO save(OfferDTO offerDTO);
+    OfferDTO save(OfferDTO offerDTO) throws Exception;
 
     /**
      * Get all the offers.

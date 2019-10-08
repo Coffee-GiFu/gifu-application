@@ -16,7 +16,7 @@ public interface RecuperatorService {
      * @param recuperatorDTO the entity to save.
      * @return the persisted entity.
      */
-    RecuperatorDTO save(RecuperatorDTO recuperatorDTO);
+    RecuperatorDTO save(RecuperatorDTO recuperatorDTO) throws Exception;
 
     /**
      * Get all the recuperators.

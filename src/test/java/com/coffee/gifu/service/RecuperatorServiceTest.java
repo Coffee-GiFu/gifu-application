@@ -6,12 +6,10 @@ import com.coffee.gifu.repository.RecuperatorRepository;
 import com.coffee.gifu.service.dto.LocationDTO;
 import com.coffee.gifu.service.dto.RecuperatorDTO;
 import com.coffee.gifu.service.impl.RecuperatorServiceImpl;
-import com.coffee.gifu.service.mapper.LocationMapperImpl;
 import com.coffee.gifu.service.mapper.RecuperatorMapper;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
@@ -40,7 +38,7 @@ public class RecuperatorServiceTest {
     }
 
     @Test
-    public void should_Save_then_return_saved_object() {
+    public void should_Save_then_return_saved_object() throws Exception {
         //Given
         RecuperatorDTO recuperatorDTO = buildRecuperatorDto();
 

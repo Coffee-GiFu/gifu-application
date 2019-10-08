@@ -2,6 +2,7 @@ package com.coffee.gifu.web.rest;
 
 import com.coffee.gifu.GifuApp;
 import com.coffee.gifu.domain.Location;
+import com.coffee.gifu.domain.Organisation;
 import com.coffee.gifu.domain.Recuperator;
 import com.coffee.gifu.repository.RecuperatorRepository;
 import com.coffee.gifu.service.RecuperatorService;
@@ -94,8 +95,18 @@ public class RecuperatorResourceIT {
             .phoneNumber(DEFAULT_PHONE_NUMBER);
         // Add required entity
         Location location;
-        location = LocationResourceIT.createEntity(em);
+        location = LocationITResource.createEntity(em);
         recuperator.setLocation(location);
+        // Add required entity
+        Organisation organisation;
+        if (TestUtil.findAll(em, Organisation.class).isEmpty()) {
+            organisation = OrganisationResourceIT.createEntity(em);
+            em.persist(organisation);
+            em.flush();
+        } else {
+            organisation = TestUtil.findAll(em, Organisation.class).get(0);
+        }
+        recuperator.setAssociation(organisation);
         return recuperator;
     }
     /**
@@ -111,13 +122,23 @@ public class RecuperatorResourceIT {
         // Add required entity
         Location location;
         if (TestUtil.findAll(em, Location.class).isEmpty()) {
-            location = LocationResourceIT.createUpdatedEntity(em);
+            location = LocationITResource.createUpdatedEntity(em);
             em.persist(location);
             em.flush();
         } else {
             location = TestUtil.findAll(em, Location.class).get(0);
         }
         recuperator.setLocation(location);
+        // Add required entity
+        Organisation organisation;
+        if (TestUtil.findAll(em, Organisation.class).isEmpty()) {
+            organisation = OrganisationResourceIT.createUpdatedEntity(em);
+            em.persist(organisation);
+            em.flush();
+        } else {
+            organisation = TestUtil.findAll(em, Organisation.class).get(0);
+        }
+        recuperator.setAssociation(organisation);
         return recuperator;
     }
 

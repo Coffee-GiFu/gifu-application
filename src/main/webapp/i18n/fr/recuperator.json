@@ -18,7 +18,8 @@
       },
       "name": "Name",
       "phoneNumber": "Phone Number",
-      "location": "Location"
+      "location": "Location",
+      "association": "Association"
     }
   }
 }

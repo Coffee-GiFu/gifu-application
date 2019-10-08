@@ -1,14 +1,13 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import { Link, RouteComponentProps } from 'react-router-dom';
-import { Button, Row, Col } from 'reactstrap';
-import { Translate, ICrudGetAction, TextFormat } from 'react-jhipster';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {connect} from 'react-redux';
+import {Link, RouteComponentProps} from 'react-router-dom';
+import {Button, Col, Row} from 'reactstrap';
+import {TextFormat, Translate} from 'react-jhipster';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 
-import { IRootState } from 'app/shared/reducers';
-import { getEntity } from './offer.reducer';
-import { IOffer } from 'app/shared/model/offer.model';
-import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
+import {IRootState} from 'app/shared/reducers';
+import {getEntity} from './offer.reducer';
+import {APP_DATE_FORMAT} from 'app/config/constants';
 
 export interface IOfferDetailProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
 
@@ -63,11 +62,24 @@ export class OfferDetail extends React.Component<IOfferDetailProps> {
             <dt>
               <Translate contentKey="gifuApp.offer.location">Location</Translate>
             </dt>
-            <dd>{offerEntity.location ? offerEntity.location.city : ''}</dd>
+            <dd>{offerEntity.locationId ? offerEntity.locationId : ''}</dd>
             <dt>
-              <Translate contentKey="gifuApp.offer.recuperator">Recuperator</Translate>
+              <Translate contentKey="gifuApp.offer.recuperators">Recuperators</Translate>
             </dt>
-            <dd>{offerEntity.recuperator ? offerEntity.recuperator.name : ''}</dd>
+            <dd>
+              {offerEntity.recuperators
+                ? offerEntity.recuperators.map((val, i) => (
+                    <span key={val.id}>
+                      <a>{val.name}</a>
+                      {i === offerEntity.recuperators.length - 1 ? '' : ', '}
+                    </span>
+                  ))
+                : null}
+            </dd>
+            <dt>
+              <Translate contentKey="gifuApp.offer.organisation">Organisation</Translate>
+            </dt>
+            <dd>{offerEntity.organisationName ? offerEntity.organisationName : ''}</dd>
           </dl>
           <Button tag={Link} to="/entity/offer" replace color="info">
             <FontAwesomeIcon icon="arrow-left" />{' '}

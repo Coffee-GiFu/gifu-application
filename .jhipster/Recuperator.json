@@ -13,6 +13,18 @@
             "ownerSide": true,
             "useJPADerivedIdentifier": false,
             "otherEntityRelationshipName": "recuperator"
+        },
+        {
+            "relationshipName": "association",
+            "otherEntityName": "organisation",
+            "relationshipType": "one-to-one",
+            "relationshipValidateRules": [
+                "required"
+            ],
+            "otherEntityField": "name",
+            "ownerSide": true,
+            "useJPADerivedIdentifier": false,
+            "otherEntityRelationshipName": "recuperator"
         }
     ],
     "fields": [

@@ -1,5 +1,9 @@
 package com.coffee.gifu.service.dto;
-import javax.validation.constraints.*;
+
+import com.coffee.gifu.domain.OrganisationType;
+
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -32,7 +36,7 @@ public class OrganisationDTO implements Serializable {
     private String identificationCode;
 
     @NotNull
-    private String type;
+    private OrganisationType type;
 
     @NotNull
     private LocationDTO locationDTO;
@@ -93,11 +97,11 @@ public class OrganisationDTO implements Serializable {
         this.identificationCode = identificationCode;
     }
 
-    public String getType() {
+    public OrganisationType getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(OrganisationType type) {
         this.type = type;
     }
 

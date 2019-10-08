@@ -1,5 +1,7 @@
 package com.coffee.gifu.service.dto;
-import javax.validation.constraints.*;
+
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -18,7 +20,10 @@ public class RecuperatorDTO implements Serializable {
     @Size(min = 10, max = 10)
     private String phoneNumber;
 
+
     private LocationDTO locationDTO;
+
+    private OrganisationDTO association;
 
     public Long getId() {
         return id;
@@ -52,6 +57,14 @@ public class RecuperatorDTO implements Serializable {
         this.locationDTO = locationDTO;
     }
 
+    public OrganisationDTO getAssociation() {
+        return association;
+    }
+
+    public void setAssociation(OrganisationDTO association) {
+        this.association = association;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -80,6 +93,7 @@ public class RecuperatorDTO implements Serializable {
             ", name='" + getName() + "'" +
             ", phoneNumber='" + getPhoneNumber() + "'" +
             ", location=" + getLocationDTO() +
+            ", association=" + getAssociation() +
             "}";
     }
 }
