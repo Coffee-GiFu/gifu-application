@@ -5,10 +5,12 @@ import { Carousel } from "react-responsive-carousel";
 
 export interface OfferCarouselProps {
     pictures: Blob[]
+    autoPlay?: boolean
 }
-export const OfferCarousel = ({ pictures }: OfferCarouselProps) => {
+
+export const OfferCarousel = ({ pictures, autoPlay = false }: OfferCarouselProps) => {
     return (
-        <Carousel autoPlay showArrows={false} showThumbs={false} showStatus={false}>
+        <Carousel autoPlay={autoPlay} infiniteLoop={true} stopOnHover={false} showArrows={false} showThumbs={false} showStatus={false}>
             <div>
                 <img src="http://lorempixel.com/output/cats-q-c-640-480-1.jpg" />
             </div>

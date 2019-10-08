@@ -18,7 +18,8 @@ export const Home = (props: IHomeProp) => {
   const fnc = (id)=>{window.console.log(id)};
   const off= {
     id: 21,
-    description: "eeeeee",
+    description: `eeesddsf e 
+    sdf ds fds eee`,
     isCold: true,
     availabilityBegin: null,
     availabilityEnd: null,
@@ -28,10 +29,17 @@ export const Home = (props: IHomeProp) => {
   };
   return (
     <Row>
-      <Col md="9">
+      <Col md="12">
         <h2>
           <Translate contentKey="home.title">Welcome, Java Hipster!</Translate>
         </h2>
+        <OfferCard offer={off} handleClick={fnc} />
+        <OfferCard offer={off} handleClick={fnc} />
+        <OfferCard offer={off} handleClick={fnc} />
+        <OfferCard offer={off} handleClick={fnc} />
+        <OfferCard offer={off} handleClick={fnc} />
+        <OfferCard offer={off} handleClick={fnc} />
+        <OfferCard offer={off} handleClick={fnc} />
         <OfferCard offer={off} handleClick={fnc} />
         <p className="lead">
           <Translate contentKey="home.subtitle">This is your homepage</Translate>
@@ -105,9 +113,6 @@ export const Home = (props: IHomeProp) => {
           </a>
           !
         </p>
-      </Col>
-      <Col md="3" className="pad">
-        <span className="hipster rounded" />
       </Col>
     </Row>
   );
