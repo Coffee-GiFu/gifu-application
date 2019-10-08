@@ -2,7 +2,7 @@ import styled from 'styled-components'
 
 export const StyledOfferCardBody  = styled.div`
   position: relative;
-  top: -8.7rem;
+  top: -6.7rem;
   padding: 0 0.5rem;
   width: 15.5rem;
   h6{
@@ -57,7 +57,7 @@ export const StyledOfferCard  = styled.div`
 export const StyledOfferCardIsCold  = styled.img`
   width: 2rem;
   position: relative;
-  top: -2.3rem;
+  top: -11.8rem;
   right: -0.2rem;
   filter: drop-shadow(1px 1px 0 black) drop-shadow(0px 1px 0 black);
 `
@@ -67,7 +67,7 @@ export const StyledOfferCardOrganisation  = styled.div`
   font-size: 0;
   position: relative;
   width: 14.9rem;
-  top: -13.3rem;
+  top: -11.3rem;
   right: -0.3rem;
   h5, h6{
     text-overflow: ellipsis;

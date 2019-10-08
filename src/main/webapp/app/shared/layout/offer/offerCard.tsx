@@ -11,8 +11,6 @@ export interface OfferCardProps {
 }
 export const OfferCard = ({ offer, handleClick }: OfferCardProps) => {
   const className = `mdi mdi`
-  offer.isCold;
-  offer.title;
   const pictures = [];
   const autoPlay = true;
   return (    
@@ -20,7 +18,6 @@ export const OfferCard = ({ offer, handleClick }: OfferCardProps) => {
       onClick={() => { handleClick(offer.id) }}
     >
     <OfferCarousel pictures={pictures} autoPlay={autoPlay}/>
-      <StyledOfferCardIsCold src="../../../../content/images/snowflake.png" />
       <StyledOfferCardOrganisation>
         <img src="http://lorempixel.com/output/cats-q-c-640-480-1.jpg" />
         <div>
@@ -34,6 +31,9 @@ export const OfferCard = ({ offer, handleClick }: OfferCardProps) => {
         <h6>31/10/2017 17h35</h6>
         <p>{offer.description}</p>
       </StyledOfferCardBody>
+      {
+        offer.isCold && (<StyledOfferCardIsCold src="../../../../content/images/snowflake.png" />)
+      }
     </StyledOfferCard>
   )
 }

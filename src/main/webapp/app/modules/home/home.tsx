@@ -27,6 +27,20 @@ export const Home = (props: IHomeProp) => {
     location: null,
     recuperator: null
   };
+  const off2= {
+    id: 24,
+    description: `eeesddsf e 
+    sdf ds fds eeeeeesddsf e 
+    sdf ds fds eeeeeesddsf e 
+    sdf ds fds eeeeeesddsf e 
+    sdf ds fds eee`,
+    isCold: false,
+    availabilityBegin: null,
+    availabilityEnd: null,
+    title: "titre",
+    location: null,
+    recuperator: null
+  };
   return (
     <Row>
       <Col md="12">
@@ -34,6 +48,7 @@ export const Home = (props: IHomeProp) => {
           <Translate contentKey="home.title">Welcome, Java Hipster!</Translate>
         </h2>
         <OfferCard offer={off} handleClick={fnc} />
+        <OfferCard offer={off2} handleClick={fnc} />
         <p className="lead">
           <Translate contentKey="home.subtitle">This is your homepage</Translate>
         </p>
