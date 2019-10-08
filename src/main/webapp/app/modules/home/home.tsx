@@ -34,13 +34,6 @@ export const Home = (props: IHomeProp) => {
           <Translate contentKey="home.title">Welcome, Java Hipster!</Translate>
         </h2>
         <OfferCard offer={off} handleClick={fnc} />
-        <OfferCard offer={off} handleClick={fnc} />
-        <OfferCard offer={off} handleClick={fnc} />
-        <OfferCard offer={off} handleClick={fnc} />
-        <OfferCard offer={off} handleClick={fnc} />
-        <OfferCard offer={off} handleClick={fnc} />
-        <OfferCard offer={off} handleClick={fnc} />
-        <OfferCard offer={off} handleClick={fnc} />
         <p className="lead">
           <Translate contentKey="home.subtitle">This is your homepage</Translate>
         </p>

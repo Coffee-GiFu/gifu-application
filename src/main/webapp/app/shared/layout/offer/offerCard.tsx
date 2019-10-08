@@ -22,7 +22,7 @@ export const OfferCard = ({ offer, handleClick }: OfferCardProps) => {
     <OfferCarousel pictures={pictures} autoPlay={autoPlay}/>
       <StyledOfferCardIsCold src="../../../../content/images/snowflake.png" />
       <StyledOfferCardOrganisation>
-        <img src="http://lorempixel.com/output/cats-q-c-640-480-4.jpg" />
+        <img src="http://lorempixel.com/output/cats-q-c-640-480-1.jpg" />
         <div>
           <h5 title="Cat Corp." >Cat Corp.</h5>
           <h6 title="1 rue du bout du monde" >1 rue du bout du monde</h6>

@@ -46,8 +46,12 @@ export const StyledOfferCard  = styled.div`
   outline: none;
   width: 16rem;
   .carousel{
+    height: 11.7rem;
     border-radius: 0.6rem 0.6rem 0 0;
     border-bottom: solid 0.1rem;
+  }
+  .slider-wrapper{
+    height: 11.7rem;
   }
 `
 export const StyledOfferCardIsCold  = styled.img`

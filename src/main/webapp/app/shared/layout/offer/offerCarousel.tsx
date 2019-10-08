@@ -11,15 +11,23 @@ export interface OfferCarouselProps {
 export const OfferCarousel = ({ pictures, autoPlay = false }: OfferCarouselProps) => {
     return (
         <Carousel autoPlay={autoPlay} infiniteLoop={true} stopOnHover={false} showArrows={false} showThumbs={false} showStatus={false}>
-            <div>
-                <img src="http://lorempixel.com/output/cats-q-c-640-480-1.jpg" />
-            </div>
-            <div>
-                <img src="http://lorempixel.com/output/cats-q-c-640-480-2.jpg" />
-            </div>
-            <div>
-                <img src="http://lorempixel.com/output/cats-q-c-640-480-3.jpg" />
-            </div>
+            {
+                pictures.length === 0 && (
+                    <div>
+                        <img src="../../../../content/images/default.png" />
+                    </div>
+                )
+            }
+            {
+                pictures.map( pictureBlob => {
+                    const imgSrc= URL.createObjectURL( pictureBlob );
+                    (
+                        <div>
+                            <img src={imgSrc} />
+                        </div>
+                    )
+                })
+            }
         </Carousel>
     )
 };
