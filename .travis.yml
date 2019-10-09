@@ -19,8 +19,9 @@ env:
     - NG_CLI_ANALYTICS="false"
 before_install:
   - echo '*** Using OpenJDK 11 by default'
+  - sudo add-apt-repository ppa:openjdk-r/ppa
   - sudo apt-get update
-  - sudo apt-get install -y openjdk-11-jdk
+  - sudo apt install openjdk-11-jdk
   - sudo update-java-alternatives -s java-1.11.0-openjdk-amd64
   - java -version
   - sudo apt-get install python3
