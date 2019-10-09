@@ -107,13 +107,13 @@ public class OfferServiceTest {
 
     @Test
     public void should_find_all_object() {
-
-        //TODO : Redo this test with toDTO(List) not toDTO(Entity)
         //Given
         List<Offer> offers = new ArrayList<>();
         offers.add(offer);
+        List<OfferDTO> offerDTOS = new ArrayList<>();
+        offerDTOS.add(offerDTO);
         when(offerRepository.findAll()).thenReturn(offers);
-        when(offerMapper.toDto(offer)).thenReturn(offerDTO);
+        when(offerMapper.toDto(offers)).thenReturn(offerDTOS);
 
         //When
         List<OfferDTO> actual = offerService.findAll();
