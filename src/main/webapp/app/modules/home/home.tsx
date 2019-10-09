@@ -16,39 +16,38 @@ export type IHomeProp = StateProps;
 export const Home = (props: IHomeProp) => {
   const { account } = props;
   const fnc = (id)=>{window.console.log(id)};
-  const off= {
-    id: 21,
-    description: `eeesddsf e 
-    sdf ds fds eee`,
-    isCold: true,
-    availabilityBegin: null,
-    availabilityEnd: null,
-    title: "titre",
-    location: null,
-    recuperator: null
-  };
-  const off2= {
-    id: 24,
-    description: `eeesddsf e 
-    sdf ds fds eeeeeesddsf e 
-    sdf ds fds eeeeeesddsf e 
-    sdf ds fds eeeeeesddsf e 
-    sdf ds fds eee`,
-    isCold: false,
-    availabilityBegin: null,
-    availabilityEnd: null,
-    title: "titre",
-    location: null,
-    recuperator: null
-  };
+  const offs= [{id: 21,description: `eeesddsf e 
+  sdf ds fds eee`,isCold: true,availabilityBegin: null,availabilityEnd: null,title: "titre",location: null,recuperator: null}, {id: 24,description: `eeesddsf e 
+  sdf ds fds eeeeeesddsf e 
+  sdf ds fds eeeeeesddsf e 
+  sdf ds fds eeeeeesddsf e 
+  sdf ds fds eee`,isCold: false,availabilityBegin: null,availabilityEnd: null,title: "titre",location: null,recuperator: null},{id: 21,description: `eeesddsf e 
+  sdf ds fds eee`,isCold: true,availabilityBegin: null,availabilityEnd: null,title: "titre",location: null,recuperator: null}, {id: 24,description: `eeesddsf e 
+  sdf ds fds eeeeeesddsf e 
+  sdf ds fds eeeeeesddsf e 
+  sdf ds fds eeeeeesddsf e 
+  sdf ds fds eee`,isCold: false,availabilityBegin: null,availabilityEnd: null,title: "titre",location: null,recuperator: null},{id: 21,description: `eeesddsf e 
+  sdf ds fds eee`,isCold: true,availabilityBegin: null,availabilityEnd: null,title: "titre",location: null,recuperator: null}, {id: 24,description: `eeesddsf e 
+  sdf ds fds eeeeeesddsf e 
+  sdf ds fds eeeeeesddsf e 
+  sdf ds fds eeeeeesddsf e 
+  sdf ds fds eee`,isCold: false,availabilityBegin: null,availabilityEnd: null,title: "titre",location: null,recuperator: null},{id: 21,description: `eeesddsf e 
+  sdf ds fds eee`,isCold: true,availabilityBegin: null,availabilityEnd: null,title: "titre",location: null,recuperator: null}, {id: 24,description: `eeesddsf e 
+  sdf ds fds eeeeeesddsf e 
+  sdf ds fds eeeeeesddsf e 
+  sdf ds fds eeeeeesddsf e 
+  sdf ds fds eee`,isCold: false,availabilityBegin: null,availabilityEnd: null,title: "titre",location: null,recuperator: null},{id: 21,description: `eeesddsf e 
+  sdf ds fds eee`,isCold: true,availabilityBegin: null,availabilityEnd: null,title: "titre",location: null,recuperator: null}, {id: 24,description: `eeesddsf e 
+  sdf ds fds eeeeeesddsf e 
+  sdf ds fds eeeeeesddsf e 
+  sdf ds fds eeeeeesddsf e 
+  sdf ds fds eee`,isCold: false,availabilityBegin: null,availabilityEnd: null,title: "titre",location: null,recuperator: null}];
   return (
     <Row>
       <Col md="12">
         <h2>
           <Translate contentKey="home.title">Welcome, Java Hipster!</Translate>
         </h2>
-        <OfferCard offer={off} handleClick={fnc} />
-        <OfferCard offer={off2} handleClick={fnc} />
         <p className="lead">
           <Translate contentKey="home.subtitle">This is your homepage</Translate>
         </p>
@@ -82,45 +81,9 @@ export const Home = (props: IHomeProp) => {
             </Alert>
           </div>
         )}
-        <p>
-          <Translate contentKey="home.question">If you have any question on JHipster:</Translate>
-        </p>
-
-        <ul>
-          <li>
-            <a href="https://www.jhipster.tech/" target="_blank" rel="noopener noreferrer">
-              <Translate contentKey="home.link.homepage">JHipster homepage</Translate>
-            </a>
-          </li>
-          <li>
-            <a href="http://stackoverflow.com/tags/jhipster/info" target="_blank" rel="noopener noreferrer">
-              <Translate contentKey="home.link.stackoverflow">JHipster on Stack Overflow</Translate>
-            </a>
-          </li>
-          <li>
-            <a href="https://github.com/jhipster/generator-jhipster/issues?state=open" target="_blank" rel="noopener noreferrer">
-              <Translate contentKey="home.link.bugtracker">JHipster bug tracker</Translate>
-            </a>
-          </li>
-          <li>
-            <a href="https://gitter.im/jhipster/generator-jhipster" target="_blank" rel="noopener noreferrer">
-              <Translate contentKey="home.link.chat">JHipster public chat room</Translate>
-            </a>
-          </li>
-          <li>
-            <a href="https://twitter.com/java_hipster" target="_blank" rel="noopener noreferrer">
-              <Translate contentKey="home.link.follow">follow @java_hipster on Twitter</Translate>
-            </a>
-          </li>
-        </ul>
-
-        <p>
-          <Translate contentKey="home.like">If you like JHipster, do not forget to give us a star on</Translate>{' '}
-          <a href="https://github.com/jhipster/generator-jhipster" target="_blank" rel="noopener noreferrer">
-            Github
-          </a>
-          !
-        </p>
+        {offs.map((off,index) => {
+          return <OfferCard key={index} offer={off} handleClick={fnc} />;
+        })}
       </Col>
     </Row>
   );

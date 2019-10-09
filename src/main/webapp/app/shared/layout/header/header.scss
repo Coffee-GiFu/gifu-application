@@ -1,5 +1,6 @@
-$header-color: #fff;
-$header-color-secondary: #bbb;
+@import '../../../app.scss';
+$header-color: $typo;
+$header-color-secondary: $typo-dark;
 $header-color-hover: darken($header-color, 20%);
 
 /* ==========================================================================
@@ -22,14 +23,14 @@ Developement Ribbon
   pointer-events: none;
   opacity: 0.75;
   a {
-    color: #fff;
+    color: $header-color;
     display: block;
     font-weight: 400;
     margin: 1px 0;
     padding: 10px 50px;
     text-align: center;
     text-decoration: none;
-    text-shadow: 0 0 5px #444;
+    text-shadow: 0 0 5px $typo-shadow;
     pointer-events: none;
   }
 }
@@ -38,7 +39,7 @@ Developement Ribbon
 Navbar styles
 ========================================================================== */
 .jh-navbar {
-  background-color: #353d47;
+  background-color: $color-main-light;
   padding: 0.2em 1em;
   .profile-image {
     margin: -10px 0px;
@@ -49,15 +50,24 @@ Navbar styles
   .dropdown-item.active,
   .dropdown-item.active:focus,
   .dropdown-item.active:hover {
-    background-color: #353d47;
+    background-color: $color-main-light;
   }
   .dropdown-toggle::after {
     margin-left: 0.15em;
+  }
+  .nav-item span,
+  .nav-item svg {
+    color: $header-color !important;
+  }
+  .dropdown-toggle::after {
+    border-bottom-color: $header-color;
+    border-top-color: $header-color;
   }
   ul.navbar-nav {
     padding: 0.5em;
     .nav-item {
       margin-left: 1.5rem;
+      color: $header-color !important;
     }
   }
   a.nav-link {
@@ -67,11 +77,11 @@ Navbar styles
     }
   }
   .jh-navbar-toggler {
-    color: #ccc;
+    color: $typo;
     font-size: 1.5em;
     padding: 10px;
     &:hover {
-      color: #fff;
+      color: $typo-dark;
     }
   }
 }
@@ -86,7 +96,7 @@ Navbar styles
     text-decoration: none;
   }
   .brand-icon {
-    height: 35px;
+    height: 45px;
     width: auto;
     display: inline-block;
     img {
