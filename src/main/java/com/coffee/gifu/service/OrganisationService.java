@@ -2,7 +2,6 @@ package com.coffee.gifu.service;
 
 import com.coffee.gifu.service.dto.OrganisationDTO;
 
-import java.util.List;
 import java.util.Optional;
 
 /**

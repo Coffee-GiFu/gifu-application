@@ -1,14 +1,13 @@
 package com.coffee.gifu.service.dto;
 
 import com.coffee.gifu.config.Constants;
-
 import com.coffee.gifu.domain.Authority;
 import com.coffee.gifu.domain.User;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-
-import javax.validation.constraints.*;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.Set;

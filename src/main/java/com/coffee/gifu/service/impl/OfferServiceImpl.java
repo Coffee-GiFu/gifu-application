@@ -5,7 +5,7 @@ import com.coffee.gifu.domain.OrganisationType;
 import com.coffee.gifu.repository.OfferRepository;
 import com.coffee.gifu.service.OfferService;
 import com.coffee.gifu.service.dto.OfferDTO;
-import com.coffee.gifu.service.exception.WrongOrganisationTypeException;
+import com.coffee.gifu.service.exception.ManagementRulesException;
 import com.coffee.gifu.service.mapper.OfferMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,9 +42,9 @@ public class OfferServiceImpl implements OfferService {
      * @return the persisted entity.
      */
     @Override
-    public OfferDTO save(OfferDTO offerDTO) throws Exception {
+    public OfferDTO save(OfferDTO offerDTO) throws ManagementRulesException {
         if (offerDTO.getEnterprise().getType() != OrganisationType.ENTERPRISE) {
-            throw new WrongOrganisationTypeException("An offer need an Enterprise Type to be created/updated !");
+            throw new ManagementRulesException("An offer need an Enterprise Type to be created/updated !");
         }
         log.debug("Request to save Offer : {}", offerDTO);
         Offer offer = offerMapper.toEntity(offerDTO);

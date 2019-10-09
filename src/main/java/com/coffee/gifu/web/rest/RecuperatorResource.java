@@ -2,7 +2,9 @@ package com.coffee.gifu.web.rest;
 
 import com.coffee.gifu.service.RecuperatorService;
 import com.coffee.gifu.service.dto.RecuperatorDTO;
+import com.coffee.gifu.service.exception.ManagementRulesException;
 import com.coffee.gifu.web.rest.errors.BadRequestAlertException;
+import com.coffee.gifu.web.rest.errors.WrongOrganisationTypeException;
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
@@ -53,8 +55,8 @@ public class RecuperatorResource {
         RecuperatorDTO result = null;
         try {
             result = recuperatorService.save(recuperatorDTO);
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (ManagementRulesException e) {
+            throw new WrongOrganisationTypeException();
         }
         return ResponseEntity.created(new URI("/api/recuperators/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
@@ -79,8 +81,8 @@ public class RecuperatorResource {
         RecuperatorDTO result = null;
         try {
             result = recuperatorService.save(recuperatorDTO);
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (ManagementRulesException e) {
+            throw new WrongOrganisationTypeException();
         }
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, recuperatorDTO.getId().toString()))

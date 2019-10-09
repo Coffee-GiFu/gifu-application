@@ -2,7 +2,9 @@ package com.coffee.gifu.web.rest;
 
 import com.coffee.gifu.service.OfferService;
 import com.coffee.gifu.service.dto.OfferDTO;
+import com.coffee.gifu.service.exception.ManagementRulesException;
 import com.coffee.gifu.web.rest.errors.BadRequestAlertException;
+import com.coffee.gifu.web.rest.errors.WrongOrganisationTypeException;
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
@@ -53,8 +55,8 @@ public class OfferResource {
         OfferDTO result = null;
         try {
             result = offerService.save(offerDTO);
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (ManagementRulesException e) {
+            throw new WrongOrganisationTypeException();
         }
         return ResponseEntity.created(new URI("/api/offers/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
@@ -71,7 +73,7 @@ public class OfferResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/offers")
-    public ResponseEntity<OfferDTO> updateOffer(@Valid @RequestBody OfferDTO offerDTO) throws URISyntaxException {
+    public ResponseEntity<OfferDTO> updateOffer(@Valid @RequestBody OfferDTO offerDTO) {
         log.debug("REST request to update Offer : {}", offerDTO);
         if (offerDTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
@@ -79,8 +81,8 @@ public class OfferResource {
         OfferDTO result = null;
         try {
             result = offerService.save(offerDTO);
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (ManagementRulesException e) {
+            throw new WrongOrganisationTypeException();
         }
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, offerDTO.getId().toString()))
