@@ -17,12 +17,11 @@ env:
     - SPRING_JPA_SHOW_SQL=false
     - JHI_DISABLE_WEBPACK_LOGS=true
     - NG_CLI_ANALYTICS="false"
-    - secure: 'mrnEj43ffmnrsLgFI48KP6vTFqYhfAWHx7gju87AwOEcTQgkiWrFpYkbWBgFbbUQ6WM4IdTloBsnMy0V9t59Rlnz6FWWkDW1EsK6pelClPnLTtwyVBYb8jsHhT3n5TjA0xgQPfONeMK/NG3XMCMS9C4B3Lw5n/CkcqndbX1f/SbFvaTqBo6dXrGAAU3t/XrX+kFlLPkudfViywEQ8jk1n8wKW1SDUbi+A3BDMGn3mAv6dhyi4e3YuvQ9LEpO8whfq2NW7XpQ6+0RtqWhDBM9qUsBOoU0BgzDcL9kMWCWoODJonqrKwgxmLu98gtE0R8OtOXsQ5QZZijmQoFJ+7dtHc76zUphPyNxwfvL+yXNsFc0vQ+Rf4YBupyutBBxgV1vQ1XosYaq4u3GUbRtmPL/BEcrHrxX5SZ6093QiKe4rBeeyUftVjQ5vY+ALpjjCynMP0L0jC5pl2LkuOc3WbIWIGG8+i9aZ6cLEsNPT5+30MgX+VnicF029+sTyJkAoxRhVnm2yJtmMW3nm1BWttZWULI07ScOflLA5+UqSPXhPcA3oOy7tg5oUud6oxXdQhazJqCduICEF+z5/uJ9BpTr0Q16GFlLJNIP4g6hJl9VHZ/wIMMVFJRzNDVxUIXEokgbtOXoyWMlSJVhvEb21SRqagLaD+vVboPCXmcO3Nz1Uws='
-    - secure: 'eMgxFF2YXUo0enxVAPcnCQFZrAmAQzdseyjobYZjcYeXVqPgBdJ2geV4X+rjkuwfTKMPbWhMRduQYE3HUxwt5dtldeqwmIrlCmx9uo9PzquIb/mPDzQUlC1djQYUj8grsATzJ4NE78fXWouBWICMJubQsQOZhmjE7sdGRD78fx/4RrcTFDUmiyYbVjMH+Qy7/EZQ5D8Hxno4wvi2D314enSoCWNTnl3napciZ+LcXr2rtBA6gDUC96Ys2oOD0m72xLGLf44vu5Ei5mAo8F3E8HoMcXow4ij2/Nz2yrM6JtTXteq7Si9kp6qNRRcji7VL+XQxLGVtmCSwzolAfLeCPBI6Qms7VliJDh31oYaD5d2AKzPJJu/3oymHkS3xH4e++lpH+VYoQwtO8seofTnB1lXw6oo/3enelfUKvMvPX2SfpoxH/k2eWUmcnl1zNV7d1ANfRQfXSCpw7K9oCkr6CooOLyLjBFPevlOSKQrrjvYIMc5FfeeNlGVSddEOUwo3ADjgcJg30NliJ9HYcL5XY8ukKmzvYYg7UlYLL5vORCd78UePZ2oG9uXmNllvBhPlJY9bZ+w6Xyejmdd4mH9bCjXWSZ64x4PjEIdfMS4oXHzs09O7twX7RgOGBGf8xITonXj7gmPGgNguR8lzIujQKngfZIeny4Y6pC21e/wk9J0='
 before_install:
   - echo '*** Using OpenJDK 11 by default'
+  - sudo add-apt-repository ppa:openjdk-r/ppa -y
   - sudo apt-get update
-  - sudo apt-get install -y openjdk-11-jdk
+  - sudo apt install openjdk-11-jdk
   - sudo update-java-alternatives -s java-1.11.0-openjdk-amd64
   - java -version
   - sudo apt-get install python3
@@ -55,3 +54,14 @@ notifications:
     on_success: change
     on_failure: always
     on_start: false
+deploy:
+  provider: elasticbeanstalk
+  access_key_id: AKIATUADIRQAGNTL2YGH
+  secret_access_key:
+    secure: oWYhFM2cptMKx4ilPOekvRRu4sPmr/WI4w+L8tg0z9xtlboXVHsMD5v3Vx0pViwl9j5mgjRmDfwhtYvH+J91//LdbakMgkeqPvwwjYtZR4jIk4sVmBgeJOjcakcP/V8XhvV17H5+4Gs2sMiVRfCU6Tw2RvXlYA829PpPdUUZ+dzyZ2go6hNG/G1b6pbiGex8kryEUfW5ObOeYB15J/9Ccv2bovbKIxE0k+Hpmmr/zjywFde1EPLfSR2+3k3hvcC49pK/wmtzprLeBf6jPgTCjvSWrc0s462heoW+1S/85NzWZJw2jVD348EKrJeeQhM0xl3FRU1xfBXj48qI0nOsDk2O/R+rAc2/4j8OSVcpdVTP63Rec4KkXmTR7TA2LXVmr5z2/i+hqfF6WhCWBLBBPcrrjNjcQYfZ1oYPCs36iqXYbaWRtpcXyqxEuVgRmzAvtWVzkYCcOFQWmaKmwYpbe8VVykfwMzlPBxTHEuoECrvCJfto+v9Te/V9CY1w6PB9zUVQIeiP2MWBWzBSUAML6ZklZMR/t91RtnzI8CL8FC4N4DZ8YjedA7nRNvv2xHAYryEMzsnXua+QfIlmhuXNBqkk/BdElV30afPwWuSAK7jQOVSg8iAqipPTCWWylijFHzntYkzel5xiHJN8jLrvTm5NfF5ifEYhA1KqNDwdTCo=
+  region: eu-west-1
+  app: gifu-application
+  env: GifuApplicationEnv
+  on:
+    repo: Coffee-GiFu/gifu-application
+    branch: master
