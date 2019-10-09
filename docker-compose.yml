@@ -1,0 +1,7 @@
+version: '3.7'
+
+services:
+  gifu-front:
+    image: docker.pkg.github.com/coffee-gifu/gifu-application/gifu-front
+    ports:
+      - '80:80'
