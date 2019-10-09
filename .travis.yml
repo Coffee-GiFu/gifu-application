@@ -19,7 +19,7 @@ env:
     - NG_CLI_ANALYTICS="false"
 before_install:
   - echo '*** Using OpenJDK 11 by default'
-  - sudo add-apt-repository ppa:openjdk-r/ppa
+  - sudo add-apt-repository ppa:openjdk-r/ppa -y
   - sudo apt-get update
   - sudo apt install openjdk-11-jdk
   - sudo update-java-alternatives -s java-1.11.0-openjdk-amd64
