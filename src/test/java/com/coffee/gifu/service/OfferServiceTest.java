@@ -1,11 +1,10 @@
 package com.coffee.gifu.service;
 
-import com.coffee.gifu.domain.Location;
-import com.coffee.gifu.domain.Offer;
-import com.coffee.gifu.domain.Recuperator;
+import com.coffee.gifu.domain.*;
 import com.coffee.gifu.repository.OfferRepository;
 import com.coffee.gifu.service.dto.LocationDTO;
 import com.coffee.gifu.service.dto.OfferDTO;
+import com.coffee.gifu.service.dto.OrganisationDTO;
 import com.coffee.gifu.service.dto.RecuperatorDTO;
 import com.coffee.gifu.service.impl.OfferServiceImpl;
 import com.coffee.gifu.service.mapper.OfferMapper;
@@ -67,6 +66,17 @@ public class OfferServiceTest {
         recuperators.add(recuperator);
         offer.setRecuperators(recuperators);
 
+        Organisation organisation = new Organisation();
+        organisation.setId(12345L);
+        organisation.setIdentificationCode("0123456789");
+        organisation.setLocation(location);
+        organisation.setLogo("test");
+        organisation.setName("Test");
+        organisation.setDescription("Test");
+        organisation.setContactMail("Test");
+        organisation.setType("ENTERPRISE");
+        offer.setOrganisation(organisation);
+
         offerDTO = new OfferDTO();
         offerDTO.setDescription("Coucou");
         offerDTO.setTitle("Hello");
@@ -89,6 +99,17 @@ public class OfferServiceTest {
         recuperatorDTO.setLocationDTO(locationDTO);
         recuperatorDTOs.add(recuperatorDTO);
         offerDTO.setRecuperatorDTOs(recuperatorDTOs);
+
+        OrganisationDTO enterprise = new OrganisationDTO();
+        enterprise.setId(12345L);
+        enterprise.setIdentificationCode("0123456789");
+        enterprise.setLocationDTO(locationDTO);
+        enterprise.setLogo("test");
+        enterprise.setName("Test");
+        enterprise.setDescription("Test");
+        enterprise.setContactMail("Test");
+        enterprise.setType(OrganisationType.ENTERPRISE);
+        offerDTO.setEnterprise(enterprise);
     }
 
     @Test

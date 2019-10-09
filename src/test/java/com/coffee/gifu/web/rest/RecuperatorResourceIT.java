@@ -101,10 +101,12 @@ public class RecuperatorResourceIT {
         Organisation organisation;
         if (TestUtil.findAll(em, Organisation.class).isEmpty()) {
             organisation = OrganisationResourceIT.createEntity(em);
+            organisation.setType("ASSOCIATION");
             em.persist(organisation);
             em.flush();
         } else {
             organisation = TestUtil.findAll(em, Organisation.class).get(0);
+            organisation.setType("ASSOCIATION");
         }
         recuperator.setAssociation(organisation);
         return recuperator;
@@ -133,10 +135,12 @@ public class RecuperatorResourceIT {
         Organisation organisation;
         if (TestUtil.findAll(em, Organisation.class).isEmpty()) {
             organisation = OrganisationResourceIT.createUpdatedEntity(em);
+            organisation.setType("ASSOCIATION");
             em.persist(organisation);
             em.flush();
         } else {
             organisation = TestUtil.findAll(em, Organisation.class).get(0);
+            organisation.setType("ASSOCIATION");
         }
         recuperator.setAssociation(organisation);
         return recuperator;

@@ -5,6 +5,7 @@ import com.coffee.gifu.domain.Recuperator;
 import com.coffee.gifu.repository.RecuperatorRepository;
 import com.coffee.gifu.service.RecuperatorService;
 import com.coffee.gifu.service.dto.RecuperatorDTO;
+import com.coffee.gifu.service.exception.WrongOrganisationTypeException;
 import com.coffee.gifu.service.mapper.RecuperatorMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,7 +44,7 @@ public class RecuperatorServiceImpl implements RecuperatorService {
     @Override
     public RecuperatorDTO save(RecuperatorDTO recuperatorDTO) throws Exception {
         if (recuperatorDTO.getAssociation().getType() != OrganisationType.ASSOCIATION) {
-            throw new Exception("Big Problema");
+            throw new WrongOrganisationTypeException("A recuperator need an Association Type to be created/updated !");
         }
         log.debug("Request to save Recuperator : {}", recuperatorDTO);
         Recuperator recuperator = recuperatorMapper.toEntity(recuperatorDTO);

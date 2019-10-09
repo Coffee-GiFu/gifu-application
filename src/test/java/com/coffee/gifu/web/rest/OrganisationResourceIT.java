@@ -53,8 +53,8 @@ public class OrganisationResourceIT {
     private static final String DEFAULT_IDENTIFICATION_CODE = "AAAAAAAAAA";
     private static final String UPDATED_IDENTIFICATION_CODE = "BBBBBBBBBB";
 
-    private static final String DEFAULT_TYPE = "AAAAAAAAAA";
-    private static final String UPDATED_TYPE = "BBBBBBBBBB";
+    private static final String DEFAULT_TYPE = "ENTERPRISE";
+    private static final String UPDATED_TYPE = "ENTERPRISE";
 
     @Autowired
     private OrganisationRepository organisationRepository;
