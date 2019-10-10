@@ -1,6 +1,7 @@
 package com.coffee.gifu.service;
 
 import com.coffee.gifu.service.dto.RecuperatorDTO;
+import com.coffee.gifu.service.exception.ManagementRulesException;
 
 import java.util.List;
 import java.util.Optional;
@@ -16,7 +17,7 @@ public interface RecuperatorService {
      * @param recuperatorDTO the entity to save.
      * @return the persisted entity.
      */
-    RecuperatorDTO save(RecuperatorDTO recuperatorDTO);
+    RecuperatorDTO save(RecuperatorDTO recuperatorDTO) throws ManagementRulesException;
 
     /**
      * Get all the recuperators.

@@ -1,6 +1,7 @@
 package com.coffee.gifu.repository;
+
 import com.coffee.gifu.domain.Location;
-import org.springframework.data.jpa.repository.*;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 

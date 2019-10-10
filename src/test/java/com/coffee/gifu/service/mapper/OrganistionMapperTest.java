@@ -2,6 +2,7 @@ package com.coffee.gifu.service.mapper;
 
 import com.coffee.gifu.domain.Location;
 import com.coffee.gifu.domain.Organisation;
+import com.coffee.gifu.domain.OrganisationType;
 import com.coffee.gifu.service.dto.LocationDTO;
 import com.coffee.gifu.service.dto.OrganisationDTO;
 import org.junit.Test;
@@ -38,7 +39,7 @@ public class OrganistionMapperTest {
         organisation.setLogo("Test");
         organisation.setName("Test");
         organisation.setPhoneNumber("0123456789");
-        organisation.setType("Test");
+        organisation.setType("ENTERPRISE");
         organisation.setLocation(location);
 
         //When
@@ -53,7 +54,7 @@ public class OrganistionMapperTest {
         assertThat(organisationDTO.getIdentificationCode()).isEqualTo(organisation.getIdentificationCode());
         assertThat(organisationDTO.getContactMail()).isEqualTo(organisation.getContactMail());
         assertThat(organisationDTO.getName()).isEqualTo(organisation.getName());
-        assertThat(organisationDTO.getType()).isEqualTo(organisation.getType());
+        assertThat(organisationDTO.getType().toString()).isEqualTo(organisation.getType());
     }
 
     @Test
@@ -72,7 +73,7 @@ public class OrganistionMapperTest {
         organisationDTO.setLogo("Test");
         organisationDTO.setName("Test");
         organisationDTO.setPhoneNumber("0123456789");
-        organisationDTO.setType("Test");
+        organisationDTO.setType(OrganisationType.ENTERPRISE);
         organisationDTO.setLocationDTO(locationDTO);
 
         //When
@@ -87,7 +88,7 @@ public class OrganistionMapperTest {
         assertThat(organisation.getIdentificationCode()).isEqualTo(organisationDTO.getIdentificationCode());
         assertThat(organisation.getContactMail()).isEqualTo(organisationDTO.getContactMail());
         assertThat(organisation.getName()).isEqualTo(organisationDTO.getName());
-        assertThat(organisation.getType()).isEqualTo(organisationDTO.getType());
+        assertThat(organisation.getType()).isEqualTo(organisationDTO.getType().toString());
     }
 
 }

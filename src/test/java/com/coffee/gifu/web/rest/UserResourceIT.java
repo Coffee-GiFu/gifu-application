@@ -2,6 +2,7 @@ package com.coffee.gifu.web.rest;
 
 import com.coffee.gifu.GifuApp;
 import com.coffee.gifu.domain.Authority;
+import com.coffee.gifu.domain.OrganisationType;
 import com.coffee.gifu.domain.User;
 import com.coffee.gifu.repository.OrganisationRepository;
 import com.coffee.gifu.repository.UserRepository;
@@ -16,7 +17,6 @@ import com.coffee.gifu.web.rest.errors.ExceptionTranslator;
 import com.coffee.gifu.web.rest.vm.ManagedUserVM;
 import com.coffee.gifu.web.rest.wrapper.CreateUserRequest;
 import org.apache.commons.lang3.RandomStringUtils;
-import org.junit.Ignore;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -161,7 +161,7 @@ public class UserResourceIT {
         organisationDTO.setLogo("Test");
         organisationDTO.setName("Test");
         organisationDTO.setPhoneNumber("0123456789");
-        organisationDTO.setType("Test");
+        organisationDTO.setType(OrganisationType.ENTERPRISE);
         organisationDTO.setLocationDTO(locationDTO);
 
         CreateUserRequest createUserRequest = new CreateUserRequest(managedUserVM, organisationDTO);
@@ -208,7 +208,7 @@ public class UserResourceIT {
         organisationDTO.setLogo("Test");
         organisationDTO.setName("Test");
         organisationDTO.setPhoneNumber("0123456789");
-        organisationDTO.setType("Test");
+        organisationDTO.setType(OrganisationType.ENTERPRISE);
         organisationDTO.setLocationDTO(locationDTO);
 
         CreateUserRequest createUserRequest = new CreateUserRequest(managedUserVM, organisationDTO);
@@ -252,7 +252,7 @@ public class UserResourceIT {
         organisationDTO.setLogo("Test");
         organisationDTO.setName("Test");
         organisationDTO.setPhoneNumber("0123456789");
-        organisationDTO.setType("Test");
+        organisationDTO.setType(OrganisationType.ENTERPRISE);
         organisationDTO.setLocationDTO(locationDTO);
 
         CreateUserRequest createUserRequest = new CreateUserRequest(managedUserVM, organisationDTO);
@@ -296,7 +296,7 @@ public class UserResourceIT {
         organisationDTO.setLogo("Test");
         organisationDTO.setName("Test");
         organisationDTO.setPhoneNumber("0123456789");
-        organisationDTO.setType("Test");
+        organisationDTO.setType(OrganisationType.ENTERPRISE);
         organisationDTO.setLocationDTO(locationDTO);
 
         CreateUserRequest createUserRequest = new CreateUserRequest(managedUserVM, organisationDTO);

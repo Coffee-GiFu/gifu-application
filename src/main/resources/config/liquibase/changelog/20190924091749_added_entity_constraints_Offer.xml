@@ -14,11 +14,23 @@
                                  referencedColumnNames="id"
                                  referencedTableName="location"/>
 
-        <addForeignKeyConstraint baseColumnNames="recuperator_id"
-                                 baseTableName="offer"
-                                 constraintName="fk_offer_recuperator_id"
+        <addForeignKeyConstraint baseColumnNames="offer_id"
+                                 baseTableName="offer_recuperators"
+                                 constraintName="fk_offer_recuperators_offer_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="offer"/>
+
+        <addForeignKeyConstraint baseColumnNames="recuperators_id"
+                                 baseTableName="offer_recuperators"
+                                 constraintName="fk_offer_recuperators_recuperators_id"
                                  referencedColumnNames="id"
                                  referencedTableName="recuperator"/>
+        
+        <addForeignKeyConstraint baseColumnNames="organisation_id"
+                                 baseTableName="offer"
+                                 constraintName="fk_offer_organisation_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="organisation"/>
 
     </changeSet>
 </databaseChangeLog>

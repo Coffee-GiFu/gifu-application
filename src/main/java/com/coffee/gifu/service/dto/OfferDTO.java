@@ -4,7 +4,9 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.time.ZonedDateTime;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * A DTO for the {@link com.coffee.gifu.domain.Offer} entity.
@@ -32,7 +34,10 @@ public class OfferDTO implements Serializable {
     @NotNull
     private LocationDTO locationDTO;
 
-    private RecuperatorDTO recuperatorDTO;
+    private Set<RecuperatorDTO> recuperatorDTOs = new HashSet<>();
+
+    @NotNull
+    private OrganisationDTO enterprise;
 
     public Long getId() {
         return id;
@@ -50,11 +55,11 @@ public class OfferDTO implements Serializable {
         this.description = description;
     }
 
-    public boolean isIsCold() {
+    public Boolean isIsCold() {
         return isCold;
     }
 
-    public void setIsCold(boolean isCold) {
+    public void setIsCold(Boolean isCold) {
         this.isCold = isCold;
     }
 
@@ -90,12 +95,20 @@ public class OfferDTO implements Serializable {
         this.locationDTO = locationDTO;
     }
 
-    public RecuperatorDTO getRecuperatorDTO() {
-        return recuperatorDTO;
+    public Set<RecuperatorDTO> getRecuperatorDTOs() {
+        return recuperatorDTOs;
     }
 
-    public void setRecuperatorDTO(RecuperatorDTO recuperatorDTO) {
-        this.recuperatorDTO = recuperatorDTO;
+    public void setRecuperatorDTOs(Set<RecuperatorDTO> recuperatorDTOs) {
+        this.recuperatorDTOs = recuperatorDTOs;
+    }
+
+    public OrganisationDTO getEnterprise() {
+        return enterprise;
+    }
+
+    public void setEnterprise(OrganisationDTO enterprise) {
+        this.enterprise = enterprise;
     }
 
     @Override
@@ -129,7 +142,7 @@ public class OfferDTO implements Serializable {
             ", availabilityEnd='" + getAvailabilityEnd() + "'" +
             ", title='" + getTitle() + "'" +
             ", location=" + getLocationDTO() +
-            ", recuperator=" + getRecuperatorDTO() +
+            ", organisation=" + getEnterprise() +
             "}";
     }
 }

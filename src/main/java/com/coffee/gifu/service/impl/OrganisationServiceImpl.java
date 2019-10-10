@@ -1,20 +1,16 @@
 package com.coffee.gifu.service.impl;
 
-import com.coffee.gifu.service.OrganisationService;
 import com.coffee.gifu.domain.Organisation;
 import com.coffee.gifu.repository.OrganisationRepository;
+import com.coffee.gifu.service.OrganisationService;
 import com.coffee.gifu.service.dto.OrganisationDTO;
 import com.coffee.gifu.service.mapper.OrganisationMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 /**
  * Service Implementation for managing {@link Organisation}.

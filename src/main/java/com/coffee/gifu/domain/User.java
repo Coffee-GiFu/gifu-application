@@ -1,7 +1,6 @@
 package com.coffee.gifu.domain;
 
 import com.coffee.gifu.config.Constants;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.annotations.BatchSize;

@@ -53,8 +53,8 @@ public class OrganisationResourceIT {
     private static final String DEFAULT_IDENTIFICATION_CODE = "AAAAAAAAAA";
     private static final String UPDATED_IDENTIFICATION_CODE = "BBBBBBBBBB";
 
-    private static final String DEFAULT_TYPE = "AAAAAAAAAA";
-    private static final String UPDATED_TYPE = "BBBBBBBBBB";
+    private static final String DEFAULT_TYPE = "ENTERPRISE";
+    private static final String UPDATED_TYPE = "ENTERPRISE";
 
     @Autowired
     private OrganisationRepository organisationRepository;
@@ -113,7 +113,7 @@ public class OrganisationResourceIT {
             .type(DEFAULT_TYPE);
         // Add required entity
         Location location;
-        location = LocationResourceIT.createEntity(em);
+        location = LocationITResource.createEntity(em);
         organisation.setLocation(location);
         return organisation;
     }
@@ -135,7 +135,7 @@ public class OrganisationResourceIT {
         // Add required entity
         Location location;
         if (TestUtil.findAll(em, Location.class).isEmpty()) {
-            location = LocationResourceIT.createUpdatedEntity(em);
+            location = LocationITResource.createUpdatedEntity(em);
             em.persist(location);
             em.flush();
         } else {

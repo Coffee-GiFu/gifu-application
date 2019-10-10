@@ -2,32 +2,33 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {Link, RouteComponentProps} from 'react-router-dom';
 import {Button, Col, Label, Row} from 'reactstrap';
-import {AvField, AvForm, AvGroup, AvInput} from 'availity-reactstrap-validation';
+import {AvFeedback, AvField, AvForm, AvGroup, AvInput} from 'availity-reactstrap-validation';
 import {Translate, translate} from 'react-jhipster';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {IRootState} from 'app/shared/reducers';
-
-import {ILocation} from 'app/shared/model/location.model';
 import {getEntities as getLocations} from 'app/entities/location/location.reducer';
-import {IRecuperator} from 'app/shared/model/recuperator.model';
 import {getEntities as getRecuperators} from 'app/entities/recuperator/recuperator.reducer';
+import {getEntities as getOrganisations} from 'app/entities/organisation/organisation.reducer';
 import {createEntity, getEntity, reset, updateEntity} from './offer.reducer';
 import {convertDateTimeFromServer, convertDateTimeToServer} from 'app/shared/util/date-utils';
+import {mapIdList} from 'app/shared/util/entity-utils';
 
 export interface IOfferUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
 
 export interface IOfferUpdateState {
   isNew: boolean;
-  location: ILocation;
-  recuperator: IRecuperator;
+  idsrecuperators: any[];
+  locationId: string;
+  organisationId: string;
 }
 
 export class OfferUpdate extends React.Component<IOfferUpdateProps, IOfferUpdateState> {
   constructor(props) {
     super(props);
     this.state = {
-      location: this.props.offerEntity.location,
-      recuperator: this.props.offerEntity.recuperator,
+      idsrecuperators: [],
+      locationId: '0',
+      organisationId: '0',
       isNew: !this.props.match.params || !this.props.match.params.id
     };
   }
@@ -45,7 +46,9 @@ export class OfferUpdate extends React.Component<IOfferUpdateProps, IOfferUpdate
       this.props.getEntity(this.props.match.params.id);
     }
 
+    this.props.getLocations();
     this.props.getRecuperators();
+    this.props.getOrganisations();
   }
 
   saveEntity = (event, errors, values) => {
@@ -56,7 +59,8 @@ export class OfferUpdate extends React.Component<IOfferUpdateProps, IOfferUpdate
       const { offerEntity } = this.props;
       const entity = {
         ...offerEntity,
-        ...values
+        ...values,
+        recuperators: mapIdList(values.recuperators)
       };
 
       if (this.state.isNew) {
@@ -72,7 +76,7 @@ export class OfferUpdate extends React.Component<IOfferUpdateProps, IOfferUpdate
   };
 
   render() {
-    const { offerEntity, recuperators, loading, updating } = this.props;
+    const { offerEntity, locations, recuperators, organisations, loading, updating } = this.props;
     const { isNew } = this.state;
 
     return (
@@ -170,31 +174,55 @@ export class OfferUpdate extends React.Component<IOfferUpdateProps, IOfferUpdate
                   <Label for="offer-location">
                     <Translate contentKey="gifuApp.offer.location">Location</Translate>
                   </Label>
-                  {/*<AvInput id="offer-location" type="select" className="form-control" name="locationId">*/}
-                  {/*  <option value="" key="0" />*/}
-                  {/*  {locations*/}
-                  {/*    ? locations.map(otherEntity => (*/}
-                  {/*        <option value={otherEntity.id} key={otherEntity.id}>*/}
-                  {/*          {otherEntity.id}*/}
-                  {/*        </option>*/}
-                  {/*      ))*/}
-                  {/*    : null}*/}
-                  {/*</AvInput>*/}
-                </AvGroup>
-                <AvGroup>
-                  <Label for="offer-recuperator">
-                    <Translate contentKey="gifuApp.offer.recuperator">Recuperator</Translate>
-                  </Label>
-                  <AvInput id="offer-recuperator" type="select" className="form-control" name="recuperatorId">
+                  <AvInput id="offer-location" type="select" className="form-control" name="locationId">
                     <option value="" key="0" />
-                    {recuperators
-                      ? recuperators.map(otherEntity => (
+                    {locations
+                      ? locations.map(otherEntity => (
                           <option value={otherEntity.id} key={otherEntity.id}>
                             {otherEntity.id}
                           </option>
                         ))
                       : null}
                   </AvInput>
+                </AvGroup>
+                <AvGroup>
+                  <Label for="offer-recuperators">
+                    <Translate contentKey="gifuApp.offer.recuperators">Recuperators</Translate>
+                  </Label>
+                  <AvInput
+                    id="offer-recuperators"
+                    type="select"
+                    multiple
+                    className="form-control"
+                    name="recuperators"
+                    value={offerEntity.recuperators && offerEntity.recuperators.map(e => e.id)}
+                  >
+                    <option value="" key="0" />
+                    {recuperators
+                      ? recuperators.map(otherEntity => (
+                          <option value={otherEntity.id} key={otherEntity.id}>
+                            {otherEntity.name}
+                          </option>
+                        ))
+                      : null}
+                  </AvInput>
+                </AvGroup>
+                <AvGroup>
+                  <Label for="offer-organisation">
+                    <Translate contentKey="gifuApp.offer.organisation">Organisation</Translate>
+                  </Label>
+                  <AvInput id="offer-organisation" type="select" className="form-control" name="organisationId" required>
+                    {organisations
+                      ? organisations.map(otherEntity => (
+                          <option value={otherEntity.id} key={otherEntity.id}>
+                            {otherEntity.name}
+                          </option>
+                        ))
+                      : null}
+                  </AvInput>
+                  <AvFeedback>
+                    <Translate contentKey="entity.validation.required">This field is required.</Translate>
+                  </AvFeedback>
                 </AvGroup>
                 <Button tag={Link} id="cancel-save" to="/entity/offer" replace color="info">
                   <FontAwesomeIcon icon="arrow-left" />
@@ -221,6 +249,7 @@ export class OfferUpdate extends React.Component<IOfferUpdateProps, IOfferUpdate
 const mapStateToProps = (storeState: IRootState) => ({
   locations: storeState.location.entities,
   recuperators: storeState.recuperator.entities,
+  organisations: storeState.organisation.entities,
   offerEntity: storeState.offer.entity,
   loading: storeState.offer.loading,
   updating: storeState.offer.updating,
@@ -230,6 +259,7 @@ const mapStateToProps = (storeState: IRootState) => ({
 const mapDispatchToProps = {
   getLocations,
   getRecuperators,
+  getOrganisations,
   getEntity,
   updateEntity,
   createEntity,
