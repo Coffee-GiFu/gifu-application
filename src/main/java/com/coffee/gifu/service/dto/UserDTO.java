@@ -9,6 +9,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
 import javax.validation.constraints.*;
+import java.io.Serializable;
 import java.time.Instant;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -16,7 +17,7 @@ import java.util.stream.Collectors;
 /**
  * A DTO representing a user, with his authorities.
  */
-public class UserDTO {
+public class UserDTO implements Serializable {
 
     private Long id;
 
@@ -30,6 +31,8 @@ public class UserDTO {
     private String email;
 
     private boolean activated = false;
+
+    private Long organisationID;
 
     @Size(min = 2, max = 10)
     private String langKey;
@@ -53,6 +56,7 @@ public class UserDTO {
         this.login = user.getLogin();
         this.email = user.getEmail();
         this.activated = user.getActivated();
+        this.organisationID = user.getOrganisationID();
         this.langKey = user.getLangKey();
         this.createdBy = user.getCreatedBy();
         this.createdDate = user.getCreatedDate();
@@ -93,6 +97,14 @@ public class UserDTO {
 
     public void setActivated(boolean activated) {
         this.activated = activated;
+    }
+
+    public Long getOrganisationID() {
+        return organisationID;
+    }
+
+    public void setOrganisationID(Long organisationID) {
+        this.organisationID = organisationID;
     }
 
     public String getLangKey() {

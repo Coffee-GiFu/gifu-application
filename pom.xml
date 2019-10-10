@@ -22,7 +22,7 @@
     <properties>
         <!-- Build properties -->
         <maven.version>3.3.9</maven.version>
-        <java.version>1.8</java.version>
+        <java.version>1.11</java.version>
         <node.version>v10.16.3</node.version>
         <npm.version>6.11.3</npm.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -372,6 +372,7 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
+                    <release>11</release>
                     <source>${java.version}</source>
                     <target>${java.version}</target>
                     <annotationProcessorPaths>
@@ -455,7 +456,7 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <mainClass>${start-class}</mainClass>
+                    <mainClass>com.coffee.gifu.GifuApp</mainClass>
                     <fork>true</fork>
                     <!--
                     Enable the line below to have remote debugging of your application on port 5005
@@ -493,6 +494,9 @@
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-compiler-plugin</artifactId>
                     <version>${maven-compiler-plugin.version}</version>
+                    <configuration>
+                        <release>11</release>
+                    </configuration>
                 </plugin>
                 <plugin>
                     <groupId>com.github.eirslett</groupId>
@@ -950,7 +954,7 @@
                         <groupId>org.springframework.boot</groupId>
                         <artifactId>spring-boot-maven-plugin</artifactId>
                         <configuration>
-                            <mainClass>${start-class}</mainClass>
+                            <mainClass>com.coffee.gifu.GifuApp</mainClass>
                         </configuration>
                         <executions>
                             <execution>

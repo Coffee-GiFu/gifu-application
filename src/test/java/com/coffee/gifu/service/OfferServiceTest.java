@@ -110,8 +110,10 @@ public class OfferServiceTest {
         //Given
         List<Offer> offers = new ArrayList<>();
         offers.add(offer);
+        List<OfferDTO> offerDTOS = new ArrayList<>();
+        offerDTOS.add(offerDTO);
         when(offerRepository.findAll()).thenReturn(offers);
-        when(offerMapper.toDto(offer)).thenReturn(offerDTO);
+        when(offerMapper.toDto(offers)).thenReturn(offerDTOS);
 
         //When
         List<OfferDTO> actual = offerService.findAll();

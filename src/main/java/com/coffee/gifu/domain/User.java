@@ -55,6 +55,9 @@ public class User extends AbstractAuditingEntity implements Serializable {
     @Column(nullable = false)
     private boolean activated = false;
 
+    @Column(name = "organisation_id")
+    private Long organisationID;
+
     @Size(min = 2, max = 10)
     @Column(name = "lang_key", length = 10)
     private String langKey;
@@ -123,6 +126,14 @@ public class User extends AbstractAuditingEntity implements Serializable {
         this.activated = activated;
     }
 
+    public Long getOrganisationID() {
+        return organisationID;
+    }
+
+    public void setOrganisationID(Long organisationID) {
+        this.organisationID = organisationID;
+    }
+
     public String getActivationKey() {
         return activationKey;
     }
@@ -184,9 +195,10 @@ public class User extends AbstractAuditingEntity implements Serializable {
         return "User{" +
             "login='" + login + '\'' +
             ", email='" + email + '\'' +
-            ", activated='" + activated + '\'' +
+            ", activated=" + activated +
+            ", organisationID=" + organisationID +
             ", langKey='" + langKey + '\'' +
             ", activationKey='" + activationKey + '\'' +
-            "}";
+            '}';
     }
 }

@@ -1,5 +1,6 @@
 package com.coffee.gifu.cucumber.stepdefs;
 
+import com.coffee.gifu.web.rest.UserResource;
 import com.coffee.gifu.security.AuthoritiesConstants;
 import cucumber.api.java.Before;
 import cucumber.api.java.en.Then;
@@ -10,8 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-
-import com.coffee.gifu.web.rest.UserResource;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -29,8 +28,8 @@ public class UserStepDefs extends StepDefs {
     }
 
     @When("I search user {string}")
-    public void i_search_user(String userId) throws Throwable {
-        actions = restUserMockMvc.perform(get("/api/users/" + userId)
+    public void i_search_user(String login) throws Throwable {
+        actions = restUserMockMvc.perform(get("/api/users/" + login)
                 .accept(MediaType.APPLICATION_JSON));
     }
 
