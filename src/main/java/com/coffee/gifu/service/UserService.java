@@ -2,6 +2,7 @@ package com.coffee.gifu.service;
 
 import com.coffee.gifu.config.Constants;
 import com.coffee.gifu.domain.Authority;
+import com.coffee.gifu.domain.Organisation;
 import com.coffee.gifu.domain.User;
 import com.coffee.gifu.repository.AuthorityRepository;
 import com.coffee.gifu.repository.UserRepository;
@@ -12,6 +13,7 @@ import com.coffee.gifu.service.dto.UserDTO;
 import com.coffee.gifu.service.util.RandomUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.CacheManager;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

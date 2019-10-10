@@ -1,9 +1,12 @@
 package com.coffee.gifu.cucumber.stepdefs;
 
 import com.coffee.gifu.web.rest.UserResource;
+import com.coffee.gifu.security.AuthoritiesConstants;
 import cucumber.api.java.Before;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+
+import io.cucumber.java.en.And;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
