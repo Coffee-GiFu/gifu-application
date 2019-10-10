@@ -135,7 +135,7 @@ public class OfferServiceTest {
         offers.add(offer);
         List<OfferDTO> offerDTOS = new ArrayList<>();
         offerDTOS.add(offerDTO);
-        when(offerRepository.findAll()).thenReturn(offers);
+        when(offerRepository.findAllWithEagerRelationships()).thenReturn(offers);
         when(offerMapper.toDto(offers)).thenReturn(offerDTOS);
 
         //When
