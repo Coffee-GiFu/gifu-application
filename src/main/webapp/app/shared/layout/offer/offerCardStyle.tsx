@@ -50,6 +50,35 @@ export const StyledOfferCard  = styled.div`
     height: 11.7rem;
     border-radius: 0.6rem 0.6rem 0 0;
     border-bottom: solid 0.2rem;
+    .control-dots{
+      margin-bottom: -14px;
+    }
+    .slider-wrapper{
+      ul{
+        height: inherit;
+        width: inherit !important;
+        li{
+          display: table;
+          height: inherit;
+          width: inherit !important;
+          div{
+            text-align: center;
+            display: table-cell;
+            vertical-align: middle;
+            height: inherit;
+            width: inherit !important;
+            img{
+              max-height: 100%;
+              width: auto;
+              max-width: 100%;
+            }
+          }
+        }
+      }
+    }
+    .defaultImg{
+      opacity: 0.5;
+    }
   }
   .slider-wrapper{
     height: 11.7rem;

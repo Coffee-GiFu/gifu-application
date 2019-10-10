@@ -6,7 +6,8 @@ import { Translate } from 'react-jhipster';
 import { connect } from 'react-redux';
 import { Row, Col, Alert } from 'reactstrap';
 
-import { IRootState } from 'app/shared/reducers';
+import { HomePage } from '../homePage/homePage';
+import { LoginPage } from '../loginPage/loginPage';
 
 import { OfferCard } from '../../shared/layout/offer/offerCard';
 import { IOffer } from '../../shared/model/offer.model';
@@ -16,77 +17,7 @@ export type IHomeProp = StateProps;
 export const Home = (props: IHomeProp) => {
   const { account } = props;
   const fnc = (id)=>{window.console.log(id)};
-  const offs= [{id: 21,description: `eeesddsf e 
-  sdf ds fds eee`,isCold: true,availabilityBegin: null,availabilityEnd: null,title: "titre",location: null,recuperator: null}, {id: 24,description: `eeesddsf e 
-  sdf ds fds eeeeeesddsf e 
-  sdf ds fds eeeeeesddsf e 
-  sdf ds fds eeeeeesddsf e 
-  sdf ds fds eee`,isCold: false,availabilityBegin: null,availabilityEnd: null,title: "titre",location: null,recuperator: null},{id: 21,description: `eeesddsf e 
-  sdf ds fds eee`,isCold: true,availabilityBegin: null,availabilityEnd: null,title: "titre",location: null,recuperator: null}, {id: 24,description: `eeesddsf e 
-  sdf ds fds eeeeeesddsf e 
-  sdf ds fds eeeeeesddsf e 
-  sdf ds fds eeeeeesddsf e 
-  sdf ds fds eee`,isCold: false,availabilityBegin: null,availabilityEnd: null,title: "titre",location: null,recuperator: null},{id: 21,description: `eeesddsf e 
-  sdf ds fds eee`,isCold: true,availabilityBegin: null,availabilityEnd: null,title: "titre",location: null,recuperator: null}, {id: 24,description: `eeesddsf e 
-  sdf ds fds eeeeeesddsf e 
-  sdf ds fds eeeeeesddsf e 
-  sdf ds fds eeeeeesddsf e 
-  sdf ds fds eee`,isCold: false,availabilityBegin: null,availabilityEnd: null,title: "titre",location: null,recuperator: null},{id: 21,description: `eeesddsf e 
-  sdf ds fds eee`,isCold: true,availabilityBegin: null,availabilityEnd: null,title: "titre",location: null,recuperator: null}, {id: 24,description: `eeesddsf e 
-  sdf ds fds eeeeeesddsf e 
-  sdf ds fds eeeeeesddsf e 
-  sdf ds fds eeeeeesddsf e 
-  sdf ds fds eee`,isCold: false,availabilityBegin: null,availabilityEnd: null,title: "titre",location: null,recuperator: null},{id: 21,description: `eeesddsf e 
-  sdf ds fds eee`,isCold: true,availabilityBegin: null,availabilityEnd: null,title: "titre",location: null,recuperator: null}, {id: 24,description: `eeesddsf e 
-  sdf ds fds eeeeeesddsf e 
-  sdf ds fds eeeeeesddsf e 
-  sdf ds fds eeeeeesddsf e 
-  sdf ds fds eee`,isCold: false,availabilityBegin: null,availabilityEnd: null,title: "titre",location: null,recuperator: null}];
-  return (
-    <Row>
-      <Col md="12">
-        <h2>
-          <Translate contentKey="home.title">Welcome, Java Hipster!</Translate>
-        </h2>
-        <p className="lead">
-          <Translate contentKey="home.subtitle">This is your homepage</Translate>
-        </p>
-        {account && account.login ? (
-          <div>
-            <Alert color="success">
-              <Translate contentKey="home.logged.message" interpolate={{ username: account.login }}>
-                You are logged in as user {account.login}.
-              </Translate>
-            </Alert>
-          </div>
-        ) : (
-          <div>
-            <Alert color="warning">
-              <Translate contentKey="global.messages.info.authenticated.prefix">If you want to </Translate>
-              <Link to="/login" className="alert-link">
-                <Translate contentKey="global.messages.info.authenticated.link"> sign in</Translate>
-              </Link>
-              <Translate contentKey="global.messages.info.authenticated.suffix">
-                , you can try the default accounts:
-                <br />- Administrator (login=&quot;admin&quot; and password=&quot;admin&quot;)
-                <br />- User (login=&quot;user&quot; and password=&quot;user&quot;).
-              </Translate>
-            </Alert>
-
-            <Alert color="warning">
-              <Translate contentKey="global.messages.info.register.noaccount">You do not have an account yet?</Translate>&nbsp;
-              <Link to="/account/register" className="alert-link">
-                <Translate contentKey="global.messages.info.register.link">Register a new account</Translate>
-              </Link>
-            </Alert>
-          </div>
-        )}
-        {offs.map((off,index) => {
-          return <OfferCard key={index} offer={off} handleClick={fnc} />;
-        })}
-      </Col>
-    </Row>
-  );
+  return (account && account.login ? HomePage(props) : LoginPage(props));
 };
 
 const mapStateToProps = storeState => ({
