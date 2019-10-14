@@ -10,7 +10,6 @@ export interface OfferCardProps {
     handleClick: (id: number) => void
 }
 export const OfferCard = ({ offer, handleClick }: OfferCardProps) => {
-  const className = `mdi mdi`
   const pictures = [];
   const autoPlay = true;
   return (    
