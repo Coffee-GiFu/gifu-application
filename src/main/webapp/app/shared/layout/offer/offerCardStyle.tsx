@@ -35,7 +35,7 @@ export const StyledOfferCard  = styled.div`
   border-color: rgb(0,0,0);
   color: rgb(0,0,0);
   border-radius: 1rem;
-  background: transparent;
+  background-color: white;
   border-style: solid;
   border-width: 4px;
   cursor: pointer;
@@ -45,19 +45,52 @@ export const StyledOfferCard  = styled.div`
   margin: 0 2rem 2rem 0;
   outline: none;
   width: 16rem;
+  animation: scale-up-center 0.4s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
   .carousel{
     height: 11.7rem;
     border-radius: 0.6rem 0.6rem 0 0;
-    border-bottom: solid 0.1rem;
+    border-bottom: solid 0.2rem;
+    .control-dots{
+      margin-bottom: -14px;
+    }
+    .slider-wrapper{
+      ul{
+        height: inherit;
+        width: inherit !important;
+        li{
+          display: table;
+          height: inherit;
+          width: inherit !important;
+          div{
+            text-align: center;
+            display: table-cell;
+            vertical-align: middle;
+            height: inherit;
+            width: inherit !important;
+            img{
+              max-height: 100%;
+              width: auto;
+              max-width: 100%;
+            }
+          }
+        }
+      }
+    }
+    .defaultImg{
+      opacity: 0.5;
+    }
   }
   .slider-wrapper{
     height: 11.7rem;
+  }
+  :hover{
+    animation: scale-down-center 0.4s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
   }
 `
 export const StyledOfferCardIsCold  = styled.img`
   width: 2rem;
   position: relative;
-  top: -11.8rem;
+  top: -11.9rem;
   right: -0.2rem;
   filter: drop-shadow(1px 1px 0 black) drop-shadow(0px 1px 0 black);
 `

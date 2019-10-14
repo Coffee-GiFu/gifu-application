@@ -24,12 +24,19 @@ loadIcons();
 
 const rootEl = document.getElementById('root');
 
+const items=[];
+for (let index =0; index< 20 ; index++) {
+  items.push(<li></li>)
+}
 const render = Component =>
   // eslint-disable-next-line react/no-render-return-value
   ReactDOM.render(
     <ErrorBoundary>
       <Provider store={store}>
-        <div>
+        <div className="area" >
+            <ul className="circles">
+              {items}
+            </ul>
           {/* If this slows down the app in dev disable it and enable when required  */}
           {devTools}
           <Component />
