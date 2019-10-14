@@ -8,17 +8,47 @@ import { Row, Col, Alert } from 'reactstrap';
 
 import { IRootState } from 'app/shared/reducers';
 
+import { OfferCard } from '../../shared/layout/offer/offerCard';
+import { IOffer } from '../../shared/model/offer.model';
+
 export type IHomeProp = StateProps;
 
 export const Home = (props: IHomeProp) => {
   const { account } = props;
-
+  const fnc = (id)=>{window.console.log(id)};
+  const off= {
+    id: 21,
+    description: `eeesddsf e 
+    sdf ds fds eee`,
+    isCold: true,
+    availabilityBegin: null,
+    availabilityEnd: null,
+    title: "titre",
+    location: null,
+    recuperator: null
+  };
+  const off2= {
+    id: 24,
+    description: `eeesddsf e 
+    sdf ds fds eeeeeesddsf e 
+    sdf ds fds eeeeeesddsf e 
+    sdf ds fds eeeeeesddsf e 
+    sdf ds fds eee`,
+    isCold: false,
+    availabilityBegin: null,
+    availabilityEnd: null,
+    title: "titre",
+    location: null,
+    recuperator: null
+  };
   return (
     <Row>
-      <Col md="9">
+      <Col md="12">
         <h2>
           <Translate contentKey="home.title">Welcome, Java Hipster!</Translate>
         </h2>
+        <OfferCard offer={off} handleClick={fnc} />
+        <OfferCard offer={off2} handleClick={fnc} />
         <p className="lead">
           <Translate contentKey="home.subtitle">This is your homepage</Translate>
         </p>
@@ -91,9 +121,6 @@ export const Home = (props: IHomeProp) => {
           </a>
           !
         </p>
-      </Col>
-      <Col md="3" className="pad">
-        <span className="hipster rounded" />
       </Col>
     </Row>
   );
