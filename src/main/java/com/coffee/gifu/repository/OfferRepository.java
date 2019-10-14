@@ -20,11 +20,11 @@ import java.util.Optional;
  */
 @Repository
 public interface OfferRepository extends JpaRepository<Offer, Long> {
-    @Query("SELECT Offer FROM Offer WHERE Offer.id = 2")
-    List<OfferDTO> searchCreatedOffer();
+    @Query("SELECT o FROM Offer o")
+    List<Offer> searchCreatedOffer();
 
-    @Query("SELECT Offer FROM Offer WHERE Offer.id = 1")
-    List<OfferDTO> searchChosenOffer();
+    @Query("SELECT o FROM Offer o")
+    List<Offer> searchChosenOffer();
 
     @Query(value = "select distinct offer from Offer offer left join fetch offer.recuperators",
         countQuery = "select count(distinct offer) from Offer offer")
@@ -37,10 +37,16 @@ public interface OfferRepository extends JpaRepository<Offer, Long> {
     Optional<Offer> findOneWithEagerRelationships(@Param("id") Long id);
 
     @Query(
-        "SELECT Offer FROM Offer " +
-        "WHERE Offer.recuperator = NULL " +
-            "AND Offer.availabilityEnd >= CURRENT_DATE " +
-            "AND :isColdFilter = Offer.isCold OR :isColdFilter = NULL " +
-        "ORDER BY Offer.availabilityEnd ASC ")
-    List<OfferDTO> searchAvailableOffer(Boolean isColdFilter);
+        "SELECT o FROM Offer o " +
+            "WHERE o.recuperator = NULL " +
+            "AND o.availabilityEnd >= CURRENT_DATE " +
+            "AND o.isCold = FALSE " +
+            "ORDER BY o.availabilityEnd ASC ")
+    List<Offer> searchAvailableOfferCold();
+    @Query(
+        "SELECT o FROM Offer o " +
+            "WHERE o.recuperator = NULL " +
+            "AND o.availabilityEnd >= CURRENT_DATE  " +
+            "ORDER BY o.availabilityEnd ASC ")
+    List<Offer> searchAvailableOffer();
 }

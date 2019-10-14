@@ -150,13 +150,13 @@ public class OfferResource {
         return offerService.searchCreatedOffer();
     }
     /**
-     * {@code GET  /offers/available : get the available offer.
+     * {@code POST  /offers/available : get the available offer.
      *
-     * @param isColdFilter (facultatif)
+     * @param isColdFilter
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the offerDTO,
      * or with status {@code 404 (Not Found)}.
      */
-    @GetMapping("/offers/available")
+    @GetMapping("/offers/available/{isColdFilter}")
     public List<OfferDTO> searchAvailableOffer(@PathVariable boolean isColdFilter) {
         log.debug("REST request to get available Offer : {}", isColdFilter);
         return offerService.searchAvailableOffer(isColdFilter);

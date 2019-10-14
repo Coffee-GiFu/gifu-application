@@ -49,7 +49,7 @@ public interface OfferService {
      * @param isColdFilter
      * @return the list of available entities.
      */
-    List<OfferDTO> searchAvailableOffer(Boolean isColdFilter);
+    List<OfferDTO> searchAvailableOffer(boolean isColdFilter);
 
     /**
      * Get all the selected offers for actual account.

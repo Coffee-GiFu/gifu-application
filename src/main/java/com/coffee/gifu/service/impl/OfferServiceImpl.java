@@ -100,7 +100,7 @@ public class OfferServiceImpl implements OfferService {
     @Transactional(readOnly = true)
     public List<OfferDTO> searchChosenOffer() {
         log.debug("Request to get Offer by account");
-        return offerRepository.searchChosenOffer();
+        return offerMapper.toDto(offerRepository.searchChosenOffer());
     }
 
     /**
@@ -111,7 +111,7 @@ public class OfferServiceImpl implements OfferService {
     @Transactional(readOnly = true)
     public List<OfferDTO> searchCreatedOffer() {
         log.debug("Request to get Offer by account");
-        return offerRepository.searchCreatedOffer();
+        return offerMapper.toDto(offerRepository.searchCreatedOffer());
     }
 
     /**
@@ -120,8 +120,12 @@ public class OfferServiceImpl implements OfferService {
      * @return the list of available entities.
      */
     @Transactional(readOnly = true)
-    public List<OfferDTO> searchAvailableOffer(Boolean isColdFilter) {
+    public List<OfferDTO> searchAvailableOffer(boolean isColdFilter) {
         log.debug("Request to get all available Offers");
-        return offerRepository.searchAvailableOffer(isColdFilter);
+        if (isColdFilter) {
+            return offerMapper.toDto(offerRepository.searchAvailableOfferCold());
+        }else{
+            return offerMapper.toDto(offerRepository.searchAvailableOffer());
+        }
     }
 }
