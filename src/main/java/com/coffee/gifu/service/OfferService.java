@@ -2,7 +2,6 @@ package com.coffee.gifu.service;
 
 import com.coffee.gifu.service.dto.OfferDTO;
 import com.coffee.gifu.service.exception.ManagementRulesException;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
