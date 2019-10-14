@@ -24,8 +24,6 @@ public class ExternalResource {
 
     private final Logger log = LoggerFactory.getLogger(ExternalResource.class);
 
-    private static final String ENTITY_NAME = "external";
-
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
 
