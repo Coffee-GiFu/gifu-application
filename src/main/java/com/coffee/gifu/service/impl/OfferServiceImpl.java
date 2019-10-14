@@ -91,4 +91,49 @@ public class OfferServiceImpl implements OfferService {
         log.debug("Request to delete Offer : {}", id);
         offerRepository.deleteById(id);
     }
+
+    /**
+     * Get the offer selected.
+     *
+     * @return an entity list.
+     */
+    @Transactional(readOnly = true)
+    public List<OfferDTO> searchChosenOffer() {
+        log.debug("Request to get Offer by account");
+        return offerRepository.searchChosenOffer().stream()
+            .map(offerMapper::toDto)
+            .collect(Collectors.toCollection(LinkedList::new));
+    }
+
+    /**
+     * Get the offer create.
+     *
+     * @return an entity list.
+     */
+    @Transactional(readOnly = true)
+    public List<OfferDTO> searchCreatedOffer() {
+        log.debug("Request to get Offer by account");
+        return offerRepository.searchCreatedOffer().stream()
+            .map(offerMapper::toDto)
+            .collect(Collectors.toCollection(LinkedList::new));
+    }
+
+    /**
+     * Get all the available offers.
+     *
+     * @return the list of available entities.
+     */
+    @Transactional(readOnly = true)
+    public List<OfferDTO> searchAvailableOffer(boolean isColdFilter) {
+        log.debug("Request to get all available Offers");
+        List<Offer>  listOffer;
+        if (isColdFilter) {
+            listOffer = offerRepository.searchAvailableOfferNotCold();
+        }else{
+            listOffer = offerRepository.searchAvailableOffer();
+        }
+        return listOffer.stream()
+            .map(offerMapper::toDto)
+            .collect(Collectors.toCollection(LinkedList::new));
+    }
 }

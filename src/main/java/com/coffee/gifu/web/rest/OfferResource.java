@@ -126,4 +126,39 @@ public class OfferResource {
         offerService.delete(id);
         return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString())).build();
     }
+
+    /**
+     * {@code GET  /offers/selected} : get the selecte offer.
+     *
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the offerDTO,
+     * or with status {@code 404 (Not Found)}.
+     */
+    @GetMapping("/offers/selected")
+    public List<OfferDTO> searchChosenOffer() {
+        log.debug("REST request to get Offer.");
+        return offerService.searchChosenOffer();
+    }
+    /**
+     * {@code GET  /offers/create} : get the create offer.
+     *
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the offerDTO,
+     * or with status {@code 404 (Not Found)}.
+     */
+    @GetMapping("/offers/create")
+    public List<OfferDTO> searchCreatedOffer() {
+        log.debug("REST request to get Offer.");
+        return offerService.searchCreatedOffer();
+    }
+    /**
+     * {@code POST  /offers/available : get the available offer.
+     *
+     * @param isColdFilter
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the offerDTO,
+     * or with status {@code 404 (Not Found)}.
+     */
+    @GetMapping("/offers/available/{isColdFilter}")
+    public List<OfferDTO> searchAvailableOffer(@PathVariable boolean isColdFilter) {
+        log.debug("REST request to get available Offer : {}", isColdFilter);
+        return offerService.searchAvailableOffer(isColdFilter);
+    }
 }
