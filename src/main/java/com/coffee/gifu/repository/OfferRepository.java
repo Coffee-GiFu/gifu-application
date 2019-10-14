@@ -21,7 +21,8 @@ import java.util.Optional;
 @Repository
 public interface OfferRepository extends JpaRepository<Offer, Long> {
     @Query("SELECT o FROM Offer o " +
-            "ORDER BY case when o.recuperator is null then 1 else 0 end, " +
+            "ORDER BY " +
+            //"CASE WHEN o.recuperators IS NULL THEN 1 ELSE 0 END DESC," +//TODO selection par l'entreprise de l'assos ( offre fermer )
             "o.availabilityEnd ASC")
     List<Offer> searchCreatedOffer();
 
@@ -41,16 +42,18 @@ public interface OfferRepository extends JpaRepository<Offer, Long> {
 
     @Query(
         "SELECT o FROM Offer o " +
-            "WHERE o.recuperator = NULL " +
-            "AND o.availabilityEnd >= CURRENT_DATE " +
+            "WHERE " +
+            //"o.recuperator = NULL AND " +//TODO selection par l'entreprise de l'assos ( offre fermer )
+            "o.availabilityEnd >= CURRENT_DATE " +
             "AND o.isCold = FALSE " +
             "ORDER BY o.availabilityEnd ASC ")
-    List<Offer> searchAvailableOfferCold();
+    List<Offer> searchAvailableOfferNotCold();
 
     @Query(
         "SELECT o FROM Offer o " +
-            "WHERE o.recuperator = NULL " +
-            "AND o.availabilityEnd >= CURRENT_DATE  " +
+            "WHERE " +
+            //"o.recuperator = NULL AND " +//TODO selection par l'entreprise de l'assos ( offre fermer )
+            "o.availabilityEnd >= CURRENT_DATE  " +
             "ORDER BY o.availabilityEnd ASC ")
     List<Offer> searchAvailableOffer();
 }

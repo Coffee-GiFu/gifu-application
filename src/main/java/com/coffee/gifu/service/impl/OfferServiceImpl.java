@@ -100,7 +100,9 @@ public class OfferServiceImpl implements OfferService {
     @Transactional(readOnly = true)
     public List<OfferDTO> searchChosenOffer() {
         log.debug("Request to get Offer by account");
-        return offerMapper.toDto(offerRepository.searchChosenOffer());
+        return offerRepository.searchChosenOffer().stream()
+            .map(offerMapper::toDto)
+            .collect(Collectors.toCollection(LinkedList::new));
     }
 
     /**
@@ -111,7 +113,9 @@ public class OfferServiceImpl implements OfferService {
     @Transactional(readOnly = true)
     public List<OfferDTO> searchCreatedOffer() {
         log.debug("Request to get Offer by account");
-        return offerMapper.toDto(offerRepository.searchCreatedOffer());
+        return offerRepository.searchCreatedOffer().stream()
+            .map(offerMapper::toDto)
+            .collect(Collectors.toCollection(LinkedList::new));
     }
 
     /**
@@ -122,10 +126,14 @@ public class OfferServiceImpl implements OfferService {
     @Transactional(readOnly = true)
     public List<OfferDTO> searchAvailableOffer(boolean isColdFilter) {
         log.debug("Request to get all available Offers");
+        List<Offer>  listOffer;
         if (isColdFilter) {
-            return offerMapper.toDto(offerRepository.searchAvailableOfferCold());
+            listOffer = offerRepository.searchAvailableOfferNotCold();
         }else{
-            return offerMapper.toDto(offerRepository.searchAvailableOffer());
+            listOffer = offerRepository.searchAvailableOffer();
         }
+        return listOffer.stream()
+            .map(offerMapper::toDto)
+            .collect(Collectors.toCollection(LinkedList::new));
     }
 }
