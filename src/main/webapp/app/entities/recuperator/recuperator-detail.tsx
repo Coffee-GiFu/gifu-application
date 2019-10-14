@@ -39,7 +39,11 @@ export class RecuperatorDetail extends React.Component<IRecuperatorDetailProps> 
             <dt>
               <Translate contentKey="gifuApp.recuperator.location">Location</Translate>
             </dt>
-            <dd>{recuperatorEntity.location ? recuperatorEntity.location.city : ''}</dd>
+            <dd>{recuperatorEntity.locationCity ? recuperatorEntity.locationCity : ''}</dd>
+            <dt>
+              <Translate contentKey="gifuApp.recuperator.association">Association</Translate>
+            </dt>
+            <dd>{recuperatorEntity.associationName ? recuperatorEntity.associationName : ''}</dd>
           </dl>
           <Button tag={Link} to="/entity/recuperator" replace color="info">
             <FontAwesomeIcon icon="arrow-left" />{' '}

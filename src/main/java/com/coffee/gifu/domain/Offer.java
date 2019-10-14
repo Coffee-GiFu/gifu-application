@@ -8,6 +8,8 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.time.ZonedDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * A Offer.
@@ -45,12 +47,20 @@ public class Offer implements Serializable {
     @Column(name = "title", length = 100, nullable = false)
     private String title;
 
-    @OneToOne(optional = false)
+    @OneToOne(optional = false, cascade = CascadeType.ALL)
     @NotNull
     private Location location;
 
-    @ManyToOne
-    private Recuperator recuperator;
+    @ManyToMany
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    @JoinTable(name = "offer_recuperators",
+               joinColumns = @JoinColumn(name = "offer_id", referencedColumnName = "id"),
+               inverseJoinColumns = @JoinColumn(name = "recuperators_id", referencedColumnName = "id"))
+    private Set<Recuperator> recuperators = new HashSet<>();
+
+    @ManyToOne(optional = false)
+    @NotNull
+    private Organisation organisation;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -139,17 +149,30 @@ public class Offer implements Serializable {
         this.location = location;
     }
 
-    public Recuperator getRecuperator() {
-        return recuperator;
+    public Set<Recuperator> getRecuperators() {
+        return recuperators;
     }
 
-    public Offer recuperator(Recuperator recuperator) {
-        this.recuperator = recuperator;
+    public Offer recuperators(Set<Recuperator> recuperators) {
+        this.recuperators = recuperators;
         return this;
     }
 
-    public void setRecuperator(Recuperator recuperator) {
-        this.recuperator = recuperator;
+    public void setRecuperators(Set<Recuperator> recuperators) {
+        this.recuperators = recuperators;
+    }
+
+    public Organisation getOrganisation() {
+        return organisation;
+    }
+
+    public Offer organisation(Organisation organisation) {
+        this.organisation = organisation;
+        return this;
+    }
+
+    public void setOrganisation(Organisation organisation) {
+        this.organisation = organisation;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 

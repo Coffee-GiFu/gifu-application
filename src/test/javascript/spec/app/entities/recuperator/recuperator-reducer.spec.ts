@@ -11,11 +11,11 @@ import reducer, {
   deleteEntity,
   getEntities,
   getEntity,
-  updateEntity,
-  reset
+  reset,
+  updateEntity
 } from 'app/entities/recuperator/recuperator.reducer';
-import { REQUEST, SUCCESS, FAILURE } from 'app/shared/reducers/action-type.util';
-import { IRecuperator, defaultValue } from 'app/shared/model/recuperator.model';
+import { FAILURE, REQUEST, SUCCESS } from 'app/shared/reducers/action-type.util';
+import { defaultValue, IRecuperator } from 'app/shared/model/recuperator.model';
 
 describe('Entities reducer tests', () => {
   function isEmpty(element): boolean {

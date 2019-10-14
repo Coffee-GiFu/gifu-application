@@ -14,5 +14,11 @@
                                  referencedColumnNames="id"
                                  referencedTableName="location"/>
 
+        <addForeignKeyConstraint baseColumnNames="association_id"
+                                 baseTableName="recuperator"
+                                 constraintName="fk_recuperator_association_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="organisation"/>
+
     </changeSet>
 </databaseChangeLog>

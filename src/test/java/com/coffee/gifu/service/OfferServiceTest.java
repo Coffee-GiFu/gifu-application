@@ -1,11 +1,10 @@
 package com.coffee.gifu.service;
 
-import com.coffee.gifu.domain.Location;
-import com.coffee.gifu.domain.Offer;
-import com.coffee.gifu.domain.Recuperator;
+import com.coffee.gifu.domain.*;
 import com.coffee.gifu.repository.OfferRepository;
 import com.coffee.gifu.service.dto.LocationDTO;
 import com.coffee.gifu.service.dto.OfferDTO;
+import com.coffee.gifu.service.dto.OrganisationDTO;
 import com.coffee.gifu.service.dto.RecuperatorDTO;
 import com.coffee.gifu.service.impl.OfferServiceImpl;
 import com.coffee.gifu.service.mapper.OfferMapper;
@@ -16,9 +15,7 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import java.time.ZonedDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -60,12 +57,25 @@ public class OfferServiceTest {
         location.setStreetAddress("qrsytuyuklh");
         offer.setLocation(location);
 
+        Set<Recuperator> recuperators = new HashSet<>();
         Recuperator recuperator = new Recuperator();
         recuperator.setId(1324526L);
         recuperator.setName("qergsdfg");
         recuperator.setPhoneNumber("145426357485");
         recuperator.setLocation(location);
-        offer.setRecuperator(recuperator);
+        recuperators.add(recuperator);
+        offer.setRecuperators(recuperators);
+
+        Organisation organisation = new Organisation();
+        organisation.setId(12345L);
+        organisation.setIdentificationCode("0123456789");
+        organisation.setLocation(location);
+        organisation.setLogo("test");
+        organisation.setName("Test");
+        organisation.setDescription("Test");
+        organisation.setContactMail("Test");
+        organisation.setType("ENTERPRISE");
+        offer.setOrganisation(organisation);
 
         offerDTO = new OfferDTO();
         offerDTO.setDescription("Coucou");
@@ -81,16 +91,29 @@ public class OfferServiceTest {
         locationDTO.setStreetAddress("qrsytuyuklh");
         offerDTO.setLocationDTO(locationDTO);
 
+        Set<RecuperatorDTO> recuperatorDTOs = new HashSet<>();
         RecuperatorDTO recuperatorDTO = new RecuperatorDTO();
         recuperatorDTO.setId(1324526L);
         recuperatorDTO.setName("qergsdfg");
         recuperatorDTO.setPhoneNumber("145426357485");
         recuperatorDTO.setLocationDTO(locationDTO);
-        offerDTO.setRecuperatorDTO(recuperatorDTO);
+        recuperatorDTOs.add(recuperatorDTO);
+        offerDTO.setRecuperatorDTOs(recuperatorDTOs);
+
+        OrganisationDTO enterprise = new OrganisationDTO();
+        enterprise.setId(12345L);
+        enterprise.setIdentificationCode("0123456789");
+        enterprise.setLocationDTO(locationDTO);
+        enterprise.setLogo("test");
+        enterprise.setName("Test");
+        enterprise.setDescription("Test");
+        enterprise.setContactMail("Test");
+        enterprise.setType(OrganisationType.ENTERPRISE);
+        offerDTO.setEnterprise(enterprise);
     }
 
     @Test
-    public void should_save_and_return_saved_object() {
+    public void should_save_and_return_saved_object() throws Exception {
         //Given
         when(offerMapper.toEntity(offerDTO)).thenReturn(offer);
         when(offerRepository.save(any(Offer.class))).thenReturn(offer);
@@ -110,14 +133,16 @@ public class OfferServiceTest {
         //Given
         List<Offer> offers = new ArrayList<>();
         offers.add(offer);
-        when(offerRepository.findAll()).thenReturn(offers);
-        when(offerMapper.toDto(offer)).thenReturn(offerDTO);
+        List<OfferDTO> offerDTOS = new ArrayList<>();
+        offerDTOS.add(offerDTO);
+        when(offerRepository.findAllWithEagerRelationships()).thenReturn(offers);
+        when(offerMapper.toDto(offers)).thenReturn(offerDTOS);
 
         //When
         List<OfferDTO> actual = offerService.findAll();
 
         //Then
-        verify(offerRepository, times(1)).findAll();
+        verify(offerRepository, times(1)).findAllWithEagerRelationships();
         assertThat(actual).isNotNull();
         assertThat(actual.size()).isEqualTo(1);
     }
@@ -126,14 +151,14 @@ public class OfferServiceTest {
     public void should_find_one_object() {
         //Given
         Optional<Offer> expected = Optional.ofNullable(offer);
-        when(offerRepository.findById(1L)).thenReturn(expected);
+        when(offerRepository.findOneWithEagerRelationships(1L)).thenReturn(expected);
         when(offerMapper.toDto(offer)).thenReturn(offerDTO);
 
         //When
         Optional<OfferDTO> actual = offerService.findOne(1L);
 
         //Then
-        verify(offerRepository, times(1)).findById(1L);
+        verify(offerRepository, times(1)).findOneWithEagerRelationships(1L);
         assertThat(actual).isNotNull();
         assertThat(actual.isPresent()).isTrue();
     }

@@ -1,10 +1,8 @@
 package com.coffee.gifu.config;
 
-import com.coffee.gifu.security.*;
-import com.coffee.gifu.security.jwt.*;
-
-import org.springframework.beans.factory.BeanInitializationException;
-import org.springframework.beans.factory.InitializingBean;
+import com.coffee.gifu.security.AuthoritiesConstants;
+import com.coffee.gifu.security.jwt.JWTConfigurer;
+import com.coffee.gifu.security.jwt.TokenProvider;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpMethod;

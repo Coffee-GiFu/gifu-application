@@ -1,11 +1,11 @@
-id;name;phone_number;location_id
-1;mobile Fish;Home Loan ;1
-2;Trace;Savings Ac;2
-3;Tasty Metal Bacon;red Chips ;3
-4;Home Loan Account;web-readin;4
-5;Namibia;Steel zero;5
-6;Multi-channelled Licensed;grey Cambr;6
-7;Canyon HDD;Table Smal;7
-8;envisioneer Music Public-key;infomediar;8
-9;Investment Account;Games Regi;9
-10;copy convergence;MayotteXXX;10
+id;name;phone_number;location_id;association_id
+1;mobile Fish;Home Loan ;1;6
+2;Trace;Savings Ac;2;6
+3;Tasty Metal Bacon;red Chips ;3;7
+4;Home Loan Account;web-readin;4;7
+5;Namibia;Steel zero;5;8
+6;Multi-channelled Licensed;grey Cambr;6;8
+7;Canyon HDD;Table Smal;7;9
+8;envisioneer Music Public-key;infomediar;8;9
+9;Investment Account;Games Regi;9;10
+10;copy convergence;MayotteXXX;10;10

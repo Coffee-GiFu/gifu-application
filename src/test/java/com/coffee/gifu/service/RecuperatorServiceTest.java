@@ -1,17 +1,18 @@
 package com.coffee.gifu.service;
 
 import com.coffee.gifu.domain.Location;
+import com.coffee.gifu.domain.Organisation;
+import com.coffee.gifu.domain.OrganisationType;
 import com.coffee.gifu.domain.Recuperator;
 import com.coffee.gifu.repository.RecuperatorRepository;
 import com.coffee.gifu.service.dto.LocationDTO;
+import com.coffee.gifu.service.dto.OrganisationDTO;
 import com.coffee.gifu.service.dto.RecuperatorDTO;
 import com.coffee.gifu.service.impl.RecuperatorServiceImpl;
-import com.coffee.gifu.service.mapper.LocationMapperImpl;
 import com.coffee.gifu.service.mapper.RecuperatorMapper;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
@@ -40,7 +41,7 @@ public class RecuperatorServiceTest {
     }
 
     @Test
-    public void should_Save_then_return_saved_object() {
+    public void should_Save_then_return_saved_object() throws Exception {
         //Given
         RecuperatorDTO recuperatorDTO = buildRecuperatorDto();
 
@@ -122,11 +123,23 @@ public class RecuperatorServiceTest {
         recuperator.setId(134526L);
         recuperator.setName("Toto");
         recuperator.setPhoneNumber("13456475");
+
         location.setId(1345L);
         location.setPostalCode("675679");
         location.setStreetAddress("AREGDGJFJDSDGNG");
         location.setCity("arhsgjdhgkfjlgkh");
         recuperator.setLocation(location);
+
+        Organisation organisation = new Organisation();
+        organisation.setId(12345L);
+        organisation.setIdentificationCode("0123456789");
+        organisation.setLocation(location);
+        organisation.setLogo("test");
+        organisation.setName("Test");
+        organisation.setDescription("Test");
+        organisation.setContactMail("Test");
+        organisation.setType("ASSOCIATION");
+        recuperator.setAssociation(organisation);
         return recuperator;
     }
 
@@ -135,12 +148,25 @@ public class RecuperatorServiceTest {
         recuperatorDTO.setName("Toto");
         recuperatorDTO.setId(134526L);
         recuperatorDTO.setPhoneNumber("13456475");
+
         LocationDTO locationDTO = new LocationDTO();
         locationDTO.setPostalCode("675679");
         locationDTO.setStreetAddress("AREGDGJFJDSDGNG");
         locationDTO.setCity("arhsgjdhgkfjlgkh");
         locationDTO.setId(1345L);
         recuperatorDTO.setLocationDTO(locationDTO);
+
+        OrganisationDTO association = new OrganisationDTO();
+        association.setId(12345L);
+        association.setIdentificationCode("0123456789");
+        association.setLocationDTO(locationDTO);
+        association.setLogo("test");
+        association.setName("Test");
+        association.setDescription("Test");
+        association.setContactMail("Test");
+        association.setType(OrganisationType.ASSOCIATION);
+        recuperatorDTO.setAssociation(association);
+
         return recuperatorDTO;
     }
 }

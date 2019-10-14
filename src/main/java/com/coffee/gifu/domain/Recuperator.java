@@ -1,11 +1,13 @@
 package com.coffee.gifu.domain;
+
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
-import javax.validation.constraints.*;
-
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.util.Objects;
 
 /**
  * A Recuperator.
@@ -32,10 +34,12 @@ public class Recuperator implements Serializable {
     @Column(name = "phone_number", length = 10, nullable = false)
     private String phoneNumber;
 
-    @OneToOne(optional = false)    @NotNull
-
-    @JoinColumn(unique = true)
+    @OneToOne(optional = false, cascade = CascadeType.ALL)
+    @NotNull
     private Location location;
+
+    @OneToOne(optional = false)    @NotNull
+    private Organisation association;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -84,6 +88,19 @@ public class Recuperator implements Serializable {
     public void setLocation(Location location) {
         this.location = location;
     }
+
+    public Organisation getAssociation() {
+        return association;
+    }
+
+    public Recuperator association(Organisation organisation) {
+        this.association = organisation;
+        return this;
+    }
+
+    public void setAssociation(Organisation organisation) {
+        this.association = organisation;
+    }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
     @Override
@@ -99,15 +116,17 @@ public class Recuperator implements Serializable {
 
     @Override
     public int hashCode() {
-        return 31;
+        return Objects.hash(getId(), getName(), getPhoneNumber(), getLocation(), getAssociation());
     }
 
     @Override
     public String toString() {
         return "Recuperator{" +
-            "id=" + getId() +
-            ", name='" + getName() + "'" +
-            ", phoneNumber='" + getPhoneNumber() + "'" +
-            "}";
+            "id=" + id +
+            ", name='" + name + '\'' +
+            ", phoneNumber='" + phoneNumber + '\'' +
+            ", location=" + location +
+            ", association=" + association +
+            '}';
     }
 }

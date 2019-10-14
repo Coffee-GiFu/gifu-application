@@ -1,31 +1,29 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import { Link, RouteComponentProps } from 'react-router-dom';
-import { Button, Row, Col, Label } from 'reactstrap';
-import { AvFeedback, AvForm, AvGroup, AvInput, AvField } from 'availity-reactstrap-validation';
-import { Translate, translate, ICrudGetAction, ICrudGetAllAction, ICrudPutAction } from 'react-jhipster';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { IRootState } from 'app/shared/reducers';
-
-import { ILocation } from 'app/shared/model/location.model';
-import { getEntities as getLocations } from 'app/entities/location/location.reducer';
-import { getEntity, updateEntity, createEntity, reset } from './recuperator.reducer';
-import { IRecuperator } from 'app/shared/model/recuperator.model';
-import { convertDateTimeFromServer, convertDateTimeToServer } from 'app/shared/util/date-utils';
-import { mapIdList } from 'app/shared/util/entity-utils';
+import {connect} from 'react-redux';
+import {Link, RouteComponentProps} from 'react-router-dom';
+import {Button, Col, Label, Row} from 'reactstrap';
+import {AvField, AvForm, AvGroup, AvInput} from 'availity-reactstrap-validation';
+import {Translate, translate} from 'react-jhipster';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {IRootState} from 'app/shared/reducers';
+import {getEntities as getLocations} from 'app/entities/location/location.reducer';
+import {getEntities as getOrganisations} from 'app/entities/organisation/organisation.reducer';
+import {createEntity, getEntity, reset, updateEntity} from './recuperator.reducer';
 
 export interface IRecuperatorUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
 
 export interface IRecuperatorUpdateState {
   isNew: boolean;
-  location: ILocation;
+  locationId: string;
+  associationId: string;
 }
 
 export class RecuperatorUpdate extends React.Component<IRecuperatorUpdateProps, IRecuperatorUpdateState> {
   constructor(props) {
     super(props);
     this.state = {
-      location: this.props.recuperatorEntity.location,
+      locationId: '0',
+      associationId: '0',
       isNew: !this.props.match.params || !this.props.match.params.id
     };
   }
@@ -43,6 +41,8 @@ export class RecuperatorUpdate extends React.Component<IRecuperatorUpdateProps, 
       this.props.getEntity(this.props.match.params.id);
     }
 
+    this.props.getLocations();
+    this.props.getOrganisations();
   }
 
   saveEntity = (event, errors, values) => {
@@ -66,7 +66,7 @@ export class RecuperatorUpdate extends React.Component<IRecuperatorUpdateProps, 
   };
 
   render() {
-    const { recuperatorEntity, loading, updating } = this.props;
+    const { recuperatorEntity, locations, organisations, loading, updating } = this.props;
     const { isNew } = this.state;
 
     return (
@@ -126,16 +126,31 @@ export class RecuperatorUpdate extends React.Component<IRecuperatorUpdateProps, 
                   <Label for="recuperator-location">
                     <Translate contentKey="gifuApp.recuperator.location">Location</Translate>
                   </Label>
-                  {/*<AvInput id="recuperator-location" type="select" className="form-control" name="locationId">*/}
-                  {/*  <option value="" key="0" />*/}
-                  {/*  {locations*/}
-                  {/*    ? locations.map(otherEntity => (*/}
-                  {/*        <option value={otherEntity.id} key={otherEntity.id}>*/}
-                  {/*          {otherEntity.city}*/}
-                  {/*        </option>*/}
-                  {/*      ))*/}
-                  {/*    : null}*/}
-                  {/*</AvInput>*/}
+                  <AvInput id="recuperator-location" type="select" className="form-control" name="locationId">
+                    <option value="" key="0" />
+                    {locations
+                      ? locations.map(otherEntity => (
+                          <option value={otherEntity.id} key={otherEntity.id}>
+                            {otherEntity.city}
+                          </option>
+                        ))
+                      : null}
+                  </AvInput>
+                </AvGroup>
+                <AvGroup>
+                  <Label for="recuperator-association">
+                    <Translate contentKey="gifuApp.recuperator.association">Association</Translate>
+                  </Label>
+                  <AvInput id="recuperator-association" type="select" className="form-control" name="associationId">
+                    <option value="" key="0" />
+                    {organisations
+                      ? organisations.map(otherEntity => (
+                          <option value={otherEntity.id} key={otherEntity.id}>
+                            {otherEntity.name}
+                          </option>
+                        ))
+                      : null}
+                  </AvInput>
                 </AvGroup>
                 <Button tag={Link} id="cancel-save" to="/entity/recuperator" replace color="info">
                   <FontAwesomeIcon icon="arrow-left" />
@@ -161,6 +176,7 @@ export class RecuperatorUpdate extends React.Component<IRecuperatorUpdateProps, 
 
 const mapStateToProps = (storeState: IRootState) => ({
   locations: storeState.location.entities,
+  organisations: storeState.organisation.entities,
   recuperatorEntity: storeState.recuperator.entity,
   loading: storeState.recuperator.loading,
   updating: storeState.recuperator.updating,
@@ -169,6 +185,7 @@ const mapStateToProps = (storeState: IRootState) => ({
 
 const mapDispatchToProps = {
   getLocations,
+  getOrganisations,
   getEntity,
   updateEntity,
   createEntity,

@@ -1,6 +1,7 @@
 package com.coffee.gifu.web.rest.vm;
 
 import com.coffee.gifu.service.dto.UserDTO;
+
 import javax.validation.constraints.Size;
 
 /**
