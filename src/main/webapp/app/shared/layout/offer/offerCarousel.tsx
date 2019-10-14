@@ -18,15 +18,12 @@ export const OfferCarousel = ({ pictures, autoPlay = false }: OfferCarouselProps
                     </div>
                 )
             }
-            <div>
-                <img className="defaultImg" src="../../../../content/images/default.png" />
-            </div>
             {
-                pictures.map( pictureBlob => {
+                pictures.map((pictureBlob, index) => {
                     const imgSrc= URL.createObjectURL( pictureBlob );
-                    (
-                        <div>
-                            <img src={imgSrc} />
+                    return (
+                        <div key = {index}>
+                            <img src = {imgSrc} />
                         </div>
                     )
                 })
