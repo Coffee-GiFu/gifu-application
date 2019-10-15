@@ -10,10 +10,36 @@ Main page styles
 }
 
 .LoginPage {
-  display: inline-flex;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
   width: 100%;
 }
 .LoginForm {
-  flex: 1;
+  flex: 3;
+  text-align: center;
   padding: 10px;
+  .card {
+    padding-top: 10px;
+  }
+}
+.LoginForm:nth-child(1),
+.LoginForm:nth-child(3) {
+  flex: 2;
+}
+@media (min-width: 576px) and (max-width: 992px) {
+  .LoginForm:nth-child(1),
+  .LoginForm:nth-child(3) {
+    flex: 1;
+  }
+}
+@media (max-width: 576px) {
+  .LoginForm:nth-child(1),
+  .LoginForm:nth-child(3) {
+    flex: 0 1 50%;
+  }
+  .LoginForm:nth-child(2) {
+    flex: 1 0 100%;
+    order: 2;
+  }
 }
