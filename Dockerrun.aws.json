@@ -1,0 +1,12 @@
+{
+  "AWSEBDockerrunVersion": "1",
+  "Image": {
+    "Name": "gifu-backend",
+    "Update": "true"
+  },
+  "Ports": [
+    {
+      "ContainerPort": "8888"
+    }
+  ]
+}
