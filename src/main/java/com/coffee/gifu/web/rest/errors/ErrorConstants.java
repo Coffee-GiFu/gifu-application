@@ -16,6 +16,7 @@ public final class ErrorConstants {
     public static final URI IDENTIFICATION_CODE_ALREADY_USED_TYPE = URI.create(PROBLEM_BASE_URL + "/identification-code-already-used");
     public static final URI WRONG_ORGANISATION_TYPE = URI.create(PROBLEM_BASE_URL + "/wrong-organisation-type");
     public static final URI EMAIL_NOT_FOUND_TYPE = URI.create(PROBLEM_BASE_URL + "/email-not-found");
+    public static final URI INTERNAL_ERROR = URI.create(PROBLEM_BASE_URL + "/internal-error");
 
     private ErrorConstants() {
     }
