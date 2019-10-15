@@ -34,18 +34,14 @@ install:
   - npm install
 jobs:
   include:
-    - stage: compile
-      script:
-        - ./mvnw -ntp clean verify
-      # the following command line builds the project, runs the tests with coverage and then execute the SonarCloud analysis
     - stage: test
       script:
         - npm run test-ci
-        - ./mvnw -ntp  org.jacoco:jacoco-maven-plugin:prepare-agent install  sonar:sonar
+        - ./mvnw -ntp org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar
     - stage: deploy dev
       script:
         - ./mvnw -ntp package verify -DskipTests jib:dockerBuild
-        - docker tag gifu-backend-dev:latest 249114954752.dkr.ecr.eu-west-1.amazonaws.com/gifu-backend-dev:latest
+        - docker tag gifu-backend:latest 249114954752.dkr.ecr.eu-west-1.amazonaws.com/gifu-backend-dev:latest
         - docker push 249114954752.dkr.ecr.eu-west-1.amazonaws.com/gifu-backend-dev:latest
     - stage: deploy prod
       script:
@@ -53,7 +49,6 @@ jobs:
         - docker tag gifu-backend:$VERSION 249114954752.dkr.ecr.eu-west-1.amazonaws.com/gifu-backend:latest
         - docker push 249114954752.dkr.ecr.eu-west-1.amazonaws.com/gifu-backend:latest
 stages:
-  - compile
   - test
   - name: deploy dev
     if: branch = develop
