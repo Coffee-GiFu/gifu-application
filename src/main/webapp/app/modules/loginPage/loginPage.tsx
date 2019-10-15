@@ -6,16 +6,9 @@ import { Translate } from 'react-jhipster';
 import { connect } from 'react-redux';
 import { Row, Col, Alert } from 'reactstrap';
 
-import { IRootState } from 'app/shared/reducers';
-
-import { OfferCard } from '../../shared/layout/offer/offerCard';
-import { IOffer } from '../../shared/model/offer.model';
-
 export type IHomeProp = StateProps;
 
 export const LoginPage = (props: IHomeProp) => {
-  const { account } = props;
-  const fnc = (id)=>{window.console.log(id)};
   return (
     <Row>
       <Col md="12">

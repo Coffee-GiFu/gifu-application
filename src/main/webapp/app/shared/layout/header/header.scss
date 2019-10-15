@@ -53,15 +53,13 @@ Navbar styles
     background-color: $color-main-light;
   }
   .dropdown-toggle::after {
+    border-bottom-color: $header-color;
+    border-top-color: $header-color;
     margin-left: 0.15em;
   }
   .nav-item span,
   .nav-item svg {
     color: $header-color !important;
-  }
-  .dropdown-toggle::after {
-    border-bottom-color: $header-color;
-    border-top-color: $header-color;
   }
   ul.navbar-nav {
     padding: 0.5em;
