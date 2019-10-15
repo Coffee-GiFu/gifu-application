@@ -41,4 +41,26 @@ public interface OfferService {
      * @param id the id of the entity.
      */
     void delete(Long id);
+
+    /**
+     * Get all the available offers.
+     *
+     * @param isColdFilter
+     * @return the list of available entities.
+     */
+    List<OfferDTO> searchAvailableOffer(boolean isColdFilter);
+
+    /**
+     * Get all the selected offers for actual account.
+     *
+     * @return the list of available entities.
+     */
+    List<OfferDTO> searchChosenOffer();
+
+    /**
+     * Get all the created offers for actual account.
+     *
+     * @return the list of available entities.
+     */
+    List<OfferDTO> searchCreatedOffer();
 }
