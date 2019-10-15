@@ -65,7 +65,7 @@ export class OfferUpdate extends React.Component<IOfferUpdateProps, IOfferUpdate
       const entity = {
         ...offerEntity,
         ...values,
-        locations: mapIdList(values.locationDTO)
+        recuperators: mapIdList(values.recuperators)
       };
 
       if (this.state.isNew) {
