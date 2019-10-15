@@ -18,6 +18,7 @@ export class OfferDetail extends React.Component<IOfferDetailProps> {
 
   render() {
     const { offerEntity } = this.props;
+    window.console.log(offerEntity)
     return (
       <Row>
         <Col md="8">

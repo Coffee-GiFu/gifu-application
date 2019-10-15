@@ -68,7 +68,6 @@ export class RecuperatorUpdate extends React.Component<IRecuperatorUpdateProps, 
   render() {
     const { recuperatorEntity, locations, organisations, loading, updating } = this.props;
     const { isNew } = this.state;
-
     return (
       <div>
         <Row className="justify-content-center">
@@ -175,7 +174,7 @@ export class RecuperatorUpdate extends React.Component<IRecuperatorUpdateProps, 
 }
 
 const mapStateToProps = (storeState: IRootState) => ({
-  locations: storeState.location.entities,
+  locations : storeState.location.entities,
   organisations: storeState.organisation.entities,
   recuperatorEntity: storeState.recuperator.entity,
   loading: storeState.recuperator.loading,

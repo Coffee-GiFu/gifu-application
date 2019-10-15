@@ -52,15 +52,20 @@ export class OfferUpdate extends React.Component<IOfferUpdateProps, IOfferUpdate
   }
 
   saveEntity = (event, errors, values) => {
+    window.console.log(values);
+    window.console.log(event);
+    window.console.log(this.props);
+    window.console.log(this.props);
     values.availabilityBegin = convertDateTimeToServer(values.availabilityBegin);
     values.availabilityEnd = convertDateTimeToServer(values.availabilityEnd);
 
     if (errors.length === 0) {
       const { offerEntity } = this.props;
+      window.console.log(offerEntity);
       const entity = {
         ...offerEntity,
         ...values,
-        recuperators: mapIdList(values.recuperators)
+        locations: mapIdList(values.locationDTO)
       };
 
       if (this.state.isNew) {
@@ -79,151 +84,168 @@ export class OfferUpdate extends React.Component<IOfferUpdateProps, IOfferUpdate
     const { offerEntity, locations, recuperators, organisations, loading, updating } = this.props;
     const { isNew } = this.state;
 
+    window.console.log(offerEntity)
     return (
       <div>
         <Row className="justify-content-center">
-          <Col md="8">
-            <h2 id="gifuApp.offer.home.createOrEditLabel">
-              <Translate contentKey="gifuApp.offer.home.createOrEditLabel">Create or edit a Offer</Translate>
-            </h2>
-          </Col>
-        </Row>
-        <Row className="justify-content-center">
-          <Col md="8">
+          <Col>
             {loading ? (
               <p>Loading...</p>
             ) : (
               <AvForm model={isNew ? {} : offerEntity} onSubmit={this.saveEntity}>
-                {!isNew ? (
+                <Row>
+                  <Col>
+                  <Row className="justify-content-center">
+                    <Col>
+                      <h2 id="gifuApp.offer.home.createOrEditLabel">
+                        <Translate contentKey="gifuApp.offer.home.createOrEditLabel">Create or edit a Offer</Translate>
+                      </h2>
+                    </Col>
+                  </Row>
+                  {!isNew ? (
                   <AvGroup>
                     <Label for="offer-id">
                       <Translate contentKey="global.field.id">ID</Translate>
                     </Label>
                     <AvInput id="offer-id" type="text" className="form-control" name="id" required readOnly />
                   </AvGroup>
+                  ) : null}
+                  <AvGroup>
+                    <Label id="descriptionLabel" for="offer-description">
+                      <Translate contentKey="gifuApp.offer.description">Description</Translate>
+                    </Label>
+                    <AvField
+                      id="offer-description"
+                      type="text"
+                      name="description"
+                      validate={{
+                        required: { value: true, errorMessage: translate('entity.validation.required') },
+                        minLength: { value: 10, errorMessage: translate('entity.validation.minlength', { min: 10 }) },
+                        maxLength: { value: 255, errorMessage: translate('entity.validation.maxlength', { max: 255 }) }
+                      }}
+                    />
+                  </AvGroup>
+                  <AvGroup>
+                    <Label id="isColdLabel" check>
+                      <AvInput id="offer-isCold" type="checkbox" className="form-control" name="isCold" />
+                      <Translate contentKey="gifuApp.offer.isCold">Is Cold</Translate>
+                    </Label>
+                  </AvGroup>
+                  <AvGroup>
+                    <Label id="availabilityBeginLabel" for="offer-availabilityBegin">
+                      <Translate contentKey="gifuApp.offer.availabilityBegin">Availability Begin</Translate>
+                    </Label>
+                    <AvInput
+                      id="offer-availabilityBegin"
+                      type="datetime-local"
+                      className="form-control"
+                      name="availabilityBegin"
+                      placeholder={'YYYY-MM-DD HH:mm'}
+                      value={isNew ? null : convertDateTimeFromServer(this.props.offerEntity.availabilityBegin)}
+                      validate={{
+                        required: { value: true, errorMessage: translate('entity.validation.required') }
+                      }}
+                    />
+                  </AvGroup>
+                  <AvGroup>
+                    <Label id="availabilityEndLabel" for="offer-availabilityEnd">
+                      <Translate contentKey="gifuApp.offer.availabilityEnd">Availability End</Translate>
+                    </Label>
+                    <AvInput
+                      id="offer-availabilityEnd"
+                      type="datetime-local"
+                      className="form-control"
+                      name="availabilityEnd"
+                      placeholder={'YYYY-MM-DD HH:mm'}
+                      value={isNew ? null : convertDateTimeFromServer(this.props.offerEntity.availabilityEnd)}
+                      validate={{
+                        required: { value: true, errorMessage: translate('entity.validation.required') }
+                      }}
+                    />
+                  </AvGroup>
+                  <AvGroup>
+                    <Label id="titleLabel" for="offer-title">
+                      <Translate contentKey="gifuApp.offer.title">Title</Translate>
+                    </Label>
+                    <AvField
+                      id="offer-title"
+                      type="text"
+                      name="title"
+                      validate={{
+                        required: { value: true, errorMessage: translate('entity.validation.required') },
+                        minLength: { value: 10, errorMessage: translate('entity.validation.minlength', { min: 10 }) },
+                        maxLength: { value: 100, errorMessage: translate('entity.validation.maxlength', { max: 100 }) }
+                      }}
+                    />
+                  </AvGroup>
+                  </Col>
+                  <Col>
+                  <Row className="justify-content-center">
+                <Col>
+                  <h2 id="gifuApp.location.home.createOrEditLabel">
+                    <Translate contentKey="gifuApp.location.home.createOrEditLabel">Create or edit a Location</Translate> Offre
+                  </h2>
+                </Col>
+              </Row>
+              <Row className="justify-content-center">
+                <Col>
+                {!isNew ? (
+                  <AvGroup>
+                    <Label for="location-id">
+                      <Translate contentKey="global.field.id">ID</Translate>
+                    </Label>
+                    <AvInput id="location-id" type="text" className="form-control" name="locationDTO.id" required readOnly />
+                  </AvGroup>
                 ) : null}
-                <AvGroup>
-                  <Label id="descriptionLabel" for="offer-description">
-                    <Translate contentKey="gifuApp.offer.description">Description</Translate>
-                  </Label>
-                  <AvField
-                    id="offer-description"
-                    type="text"
-                    name="description"
-                    validate={{
-                      required: { value: true, errorMessage: translate('entity.validation.required') },
-                      minLength: { value: 10, errorMessage: translate('entity.validation.minlength', { min: 10 }) },
-                      maxLength: { value: 255, errorMessage: translate('entity.validation.maxlength', { max: 255 }) }
-                    }}
-                  />
-                </AvGroup>
-                <AvGroup>
-                  <Label id="isColdLabel" check>
-                    <AvInput id="offer-isCold" type="checkbox" className="form-control" name="isCold" />
-                    <Translate contentKey="gifuApp.offer.isCold">Is Cold</Translate>
-                  </Label>
-                </AvGroup>
-                <AvGroup>
-                  <Label id="availabilityBeginLabel" for="offer-availabilityBegin">
-                    <Translate contentKey="gifuApp.offer.availabilityBegin">Availability Begin</Translate>
-                  </Label>
-                  <AvInput
-                    id="offer-availabilityBegin"
-                    type="datetime-local"
-                    className="form-control"
-                    name="availabilityBegin"
-                    placeholder={'YYYY-MM-DD HH:mm'}
-                    value={isNew ? null : convertDateTimeFromServer(this.props.offerEntity.availabilityBegin)}
-                    validate={{
-                      required: { value: true, errorMessage: translate('entity.validation.required') }
-                    }}
-                  />
-                </AvGroup>
-                <AvGroup>
-                  <Label id="availabilityEndLabel" for="offer-availabilityEnd">
-                    <Translate contentKey="gifuApp.offer.availabilityEnd">Availability End</Translate>
-                  </Label>
-                  <AvInput
-                    id="offer-availabilityEnd"
-                    type="datetime-local"
-                    className="form-control"
-                    name="availabilityEnd"
-                    placeholder={'YYYY-MM-DD HH:mm'}
-                    value={isNew ? null : convertDateTimeFromServer(this.props.offerEntity.availabilityEnd)}
-                    validate={{
-                      required: { value: true, errorMessage: translate('entity.validation.required') }
-                    }}
-                  />
-                </AvGroup>
-                <AvGroup>
-                  <Label id="titleLabel" for="offer-title">
-                    <Translate contentKey="gifuApp.offer.title">Title</Translate>
-                  </Label>
-                  <AvField
-                    id="offer-title"
-                    type="text"
-                    name="title"
-                    validate={{
-                      required: { value: true, errorMessage: translate('entity.validation.required') },
-                      minLength: { value: 10, errorMessage: translate('entity.validation.minlength', { min: 10 }) },
-                      maxLength: { value: 100, errorMessage: translate('entity.validation.maxlength', { max: 100 }) }
-                    }}
-                  />
-                </AvGroup>
-                <AvGroup>
-                  <Label for="offer-location">
-                    <Translate contentKey="gifuApp.offer.location">Location</Translate>
-                  </Label>
-                  <AvInput id="offer-location" type="select" className="form-control" name="locationId">
-                    <option value="" key="0" />
-                    {locations
-                      ? locations.map(otherEntity => (
-                          <option value={otherEntity.id} key={otherEntity.id}>
-                            {otherEntity.id}
-                          </option>
-                        ))
-                      : null}
-                  </AvInput>
-                </AvGroup>
-                <AvGroup>
-                  <Label for="offer-recuperators">
-                    <Translate contentKey="gifuApp.offer.recuperators">Recuperators</Translate>
-                  </Label>
-                  <AvInput
-                    id="offer-recuperators"
-                    type="select"
-                    multiple
-                    className="form-control"
-                    name="recuperators"
-                    value={offerEntity.recuperators && offerEntity.recuperators.map(e => e.id)}
-                  >
-                    <option value="" key="0" />
-                    {recuperators
-                      ? recuperators.map(otherEntity => (
-                          <option value={otherEntity.id} key={otherEntity.id}>
-                            {otherEntity.name}
-                          </option>
-                        ))
-                      : null}
-                  </AvInput>
-                </AvGroup>
-                <AvGroup>
-                  <Label for="offer-organisation">
-                    <Translate contentKey="gifuApp.offer.organisation">Organisation</Translate>
-                  </Label>
-                  <AvInput id="offer-organisation" type="select" className="form-control" name="organisationId" required>
-                    {organisations
-                      ? organisations.map(otherEntity => (
-                          <option value={otherEntity.id} key={otherEntity.id}>
-                            {otherEntity.name}
-                          </option>
-                        ))
-                      : null}
-                  </AvInput>
-                  <AvFeedback>
-                    <Translate contentKey="entity.validation.required">This field is required.</Translate>
-                  </AvFeedback>
-                </AvGroup>
+                  <AvGroup>
+                    <Label id="streetAddressLabel" for="location-streetAddress">
+                      <Translate contentKey="gifuApp.location.streetAddress">Street Address</Translate>
+                    </Label>
+                    <AvField
+                      id="location-streetAddress"
+                      type="text"
+                      name="locationDTO.streetAddress"
+                      validate={{
+                        required: { value: true, errorMessage: translate('entity.validation.required') },
+                        minLength: { value: 3, errorMessage: translate('entity.validation.minlength', { min: 3 }) },
+                        maxLength: { value: 255, errorMessage: translate('entity.validation.maxlength', { max: 255 }) }
+                      }}
+                    />
+                  </AvGroup>
+                  <AvGroup>
+                    <Label id="postalCodeLabel" for="location-postalCode">
+                      <Translate contentKey="gifuApp.location.postalCode">Postal Code</Translate>
+                    </Label>
+                    <AvField
+                      id="location-postalCode"
+                      type="text"
+                      name="locationDTO.postalCode"
+                      validate={{
+                        required: { value: true, errorMessage: translate('entity.validation.required') },
+                        minLength: { value: 5, errorMessage: translate('entity.validation.minlength', { min: 5 }) },
+                        maxLength: { value: 10, errorMessage: translate('entity.validation.maxlength', { max: 10 }) }
+                      }}
+                    />
+                  </AvGroup>
+                  <AvGroup>
+                    <Label id="cityLabel" for="location-city">
+                      <Translate contentKey="gifuApp.location.city">City</Translate>
+                    </Label>
+                    <AvField
+                      id="location-city"
+                      type="text"
+                      name="locationDTO.city"
+                      validate={{
+                        required: { value: true, errorMessage: translate('entity.validation.required') },
+                        minLength: { value: 2, errorMessage: translate('entity.validation.minlength', { min: 2 }) },
+                        maxLength: { value: 255, errorMessage: translate('entity.validation.maxlength', { max: 255 }) }
+                      }}
+                    />
+                  </AvGroup>
+                  </Col>
+                </Row>
+                </Col>
+              </Row>
                 <Button tag={Link} id="cancel-save" to="/entity/offer" replace color="info">
                   <FontAwesomeIcon icon="arrow-left" />
                   &nbsp;

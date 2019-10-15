@@ -18,6 +18,7 @@ export class Offer extends React.Component<IOfferProps> {
 
   render() {
     const { offerList, match } = this.props;
+    window.console.log(offerList);
     return (
       <div>
         <h2 id="offer-heading">
