@@ -113,6 +113,7 @@ export const getEntity: ICrudGetAction<IOffer> = id => {
 };
 
 export const createEntity: ICrudPutAction<IOffer> = entity => async dispatch => {
+  window.console.log(entity);
   const result = await dispatch({
     type: ACTION_TYPES.CREATE_OFFER,
     payload: axios.post(apiUrl, cleanEntity(entity))

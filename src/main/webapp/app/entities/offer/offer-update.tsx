@@ -25,6 +25,8 @@ export interface IOfferUpdateState {
 export class OfferUpdate extends React.Component<IOfferUpdateProps, IOfferUpdateState> {
   constructor(props) {
     super(props);
+    window.console.log("----");
+    window.console.log(props);
     this.state = {
       idsrecuperators: [],
       locationId: '0',
@@ -52,20 +54,19 @@ export class OfferUpdate extends React.Component<IOfferUpdateProps, IOfferUpdate
   }
 
   saveEntity = (event, errors, values) => {
-    window.console.log(values);
-    window.console.log(event);
-    window.console.log(this.props);
-    window.console.log(this.props);
     values.availabilityBegin = convertDateTimeToServer(values.availabilityBegin);
     values.availabilityEnd = convertDateTimeToServer(values.availabilityEnd);
-
+    window.console.log(this.props.getOrganisations());
+    window.console.log(this.props.getRecuperators());
     if (errors.length === 0) {
+     window.console.log(this.props.getOrganisations());
+     window.console.log(this.props.getRecuperators());
       const { offerEntity } = this.props;
+      window.console.log("----");
       window.console.log(offerEntity);
       const entity = {
         ...offerEntity,
-        ...values,
-        recuperators: mapIdList(values.recuperators)
+        ...values
       };
 
       if (this.state.isNew) {
@@ -84,7 +85,10 @@ export class OfferUpdate extends React.Component<IOfferUpdateProps, IOfferUpdate
     const { offerEntity, locations, recuperators, organisations, loading, updating } = this.props;
     const { isNew } = this.state;
 
-    window.console.log(offerEntity)
+    window.console.log(organisations)
+    window.console.log(getOrganisations());
+    window.console.log(locations);
+    window.console.log();
     return (
       <div>
         <Row className="justify-content-center">
