@@ -23,14 +23,16 @@ a {
 
 .app-container {
   box-sizing: border-box;
+  min-height: calc(100vh);
+  height: calc(100vh);
   .view-container {
-    width: 100%;
-    height: calc(100% - 40px);
-    overflow-y: auto;
-    overflow-x: hidden;
-    padding: 1rem;
+    padding-top: 3rem !important;
+    min-height: calc(100%);
+    height: calc(100%);
     .card {
       padding: 1rem;
+      padding-top: 0;
+      min-height: calc(100% - 2.5rem);
     }
     .view-routes {
       height: 100%;

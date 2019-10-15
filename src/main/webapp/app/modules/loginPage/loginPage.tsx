@@ -1,53 +1,47 @@
-import './loginPage.scss';
-
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { Translate } from 'react-jhipster';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
-import { Row, Col, Alert } from 'reactstrap';
+import { Redirect, RouteComponentProps } from 'react-router-dom';
 
-export type IHomeProp = StateProps;
+import { IRootState } from 'app/shared/reducers';
+import { login } from 'app/shared/reducers/authentication';
+import LoginForm from './loginForm';
 
-export const LoginPage = (props: IHomeProp) => {
-  return (
-    <Row>
-      <Col md="12">
-        <h2>
-          <Translate contentKey="home.title">Welcome, Java Hipster!</Translate>
-        </h2>
-        <p className="lead">
-          <Translate contentKey="home.subtitle">This is your homepage</Translate>
-        </p>
-          <div>
-            <Alert color="warning">
-              <Translate contentKey="global.messages.info.authenticated.prefix">If you want to </Translate>
-              <Link to="/login" className="alert-link">
-                <Translate contentKey="global.messages.info.authenticated.link"> sign in</Translate>
-              </Link>
-              <Translate contentKey="global.messages.info.authenticated.suffix">
-                , you can try the default accounts:
-                <br />- Administrator (login=&quot;admin&quot; and password=&quot;admin&quot;)
-                <br />- User (login=&quot;user&quot; and password=&quot;user&quot;).
-              </Translate>
-            </Alert>
+export interface ILoginProps extends StateProps, DispatchProps, RouteComponentProps<{}> {}
 
-            <Alert color="warning">
-              <Translate contentKey="global.messages.info.register.noaccount">You do not have an account yet?</Translate>&nbsp;
-              <Link to="/account/register" className="alert-link">
-                <Translate contentKey="global.messages.info.register.link">Register a new account</Translate>
-              </Link>
-            </Alert>
-          </div>
-      </Col>
-    </Row>
-  );
+export const Login = (props: ILoginProps) => {
+  const [showModal, setShowModal] = useState(props.showModal);
+
+  useEffect(() => {
+    setShowModal(true);
+  }, []);
+
+  const handleLogin = (username, password, rememberMe = false) => props.login(username, password, rememberMe);
+
+  const handleClose = () => {
+    setShowModal(false);
+    props.history.push('/');
+  };
+
+  const { location, isAuthenticated } = props;
+  const { from } = location.state || { from: { pathname: '/', search: location.search } };
+  if (isAuthenticated) {
+    return <Redirect to={from} />;
+  }
+  return <LoginForm handleLogin={handleLogin} loginError={props.loginError} />;
 };
 
-const mapStateToProps = storeState => ({
-  account: storeState.authentication.account,
-  isAuthenticated: storeState.authentication.isAuthenticated
+const mapStateToProps = ({ authentication }: IRootState) => ({
+  isAuthenticated: authentication.isAuthenticated,
+  loginError: authentication.loginError,
+  showModal: authentication.showModalLogin
 });
 
-type StateProps = ReturnType<typeof mapStateToProps>;
+const mapDispatchToProps = { login };
 
-export default connect(mapStateToProps)(LoginPage);
+type StateProps = ReturnType<typeof mapStateToProps>;
+type DispatchProps = typeof mapDispatchToProps;
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Login);
