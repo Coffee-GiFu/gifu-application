@@ -1,7 +1,7 @@
 {
   "AWSEBDockerrunVersion": "1",
   "Image": {
-    "Name": "gifu-backend",
+    "Name": "249114954752.dkr.ecr.eu-west-1.amazonaws.com/gifu-backend-dev:latest",
     "Update": "true"
   },
   "Ports": [
