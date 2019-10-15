@@ -28,7 +28,6 @@ const Admin = Loadable({
 const Routes = () => (
   <div className="view-routes">
     <Switch>
-      <ErrorBoundaryRoute path="/login" component={LoginPage} />
       <ErrorBoundaryRoute path="/account/register" component={Register} />
       <ErrorBoundaryRoute path="/account/activate/:key?" component={Activate} />
       <ErrorBoundaryRoute path="/account/reset/request" component={PasswordResetInit} />
@@ -36,8 +35,9 @@ const Routes = () => (
       <PrivateRoute path="/admin" component={Admin} hasAnyAuthorities={[AUTHORITIES.ADMIN]} />
       <PrivateRoute path="/account" component={Account} hasAnyAuthorities={[AUTHORITIES.ADMIN, AUTHORITIES.USER]} />
       <PrivateRoute path="/entity" component={Entities} hasAnyAuthorities={[AUTHORITIES.USER]} />
-      <PrivateRoute path="/logout" component={Logout} hasAnyAuthorities={[AUTHORITIES.USER]}/>
-      <PrivateRoute path="/" exact component={HomePage} hasAnyAuthorities={[AUTHORITIES.USER]}/>
+      <ErrorBoundaryRoute path="/" exact component={HomePage}/>
+      <ErrorBoundaryRoute path="/logout" component={Logout}/>
+      <ErrorBoundaryRoute path="/login" component={LoginPage} />
       <ErrorBoundaryRoute component={PageNotFound} />
     </Switch>
   </div>

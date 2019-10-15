@@ -5,10 +5,11 @@ import { Redirect, RouteComponentProps } from 'react-router-dom';
 import { IRootState } from 'app/shared/reducers';
 import { login } from 'app/shared/reducers/authentication';
 import LoginForm from './loginForm';
+import './loginPage.scss';
 
 export interface ILoginProps extends StateProps, DispatchProps, RouteComponentProps<{}> {}
 
-export const Login = (props: ILoginProps) => {
+export const LoginPage = (props: ILoginProps) => {
   const [showModal, setShowModal] = useState(props.showModal);
 
   useEffect(() => {
@@ -27,7 +28,19 @@ export const Login = (props: ILoginProps) => {
   if (isAuthenticated) {
     return <Redirect to={from} />;
   }
-  return <LoginForm handleLogin={handleLogin} loginError={props.loginError} />;
+  return (
+    <div className="LoginPage">
+      <div className="LoginForm">
+        crea
+      </div>
+      <div className="LoginForm">
+        <LoginForm handleLogin={handleLogin} loginError={props.loginError} />
+      </div>
+      <div className="LoginForm">
+        crea
+      </div>
+    </div>
+  );
 };
 
 const mapStateToProps = ({ authentication }: IRootState) => ({
@@ -44,4 +57,4 @@ type DispatchProps = typeof mapDispatchToProps;
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(Login);
+)(LoginPage);

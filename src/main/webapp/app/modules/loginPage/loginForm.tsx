@@ -1,20 +1,25 @@
 import React from 'react';
 import { Translate, translate } from 'react-jhipster';
-import { Button, Label, Alert, Row, Col } from 'reactstrap';
+import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Label, Alert, Row, Col } from 'reactstrap';
 import { AvForm, AvField, AvGroup, AvInput } from 'availity-reactstrap-validation';
 import { Link } from 'react-router-dom';
-import { ILoginModalProps } from '../login/login-modal';
-class LoginForm extends React.Component<ILoginModalProps> {
-  handleSubmit = (errors, { username, password, rememberMe }) => {
+
+export interface ILoginFormProps {
+  loginError: boolean;
+  handleLogin: Function;
+}
+
+class LoginForm extends React.Component<ILoginFormProps> {
+  handleSubmit = (event, errors, { username, password, rememberMe }) => {
     const { handleLogin } = this.props;
     handleLogin(username, password, rememberMe);
   };
 
   render() {
-    const { loginError, handleClose } = this.props;
+    const { loginError } = this.props;
 
     return (
-        <AvForm onSubmit={this.handleSubmit}>
+      <AvForm onSubmit={this.handleSubmit} className="card">
             <Translate contentKey="login.title">Sign in</Translate>
             <Row>
               <Col md="12">
@@ -64,9 +69,6 @@ class LoginForm extends React.Component<ILoginModalProps> {
                 <Translate contentKey="global.messages.info.register.link">Register a new account</Translate>
               </Link>
             </Alert>
-            <Button color="secondary" onClick={handleClose} tabIndex="1">
-              <Translate contentKey="entity.action.cancel">Cancel</Translate>
-            </Button>{' '}
             <Button color="primary" type="submit">
               <Translate contentKey="login.form.button">Sign in</Translate>
             </Button>
