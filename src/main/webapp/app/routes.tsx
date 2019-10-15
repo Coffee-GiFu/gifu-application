@@ -6,7 +6,7 @@ import Register from 'app/modules/account/register/register';
 import Activate from 'app/modules/account/activate/activate';
 import PasswordResetInit from 'app/modules/account/password-reset/init/password-reset-init';
 import PasswordResetFinish from 'app/modules/account/password-reset/finish/password-reset-finish';
-import Logout from 'app/modules/login/logout';
+import Logout from 'app/modules/logout/logout';
 import HomePage from 'app/modules/homePage/homePage';
 import LoginPage from 'app/modules/loginPage/loginPage';
 import Entities from 'app/entities';

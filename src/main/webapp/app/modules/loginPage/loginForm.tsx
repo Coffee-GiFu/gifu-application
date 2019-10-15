@@ -64,7 +64,7 @@ class LoginForm extends React.Component<ILoginFormProps> {
             <Alert color="warning">
               <span>
                 <Translate contentKey="global.messages.info.register.noaccount">You don&apos;t have an account yet?</Translate>
-              </span>{' '}
+              </span>{' '}<br/>
               <Link to="/account/register">
                 <Translate contentKey="global.messages.info.register.link">Register a new account</Translate>
               </Link>

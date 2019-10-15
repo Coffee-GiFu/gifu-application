@@ -6,22 +6,21 @@ import { IRootState } from 'app/shared/reducers';
 import { login } from 'app/shared/reducers/authentication';
 import LoginForm from './loginForm';
 import './loginPage.scss';
+import { Button } from 'reactstrap';
+import RegisterModal from './register/register';
 
 export interface ILoginProps extends StateProps, DispatchProps, RouteComponentProps<{}> {}
 
 export const LoginPage = (props: ILoginProps) => {
-  const [showModal, setShowModal] = useState(props.showModal);
+  const [show, setShow] = useState(false);
 
-  useEffect(() => {
-    setShowModal(true);
-  }, []);
+  const handleShow = () => {
+    window.console.log(show,show.valueOf())
+    setShow(true)
+    window.console.log(show,show.valueOf())
+  };
 
   const handleLogin = (username, password, rememberMe = false) => props.login(username, password, rememberMe);
-
-  const handleClose = () => {
-    setShowModal(false);
-    props.history.push('/');
-  };
 
   const { location, isAuthenticated } = props;
   const { from } = location.state || { from: { pathname: '/', search: location.search } };
@@ -29,15 +28,20 @@ export const LoginPage = (props: ILoginProps) => {
     return <Redirect to={from} />;
   }
   return (
-    <div className="LoginPage">
-      <div className="LoginForm">
-        crea
-      </div>
-      <div className="LoginForm">
-        <LoginForm handleLogin={handleLogin} loginError={props.loginError} />
-      </div>
-      <div className="LoginForm">
-        crea
+    <div>
+      <RegisterModal showModal={show} handleClose={setShow} />
+      <div className="LoginPage">
+        <div className="LoginForm">
+          crea
+        </div>
+        <div className="LoginForm">
+          <LoginForm handleLogin={handleLogin} loginError={props.loginError} />
+        </div>
+        <div className="LoginForm">        
+          <Button variant="primary" onClick={handleShow}>
+            Launch demo modal
+          </Button>
+        </div>
       </div>
     </div>
   );
