@@ -9,17 +9,16 @@ import { IRootState } from 'app/shared/reducers';
 import { handleRegister, reset } from './register.reducer';
 import { render } from 'react-dom';
 
-export interface ILoginModalProps extends StateProps, DispatchProps {
+export interface IRegisterModalProps {
   showModal: boolean;
   handleClose: Function;
   isEntreprise:boolean;
 }
 
-export const RegisterModal = (props: ILoginModalProps) => {
+export const RegisterModal = (props: IRegisterModalProps) => {
   const [password, setPassword] = useState('');
 
   const handleValidSubmit = (event, values) => {
-    props.handleRegister(values.username, values.email, values.firstPassword);
     event.preventDefault();
   };
   const updatePassword = event => setPassword(event.target.value);

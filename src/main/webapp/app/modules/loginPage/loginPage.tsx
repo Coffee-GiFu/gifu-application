@@ -22,7 +22,7 @@ export const LoginPage = (props: ILoginProps) => {
     setIsEntreprise(true);
   };
   const handleShowAssociation = () => {
-    setShow(true)
+    setShow(true);
     setIsEntreprise(false);
   };
 
