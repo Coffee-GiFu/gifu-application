@@ -12,6 +12,7 @@ import { render } from 'react-dom';
 export interface ILoginModalProps extends StateProps, DispatchProps {
   showModal: boolean;
   handleClose: Function;
+  isEntreprise:boolean;
 }
 
 export const RegisterModal = (props: ILoginModalProps) => {
@@ -31,8 +32,9 @@ export const RegisterModal = (props: ILoginModalProps) => {
     return (
       <Modal isOpen={props.showModal} toggle={handleClose} backdrop="static" id="login-page" autoFocus={false}>
         <AvForm onSubmit={handleSubmit}>
-          <ModalHeader id="login-title" toggle={handleClose}>
-            <Translate contentKey="register.title">create accout</Translate>
+          <ModalHeader id="login-title" toggle={handleClose}>            
+            {translate('register.title')}
+            {props.isEntreprise ? translate('register.type.entreprise') : translate('register.type.association')}
           </ModalHeader>
           <ModalBody>
             <Row className="justify-content-center">

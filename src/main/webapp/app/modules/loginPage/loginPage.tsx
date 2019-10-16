@@ -8,16 +8,22 @@ import LoginForm from './loginForm';
 import './loginPage.scss';
 import { Button } from 'reactstrap';
 import RegisterModal from './register/register';
+import { translate } from 'react-jhipster/lib/src/language/translate';
 
 export interface ILoginProps extends StateProps, DispatchProps, RouteComponentProps<{}> {}
 
 export const LoginPage = (props: ILoginProps) => {
   const [show, setShow] = useState(false);
 
-  const handleShow = () => {
-    window.console.log(show,show.valueOf())
+  const [isEntreprise, setIsEntreprise] = useState(false);
+
+  const handleShowEntreprise = () => {
+    setShow(true);
+    setIsEntreprise(true);
+  };
+  const handleShowAssociation = () => {
     setShow(true)
-    window.console.log(show,show.valueOf())
+    setIsEntreprise(false);
   };
 
   const handleLogin = (username, password, rememberMe = false) => props.login(username, password, rememberMe);
@@ -29,18 +35,26 @@ export const LoginPage = (props: ILoginProps) => {
   }
   return (
     <div>
-      <RegisterModal showModal={show} handleClose={setShow} />
+      <RegisterModal showModal={show} handleClose={setShow} isEntreprise={isEntreprise} />
       <div className="LoginPage">
-        <div className="LoginForm">
-          crea
+        <div className="LoginForm"> 
+          <div className="createAccount entrepriseIco btn btn-primary" onClick={handleShowEntreprise}>
+            <p>
+              {translate('register.type.base')}<br/>
+              {translate('register.type.entreprise')}
+            </p>
+          </div>
         </div>
         <div className="LoginForm">
           <LoginForm handleLogin={handleLogin} loginError={props.loginError} />
         </div>
-        <div className="LoginForm">        
-          <Button variant="primary" onClick={handleShow}>
-            Launch demo modal
-          </Button>
+        <div className="LoginForm">
+          <div className="createAccount associationIco btn btn-primary" onClick={handleShowAssociation}>
+            <p>
+              {translate('register.type.base')}<br/>
+              {translate('register.type.association')}
+            </p>
+          </div>
         </div>
       </div>
     </div>

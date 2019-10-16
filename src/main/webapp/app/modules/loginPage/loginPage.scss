@@ -15,6 +15,7 @@ Main page styles
   flex-wrap: wrap;
   width: 100%;
 }
+
 .LoginForm {
   flex: 3;
   text-align: center;
@@ -23,17 +24,56 @@ Main page styles
     padding-top: 10px;
   }
 }
+
 .LoginForm:nth-child(1),
 .LoginForm:nth-child(3) {
   flex: 2;
 }
-@media (min-width: 576px) and (max-width: 992px) {
+
+.createAccount.entrepriseIco {
+  background-image: url(../../../content/images/enterprise.svg);
+}
+
+.createAccount.associationIco {
+  background-image: url(../../../content/images/association.svg);
+}
+
+.createAccount {
+  background-color: red;
+  display: inline-grid;
+  cursor: pointer;
+  p {
+    margin: 0 10px;
+  }
+}
+@media (min-width: 577px) {
+  .createAccount {
+    background-position-x: center;
+    background-position-y: 3px;
+    background-repeat: no-repeat;
+    background-size: 3rem;
+    padding-top: 3rem;
+    border-radius: 100% 100% 14% 14%;
+    height: 4.5rem;
+    width: fit-content;
+    margin-top: 40%;
+    p {
+      background-color: inherit;
+      padding: 0 10px !important;
+    }
+  }
+}
+
+@media (min-width: 577px) and (max-width: 992px) {
   .LoginForm:nth-child(1),
   .LoginForm:nth-child(3) {
     flex: 1;
   }
 }
 @media (max-width: 576px) {
+  .createAccount {
+    background-image: none !important;
+  }
   .LoginForm:nth-child(1),
   .LoginForm:nth-child(3) {
     flex: 0 1 50%;
