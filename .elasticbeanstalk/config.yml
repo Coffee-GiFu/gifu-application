@@ -3,11 +3,11 @@ branch-defaults:
     environment: GifuApplicationEnv
 environment-defaults:
   GifuApplicationEnv:
-    branch: develop
-    repository: https://github.com/Coffee-GiFu/gifu-application
+    branch: null
+    repository: null
 global:
   application_name: gifu-application
-  branch: develop
+  branch: null
   default_ec2_keyname: null
   default_platform: arn:aws:elasticbeanstalk:eu-west-1::platform/Docker running on
     64bit Amazon Linux/2.12.17
@@ -17,7 +17,7 @@ global:
   platform_name: null
   platform_version: null
   profile: eb-cli
-  repository: https://github.com/Coffee-GiFu/gifu-application
+  repository: null
   sc: git
   workspace_type: Application
 deploy:
