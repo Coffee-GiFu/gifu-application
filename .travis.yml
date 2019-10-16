@@ -43,14 +43,14 @@ jobs:
     - stage: deploy dev
       script:
         - ./mvnw -ntp package verify -DskipTests jib:dockerBuild
-        - docker tag gifu-backend:$VERSION 249114954752.dkr.ecr.eu-west-1.amazonaws.com/gifu-backend-dev:$VERSION_$TRAVIS_BUILD_NUMBER
-        - docker push 249114954752.dkr.ecr.eu-west-1.amazonaws.com/gifu-backend-dev:$VERSION_$TRAVIS_BUILD_NUMBER
+        - docker tag gifu-backend:$VERSION 249114954752.dkr.ecr.eu-west-1.amazonaws.com/gifu-backend-dev:$VERSION
+        - docker push 249114954752.dkr.ecr.eu-west-1.amazonaws.com/gifu-backend-dev:$VERSION
         - eb deploy GifuApplicationEnv
     - stage: deploy prod
       script:
         - ./mvnw -ntp package -Pprod verify -DskipTests jib:dockerBuild
-        - docker tag gifu-backend:$VERSION 249114954752.dkr.ecr.eu-west-1.amazonaws.com/gifu-backend:$VERSION_$TRAVIS_BUILD_NUMBER
-        - docker push 249114954752.dkr.ecr.eu-west-1.amazonaws.com/gifu-backend:$VERSION_$TRAVIS_BUILD_NUMBER
+        - docker tag gifu-backend:$VERSION 249114954752.dkr.ecr.eu-west-1.amazonaws.com/gifu-backend:$VERSION
+        - docker push 249114954752.dkr.ecr.eu-west-1.amazonaws.com/gifu-backend:$VERSION
         - eb deploy GifuApplication-prod
 stages:
   - test
