@@ -84,7 +84,7 @@ public class OfferServiceImpl implements OfferService {
     /**
      * Delete the offer by id.
      *
-     * @param id the id of the entity.
+     * @param id the id of the entity.health
      */
     @Override
     public void delete(Long id) {
