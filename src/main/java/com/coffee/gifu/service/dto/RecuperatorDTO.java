@@ -20,9 +20,6 @@ public class RecuperatorDTO implements Serializable {
     @Size(min = 10, max = 10)
     private String phoneNumber;
 
-
-    private LocationDTO locationDTO;
-
     private OrganisationDTO association;
 
     public Long getId() {
@@ -47,14 +44,6 @@ public class RecuperatorDTO implements Serializable {
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
-    }
-
-    public LocationDTO getLocationDTO() {
-        return locationDTO;
-    }
-
-    public void setLocationDTO(LocationDTO locationDTO) {
-        this.locationDTO = locationDTO;
     }
 
     public OrganisationDTO getAssociation() {
@@ -92,7 +81,6 @@ public class RecuperatorDTO implements Serializable {
             "id=" + getId() +
             ", name='" + getName() + "'" +
             ", phoneNumber='" + getPhoneNumber() + "'" +
-            ", location=" + getLocationDTO() +
             ", association=" + getAssociation() +
             "}";
     }

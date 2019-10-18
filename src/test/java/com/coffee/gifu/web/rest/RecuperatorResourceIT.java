@@ -1,14 +1,14 @@
 package com.coffee.gifu.web.rest;
 
 import com.coffee.gifu.GifuApp;
-import com.coffee.gifu.domain.Location;
-import com.coffee.gifu.domain.Organisation;
 import com.coffee.gifu.domain.Recuperator;
+import com.coffee.gifu.domain.Organisation;
 import com.coffee.gifu.repository.RecuperatorRepository;
 import com.coffee.gifu.service.RecuperatorService;
 import com.coffee.gifu.service.dto.RecuperatorDTO;
 import com.coffee.gifu.service.mapper.RecuperatorMapper;
 import com.coffee.gifu.web.rest.errors.ExceptionTranslator;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockitoAnnotations;
@@ -72,7 +72,7 @@ public class RecuperatorResourceIT {
     private Recuperator recuperator;
 
     @BeforeEach
-    public void setup() {
+    void setup() {
         MockitoAnnotations.initMocks(this);
         final RecuperatorResource recuperatorResource = new RecuperatorResource(recuperatorService);
         this.restRecuperatorMockMvc = MockMvcBuilders.standaloneSetup(recuperatorResource)
@@ -94,19 +94,13 @@ public class RecuperatorResourceIT {
             .name(DEFAULT_NAME)
             .phoneNumber(DEFAULT_PHONE_NUMBER);
         // Add required entity
-        Location location;
-        location = LocationITResource.createEntity(em);
-        recuperator.setLocation(location);
-        // Add required entity
         Organisation organisation;
         if (TestUtil.findAll(em, Organisation.class).isEmpty()) {
             organisation = OrganisationResourceIT.createEntity(em);
-            organisation.setType("ASSOCIATION");
             em.persist(organisation);
             em.flush();
         } else {
             organisation = TestUtil.findAll(em, Organisation.class).get(0);
-            organisation.setType("ASSOCIATION");
         }
         recuperator.setAssociation(organisation);
         return recuperator;
@@ -122,32 +116,20 @@ public class RecuperatorResourceIT {
             .name(UPDATED_NAME)
             .phoneNumber(UPDATED_PHONE_NUMBER);
         // Add required entity
-        Location location;
-        if (TestUtil.findAll(em, Location.class).isEmpty()) {
-            location = LocationITResource.createUpdatedEntity(em);
-            em.persist(location);
-            em.flush();
-        } else {
-            location = TestUtil.findAll(em, Location.class).get(0);
-        }
-        recuperator.setLocation(location);
-        // Add required entity
         Organisation organisation;
         if (TestUtil.findAll(em, Organisation.class).isEmpty()) {
             organisation = OrganisationResourceIT.createUpdatedEntity(em);
-            organisation.setType("ASSOCIATION");
             em.persist(organisation);
             em.flush();
         } else {
             organisation = TestUtil.findAll(em, Organisation.class).get(0);
-            organisation.setType("ASSOCIATION");
         }
         recuperator.setAssociation(organisation);
         return recuperator;
     }
 
     @BeforeEach
-    public void initTest() {
+    void initTest() {
         recuperator = createEntity(em);
     }
 
@@ -241,8 +223,8 @@ public class RecuperatorResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(recuperator.getId().intValue())))
-            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
-            .andExpect(jsonPath("$.[*].phoneNumber").value(hasItem(DEFAULT_PHONE_NUMBER.toString())));
+            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
+            .andExpect(jsonPath("$.[*].phoneNumber").value(hasItem(DEFAULT_PHONE_NUMBER)));
     }
 
     @Test
@@ -256,8 +238,8 @@ public class RecuperatorResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(recuperator.getId().intValue()))
-            .andExpect(jsonPath("$.name").value(DEFAULT_NAME.toString()))
-            .andExpect(jsonPath("$.phoneNumber").value(DEFAULT_PHONE_NUMBER.toString()));
+            .andExpect(jsonPath("$.name").value(DEFAULT_NAME))
+            .andExpect(jsonPath("$.phoneNumber").value(DEFAULT_PHONE_NUMBER));
     }
 
     @Test

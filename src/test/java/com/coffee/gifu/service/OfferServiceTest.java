@@ -62,7 +62,6 @@ public class OfferServiceTest {
         recuperator.setId(1324526L);
         recuperator.setName("qergsdfg");
         recuperator.setPhoneNumber("145426357485");
-        recuperator.setLocation(location);
         recuperators.add(recuperator);
         offer.setRecuperators(recuperators);
 
@@ -96,7 +95,6 @@ public class OfferServiceTest {
         recuperatorDTO.setId(1324526L);
         recuperatorDTO.setName("qergsdfg");
         recuperatorDTO.setPhoneNumber("145426357485");
-        recuperatorDTO.setLocationDTO(locationDTO);
         recuperatorDTOs.add(recuperatorDTO);
         offerDTO.setRecuperatorDTOs(recuperatorDTOs);
 

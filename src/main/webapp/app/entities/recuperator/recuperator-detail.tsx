@@ -1,12 +1,14 @@
 import React from 'react';
-import {connect} from 'react-redux';
-import {Link, RouteComponentProps} from 'react-router-dom';
-import {Button, Col, Row} from 'reactstrap';
-import {Translate} from 'react-jhipster';
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import { connect } from 'react-redux';
+import { Link, RouteComponentProps } from 'react-router-dom';
+import { Button, Row, Col } from 'reactstrap';
+import { Translate, ICrudGetAction } from 'react-jhipster';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import {IRootState} from 'app/shared/reducers';
-import {getEntity} from './recuperator.reducer';
+import { IRootState } from 'app/shared/reducers';
+import { getEntity } from './recuperator.reducer';
+import { IRecuperator } from 'app/shared/model/recuperator.model';
+import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
 
 export interface IRecuperatorDetailProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
 
@@ -36,10 +38,6 @@ export class RecuperatorDetail extends React.Component<IRecuperatorDetailProps> 
               </span>
             </dt>
             <dd>{recuperatorEntity.phoneNumber}</dd>
-            <dt>
-              <Translate contentKey="gifuApp.recuperator.location">Location</Translate>
-            </dt>
-            <dd>{recuperatorEntity.locationCity ? recuperatorEntity.locationCity : ''}</dd>
             <dt>
               <Translate contentKey="gifuApp.recuperator.association">Association</Translate>
             </dt>

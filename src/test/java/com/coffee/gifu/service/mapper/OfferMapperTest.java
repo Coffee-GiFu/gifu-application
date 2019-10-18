@@ -41,11 +41,6 @@ public class OfferMapperTest {
         recuperator.setId(134526L);
         recuperator.setName("Toto");
         recuperator.setPhoneNumber("13456475");
-        location.setId(1345L);
-        location.setPostalCode("675679");
-        location.setStreetAddress("AREGDGJFJDSDGNG");
-        location.setCity("arhsgjdhgkfjlgkh");
-        recuperator.setLocation(location);
         recuperators.add(recuperator);
         location.setId(13465L);
         location.setPostalCode("34553");
@@ -66,7 +61,6 @@ public class OfferMapperTest {
         //Then
         assertThat(offerDTO).isNotNull();
         assertThat(offerDTO.getRecuperatorDTOs().toArray()[0]).isEqualTo(recuperatorMapper.toDto(recuperators).toArray()[0]);
-        assertThat(offerDTO.getLocationDTO()).isEqualTo(locationMapper.toDto(recuperator.getLocation()));
         assertThat(offerDTO.getDescription()).isEqualTo(offer.getDescription());
         assertThat(offerDTO.getTitle()).isEqualTo(offer.getTitle());
         assertThat(offerDTO.getAvailabilityBegin()).isEqualTo(offer.getAvailabilityBegin());
@@ -88,7 +82,6 @@ public class OfferMapperTest {
         locationDTO.setStreetAddress("AREGDGJFJDSDGNG");
         locationDTO.setCity("arhsgjdhgkfjlgkh");
         locationDTO.setId(132452L);
-        recuperatorDTO.setLocationDTO(locationDTO);
         recuperatorDTOs.add(recuperatorDTO);
         offerDTO.setId(149876L);
         offerDTO.setDescription("gergsghshsgfh");
@@ -105,7 +98,6 @@ public class OfferMapperTest {
         //Then
         assertThat(offer).isNotNull();
         assertThat(offer.getRecuperators().toArray()[0]).isEqualTo(recuperatorMapper.toEntity(recuperatorDTOs).toArray()[0]);
-        assertThat(offer.getLocation()).isEqualTo(locationMapper.toEntity(recuperatorDTO.getLocationDTO()));
         assertThat(offer.getDescription()).isEqualTo(offer.getDescription());
         assertThat(offer.getTitle()).isEqualTo(offer.getTitle());
         assertThat(offer.getAvailabilityBegin()).isEqualTo(offer.getAvailabilityBegin());

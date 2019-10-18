@@ -1,10 +1,9 @@
 package com.coffee.gifu.web.rest;
 
 import com.coffee.gifu.service.RecuperatorService;
-import com.coffee.gifu.service.dto.RecuperatorDTO;
-import com.coffee.gifu.service.exception.ManagementRulesException;
 import com.coffee.gifu.web.rest.errors.BadRequestAlertException;
-import com.coffee.gifu.web.rest.errors.WrongOrganisationTypeException;
+import com.coffee.gifu.service.dto.RecuperatorDTO;
+
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
@@ -16,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -52,12 +52,7 @@ public class RecuperatorResource {
         if (recuperatorDTO.getId() != null) {
             throw new BadRequestAlertException("A new recuperator cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        RecuperatorDTO result = null;
-        try {
-            result = recuperatorService.save(recuperatorDTO);
-        } catch (ManagementRulesException e) {
-            throw new WrongOrganisationTypeException();
-        }
+        RecuperatorDTO result = recuperatorService.save(recuperatorDTO);
         return ResponseEntity.created(new URI("/api/recuperators/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -78,12 +73,7 @@ public class RecuperatorResource {
         if (recuperatorDTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        RecuperatorDTO result = null;
-        try {
-            result = recuperatorService.save(recuperatorDTO);
-        } catch (ManagementRulesException e) {
-            throw new WrongOrganisationTypeException();
-        }
+        RecuperatorDTO result = recuperatorService.save(recuperatorDTO);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, recuperatorDTO.getId().toString()))
             .body(result);
