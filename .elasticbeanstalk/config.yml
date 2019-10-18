@@ -1,0 +1,24 @@
+branch-defaults:
+  develop:
+    environment: GifuApplication-prod
+environment-defaults:
+  GifuApplicationEnv:
+    branch: null
+    repository: null
+global:
+  application_name: gifu-application
+  branch: null
+  default_ec2_keyname: null
+  default_platform: arn:aws:elasticbeanstalk:eu-west-1::platform/Docker running on
+    64bit Amazon Linux/2.12.17
+  default_region: eu-west-1
+  include_git_submodules: true
+  instance_profile: null
+  platform_name: null
+  platform_version: null
+  profile: eb-cli
+  repository: null
+  sc: git
+  workspace_type: Application
+deploy:
+  artifact: Dockerrun.aws.json
