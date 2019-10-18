@@ -6,6 +6,7 @@ import { AvFeedback, AvField, AvForm, AvGroup, AvInput } from 'availity-reactstr
 import { Translate, translate } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IRootState } from 'app/shared/reducers';
+import { getSession } from 'app/shared/reducers/authentication';
 import { getEntities as getLocations } from 'app/entities/location/location.reducer';
 import { getEntities as getRecuperators } from 'app/entities/recuperator/recuperator.reducer';
 import { getEntities as getOrganisations } from 'app/entities/organisation/organisation.reducer';
@@ -54,6 +55,8 @@ export class OfferUpdate extends React.Component<IOfferUpdateProps, IOfferUpdate
   }
 
   saveEntity = (event, errors, values) => {
+    window.console.log(this.props);
+    window.console.log(event);
     values.availabilityBegin = convertDateTimeToServer(values.availabilityBegin);
     values.availabilityEnd = convertDateTimeToServer(values.availabilityEnd);
     window.console.log(this.props.getOrganisations());
@@ -82,8 +85,15 @@ export class OfferUpdate extends React.Component<IOfferUpdateProps, IOfferUpdate
   };
 
   render() {
+    
+    window.console.log("slslslslsslsls");
+    window.console.log(this.props);
     const { offerEntity, locations, recuperators, organisations, loading, updating } = this.props;
     const { isNew } = this.state;
+    window.console.log("wwwwwlsls");
+    window.console.log(recuperators);
+    window.console.log("wwwwwlsls");
+    window.console.log(recuperators);
     return (
       <div>
         <Row className="justify-content-center">
@@ -223,6 +233,7 @@ const mapDispatchToProps = {
   createEntity,
   reset
 };
+
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
