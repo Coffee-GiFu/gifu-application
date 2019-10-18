@@ -102,8 +102,7 @@ public class RecuperatorResourceIT {
         } else {
             organisation = TestUtil.findAll(em, Organisation.class).get(0);
         }
-        recuperator.setAssociation(organisation);
-        return recuperator;
+        return recuperator.association(organisation);
     }
     /**
      * Create an updated entity for this test.
@@ -124,8 +123,7 @@ public class RecuperatorResourceIT {
         } else {
             organisation = TestUtil.findAll(em, Organisation.class).get(0);
         }
-        recuperator.setAssociation(organisation);
-        return recuperator;
+        return recuperator.association(organisation);
     }
 
     @BeforeEach
