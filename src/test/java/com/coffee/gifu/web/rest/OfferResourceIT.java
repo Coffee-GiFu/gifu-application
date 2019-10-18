@@ -226,7 +226,7 @@ public class OfferResourceIT {
 
     @Test
     @Transactional()
-    public void createOffer_with_identerprise_should_return_exception_error_not_found() throws Exception {
+    public void createOffer_should_return_not_found_if_idEnterprise_not_found() throws Exception {
         int databaseSizeBeforeCreate = offerRepository.findAll().size();
 
         // Create the Offer
@@ -246,7 +246,7 @@ public class OfferResourceIT {
         restOfferMockMvc.perform(post("/api/offers")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(createOfferRequest)))
-                .andExpect(status().isCreated());
+                .andExpect(status().isNotFound());
     }
 
     @Test
