@@ -1,8 +1,11 @@
 package com.coffee.gifu.web.rest;
 
+import com.coffee.gifu.domain.User;
+import com.coffee.gifu.security.SecurityUtils;
 import com.coffee.gifu.service.EnterpriseNotFoundException;
 import com.coffee.gifu.service.OfferService;
 import com.coffee.gifu.service.OrganisationService;
+import com.coffee.gifu.service.UserService;
 import com.coffee.gifu.service.dto.OfferDTO;
 import com.coffee.gifu.service.dto.OrganisationDTO;
 import com.coffee.gifu.service.exception.ManagementRulesException;
@@ -39,11 +42,14 @@ public class OfferResource {
     private String applicationName;
 
     private final OfferService offerService;
+    private final UserService userService;
     private final OrganisationService organisationService;
 
-    public OfferResource(OfferService offerService, OrganisationService organisationService) {
+    public OfferResource(OfferService offerService, OrganisationService organisationService,
+                         UserService userService) {
         this.offerService = offerService;
         this.organisationService = organisationService;
+        this.userService = userService;
     }
 
     /**
@@ -57,14 +63,23 @@ public class OfferResource {
     public ResponseEntity<OfferDTO> createOffer(@Valid @RequestBody CreateOfferRequest createOfferRequest) throws URISyntaxException {
         log.debug("REST request to save Offer : {}", createOfferRequest);
 
+        Optional<String> currentUserLogin = SecurityUtils.getCurrentUserLogin();
+        Optional<User> userWithAuthoritiesByLogin =
+                userService.getUserWithAuthoritiesByLogin(currentUserLogin.get());
+
+        System.out.println("**********");
+        System.out.println(userWithAuthoritiesByLogin.get());
+        System.out.println("**********");
+
         OfferDTO offerDTO = new OfferDTO();
         offerDTO.setDescription(createOfferRequest.getDescription());
         offerDTO.setAvailabilityBegin(createOfferRequest.getAvailabilityBegin());
         offerDTO.setAvailabilityEnd(createOfferRequest.getAvailabilityEnd());
         offerDTO.setTitle(createOfferRequest.getTitle());
         offerDTO.setLocationDTO(createOfferRequest.getLocationDTO());
+
         Optional<OrganisationDTO> optionalOrganisationDTO =
-                organisationService.findOne(createOfferRequest.getEnterpriseId());
+                organisationService.findOne(userWithAuthoritiesByLogin.get().getOrganisationID());
 
         if (!optionalOrganisationDTO.isPresent()){
            throw new EnterpriseNotFoundException("Organisation not found for this id " + createOfferRequest.getEnterpriseId());

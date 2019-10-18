@@ -60,6 +60,7 @@ export class OfferUpdate extends React.Component<IOfferUpdateProps, IOfferUpdate
       const entity = {
         ...offerEntity,
         ...values,
+        locations: mapIdList(values.locations),
         recuperators: mapIdList(values.recuperators)
       };
 
@@ -78,7 +79,6 @@ export class OfferUpdate extends React.Component<IOfferUpdateProps, IOfferUpdate
   render() {
     const { offerEntity, locations, recuperators, organisations, loading, updating } = this.props;
     const { isNew } = this.state;
-
     return (
       <div>
         <Row className="justify-content-center">
@@ -174,7 +174,7 @@ export class OfferUpdate extends React.Component<IOfferUpdateProps, IOfferUpdate
                   <Label for="offer-location">
                     <Translate contentKey="gifuApp.offer.location">Location</Translate>
                   </Label>
-                  <AvInput id="offer-location" type="select" className="form-control" name="locationId">
+                  {/*<AvInput id="offer-location" type="select" className="form-control" name="locationId">
                     <option value="" key="0" />
                     {locations
                       ? locations.map(otherEntity => (
@@ -183,7 +183,7 @@ export class OfferUpdate extends React.Component<IOfferUpdateProps, IOfferUpdate
                           </option>
                         ))
                       : null}
-                  </AvInput>
+                      </AvInput>*/}
                 </AvGroup>
                 <AvGroup>
                   <Label for="offer-recuperators">
@@ -211,7 +211,7 @@ export class OfferUpdate extends React.Component<IOfferUpdateProps, IOfferUpdate
                   <Label for="offer-organisation">
                     <Translate contentKey="gifuApp.offer.organisation">Organisation</Translate>
                   </Label>
-                  <AvInput id="offer-organisation" type="select" className="form-control" name="organisationId" required>
+                  {/*<AvInput id="offer-organisation" type="select" className="form-control" name="organisationId" required>
                     {organisations
                       ? organisations.map(otherEntity => (
                           <option value={otherEntity.id} key={otherEntity.id}>
@@ -219,7 +219,7 @@ export class OfferUpdate extends React.Component<IOfferUpdateProps, IOfferUpdate
                           </option>
                         ))
                       : null}
-                  </AvInput>
+                      </AvInput>*/}
                   <AvFeedback>
                     <Translate contentKey="entity.validation.required">This field is required.</Translate>
                   </AvFeedback>

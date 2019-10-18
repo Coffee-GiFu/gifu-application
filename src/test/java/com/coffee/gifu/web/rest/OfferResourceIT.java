@@ -7,6 +7,7 @@ import com.coffee.gifu.domain.Organisation;
 import com.coffee.gifu.repository.OfferRepository;
 import com.coffee.gifu.service.OfferService;
 import com.coffee.gifu.service.OrganisationService;
+import com.coffee.gifu.service.UserService;
 import com.coffee.gifu.service.dto.LocationDTO;
 import com.coffee.gifu.service.dto.OfferDTO;
 import com.coffee.gifu.service.dto.OrganisationDTO;
@@ -85,6 +86,9 @@ public class OfferResourceIT {
     private OrganisationService organisationService;
 
     @Autowired
+    private UserService userService;
+
+    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -106,7 +110,7 @@ public class OfferResourceIT {
     @BeforeEach
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final OfferResource offerResource = new OfferResource(offerService,organisationService);
+        final OfferResource offerResource = new OfferResource(offerService, organisationService, userService);
         this.restOfferMockMvc = MockMvcBuilders.standaloneSetup(offerResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
