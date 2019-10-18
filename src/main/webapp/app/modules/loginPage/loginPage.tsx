@@ -10,6 +10,7 @@ import { Button } from 'reactstrap';
 import RegisterModal from './register/register';
 import { translate } from 'react-jhipster/lib/src/language/translate';
 import Checkbox from 'app/shared/layout/checkbox/checkbox';
+import { OfferCard } from 'app/shared/layout/offer/offerCard';
 
 export interface ILoginProps extends StateProps, DispatchProps, RouteComponentProps<{}> {}
 
@@ -34,9 +35,38 @@ export const LoginPage = (props: ILoginProps) => {
   if (isAuthenticated) {
     return <Redirect to={from} />;
   }
+  const offs= [{id: 21,description: `eeesddsf e 
+  sdf ds fds eee`,isCold: true,availabilityBegin: null,availabilityEnd: null,title: "titre",location: null,recuperator: null}, {id: 24,description: `eeesddsf e 
+  sdf ds fds eeeeeesddsf e 
+  sdf ds fds eeeeeesddsf e 
+  sdf ds fds eeeeeesddsf e 
+  sdf ds fds eee`,isCold: false,availabilityBegin: null,availabilityEnd: null,title: "titre",location: null,recuperator: null},{id: 21,description: `eeesddsf e 
+  sdf ds fds eee`,isCold: true,availabilityBegin: null,availabilityEnd: null,title: "titre",location: null,recuperator: null}, {id: 24,description: `eeesddsf e 
+  sdf ds fds eeeeeesddsf e 
+  sdf ds fds eeeeeesddsf e 
+  sdf ds fds eeeeeesddsf e 
+  sdf ds fds eee`,isCold: false,availabilityBegin: null,availabilityEnd: null,title: "titre",location: null,recuperator: null},{id: 21,description: `eeesddsf e 
+  sdf ds fds eee`,isCold: true,availabilityBegin: null,availabilityEnd: null,title: "titre",location: null,recuperator: null}, {id: 24,description: `eeesddsf e 
+  sdf ds fds eeeeeesddsf e 
+  sdf ds fds eeeeeesddsf e 
+  sdf ds fds eeeeeesddsf e 
+  sdf ds fds eee`,isCold: false,availabilityBegin: null,availabilityEnd: null,title: "titre",location: null,recuperator: null},{id: 21,description: `eeesddsf e 
+  sdf ds fds eee`,isCold: true,availabilityBegin: null,availabilityEnd: null,title: "titre",location: null,recuperator: null}, {id: 24,description: `eeesddsf e 
+  sdf ds fds eeeeeesddsf e 
+  sdf ds fds eeeeeesddsf e 
+  sdf ds fds eeeeeesddsf e 
+  sdf ds fds eee`,isCold: false,availabilityBegin: null,availabilityEnd: null,title: "titre",location: null,recuperator: null},{id: 21,description: `eeesddsf e 
+  sdf ds fds eee`,isCold: true,availabilityBegin: null,availabilityEnd: null,title: "titre",location: null,recuperator: null}, {id: 24,description: `eeesddsf e 
+  sdf ds fds eeeeeesddsf e 
+  sdf ds fds eeeeeesddsf e 
+  sdf ds fds eeeeeesddsf e 
+  sdf ds fds eee`,isCold: false,availabilityBegin: null,availabilityEnd: null,title: "titre",location: null,recuperator: null}];
   return (
     <div>
-      <Checkbox name="test" defaultValue={true}></Checkbox>
+      
+      {offs.map((off,index) => {
+          return <OfferCard key={index} offer={off} handleClick={(id)=>{window.console.log(id)}} />;
+        })}
       <RegisterModal showModal={show} handleClose={setShow} isEntreprise={isEntreprise} />
       <div className="LoginPage">
         <div className="LoginForm"> 
