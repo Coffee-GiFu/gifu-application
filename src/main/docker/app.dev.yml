@@ -1,7 +1,7 @@
 version: '2'
 services:
   gifu-backend:
-    image: gifu-backend
+    image: gifu-backend-dev
     environment:
       - _JAVA_OPTIONS=-Xmx512m -Xms256m
       - SPRING_PROFILES_ACTIVE=dev

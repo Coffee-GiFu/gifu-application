@@ -24,14 +24,9 @@ before_install:
   - sudo apt-get update
   - sudo apt install openjdk-11-jdk
   - sudo update-java-alternatives -s java-1.11.0-openjdk-amd64
-  - sudo apt-get install python3
-  - pip install awscli --upgrade --user
-  - pip install awsebcli --upgrade --user
   - nvm install $NODE_VERSION
   - npm install -g npm
   - chmod +x mvnw
-  - eb init --platform "arn:aws:elasticbeanstalk:eu-west-1::platform/Docker running on 64bit Amazon Linux/2.12.17"
-  - echo $DOCKER_PASSWORD | docker login -u AWS --password-stdin https://249114954752.dkr.ecr.eu-west-1.amazonaws.com
 install:
   - npm install
 jobs:
@@ -42,12 +37,20 @@ jobs:
         - ./mvnw -ntp org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar
     - stage: deploy dev
       script:
+        - sudo apt-get install python3
+        - pip install awsebcli --upgrade --user
+        - echo $DOCKER_PASSWORD | docker login -u AWS --password-stdin https://249114954752.dkr.ecr.eu-west-1.amazonaws.com
+        - eb init --platform "arn:aws:elasticbeanstalk:eu-west-1::platform/Docker running on 64bit Amazon Linux/2.12.17"
         - ./mvnw -ntp package verify -DskipTests jib:dockerBuild
         - docker tag gifu-backend:$VERSION 249114954752.dkr.ecr.eu-west-1.amazonaws.com/gifu-backend-dev:$VERSION
         - docker push 249114954752.dkr.ecr.eu-west-1.amazonaws.com/gifu-backend-dev:$VERSION
         - eb deploy GifuApplicationEnv
     - stage: deploy prod
       script:
+        - sudo apt-get install python3
+        - pip install awsebcli --upgrade --user
+        - eb init --platform "arn:aws:elasticbeanstalk:eu-west-1::platform/Docker running on 64bit Amazon Linux/2.12.17"
+        - echo $DOCKER_PASSWORD | docker login -u AWS --password-stdin https://249114954752.dkr.ecr.eu-west-1.amazonaws.com
         - ./mvnw -ntp package -Pprod verify -DskipTests jib:dockerBuild
         - docker tag gifu-backend:$VERSION 249114954752.dkr.ecr.eu-west-1.amazonaws.com/gifu-backend:$VERSION
         - docker push 249114954752.dkr.ecr.eu-west-1.amazonaws.com/gifu-backend:$VERSION
