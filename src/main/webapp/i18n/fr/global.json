@@ -7,6 +7,10 @@
       "jhipster-needle-menu-add-element": "JHipster will add additional menu entries here (do not translate!)",
       "entities": {
         "main": "Entités",
+        "location": "Location",
+        "recuperator": "Recuperator",
+        "offer": "Offer",
+        "organisation": "Organisation",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "account": {
@@ -129,7 +133,9 @@
     "userexists": "Login déjà utilisé !",
     "emailexists": "Email déjà utilisé !",
     "idexists": "Une nouvelle entité {{entityName}} ne peut pas avoir d'ID !",
-    "idnull": "Invalid ID"
+    "idnull": "Invalid ID",
+    "identificationcodeexists": "Code d'identification déjà utilisé !",
+    "wrongorganisationtype": "Mauvais Type d'Organisation !"
   },
   "footer": "Ceci est votre pied de page"
 }

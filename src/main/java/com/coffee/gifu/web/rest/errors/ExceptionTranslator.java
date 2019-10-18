@@ -1,7 +1,8 @@
 package com.coffee.gifu.web.rest.errors;
 
+import javassist.NotFoundException;
+import org.json.simple.parser.ParseException;
 import io.github.jhipster.web.util.HeaderUtil;
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.ConcurrencyFailureException;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +14,7 @@ import org.springframework.web.context.request.NativeWebRequest;
 import org.zalando.problem.DefaultProblem;
 import org.zalando.problem.Problem;
 import org.zalando.problem.ProblemBuilder;
+import java.io.IOException;
 import org.zalando.problem.Status;
 import org.zalando.problem.spring.web.advice.ProblemHandling;
 import org.zalando.problem.spring.web.advice.security.SecurityAdviceTrait;
@@ -126,6 +128,38 @@ public class ExceptionTranslator implements ProblemHandling, SecurityAdviceTrait
         Problem problem = Problem.builder()
             .withStatus(Status.CONFLICT)
             .with(MESSAGE_KEY, ErrorConstants.ERR_CONCURRENCY_FAILURE)
+            .build();
+        return create(ex, problem, request);
+    }
+    @ExceptionHandler
+    public ResponseEntity<Problem> handleNotFoundException(NotFoundException ex, NativeWebRequest request) {
+        Problem problem = Problem.builder()
+            .withStatus(Status.NOT_FOUND)
+            .with(MESSAGE_KEY, ErrorConstants.ENTITY_NOT_FOUND_TYPE)
+            .build();
+        return create(ex, problem, request);
+    }
+    @ExceptionHandler
+    public ResponseEntity<Problem> handleInterruptedException(InterruptedException ex, NativeWebRequest request) {
+        Problem problem = Problem.builder()
+            .withStatus(Status.INTERNAL_SERVER_ERROR)
+            .with(MESSAGE_KEY, ErrorConstants.ENTITY_NOT_FOUND_TYPE)
+            .build();
+        return create(ex, problem, request);
+    }
+    @ExceptionHandler
+    public ResponseEntity<Problem> handleIOException(IOException ex, NativeWebRequest request) {
+        Problem problem = Problem.builder()
+            .withStatus(Status.INTERNAL_SERVER_ERROR)
+            .with(MESSAGE_KEY, ErrorConstants.ENTITY_NOT_FOUND_TYPE)
+            .build();
+        return create(ex, problem, request);
+    }
+    @ExceptionHandler
+    public ResponseEntity<Problem> handleParseException(ParseException ex, NativeWebRequest request) {
+        Problem problem = Problem.builder()
+            .withStatus(Status.INTERNAL_SERVER_ERROR)
+            .with(MESSAGE_KEY, ErrorConstants.INTERNAL_ERROR)
             .build();
         return create(ex, problem, request);
     }

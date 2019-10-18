@@ -1,5 +1,6 @@
 import 'react-toastify/dist/ReactToastify.css';
 import './app.scss';
+import './app-animation.scss';
 
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
@@ -13,11 +14,12 @@ import { getSession } from 'app/shared/reducers/authentication';
 import { getProfile } from 'app/shared/reducers/application-profile';
 import { setLocale } from 'app/shared/reducers/locale';
 import Header from 'app/shared/layout/header/header';
+import HeaderGiFu from 'app/shared/layout/header/header-gifu-components';
 import Footer from 'app/shared/layout/footer/footer';
 import { hasAnyAuthority } from 'app/shared/auth/private-route';
 import ErrorBoundary from 'app/shared/error/error-boundary';
 import { AUTHORITIES } from 'app/config/constants';
-import AppRoutes from 'app/routes';
+import AppRoutes from './routes';
 
 const baseHref = document
   .querySelector('base')
@@ -38,7 +40,7 @@ export const App = (props: IAppProps) => {
       <div className="app-container" style={{ paddingTop }}>
         <ToastContainer position={toast.POSITION.TOP_LEFT} className="toastify-container" toastClassName="toastify-toast" />
         <ErrorBoundary>
-          <Header
+          <HeaderGiFu
             isAuthenticated={props.isAuthenticated}
             isAdmin={props.isAdmin}
             currentLocale={props.currentLocale}
@@ -47,6 +49,7 @@ export const App = (props: IAppProps) => {
             isInProduction={props.isInProduction}
             isSwaggerEnabled={props.isSwaggerEnabled}
           />
+          
         </ErrorBoundary>
         <div className="container-fluid view-container" id="app-view-container">
           <Card className="jh-card">

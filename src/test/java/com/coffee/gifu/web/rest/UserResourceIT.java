@@ -2,15 +2,20 @@ package com.coffee.gifu.web.rest;
 
 import com.coffee.gifu.GifuApp;
 import com.coffee.gifu.domain.Authority;
+import com.coffee.gifu.domain.OrganisationType;
 import com.coffee.gifu.domain.User;
+import com.coffee.gifu.repository.OrganisationRepository;
 import com.coffee.gifu.repository.UserRepository;
 import com.coffee.gifu.security.AuthoritiesConstants;
 import com.coffee.gifu.service.MailService;
 import com.coffee.gifu.service.UserService;
+import com.coffee.gifu.service.dto.LocationDTO;
+import com.coffee.gifu.service.dto.OrganisationDTO;
 import com.coffee.gifu.service.dto.UserDTO;
 import com.coffee.gifu.service.mapper.UserMapper;
 import com.coffee.gifu.web.rest.errors.ExceptionTranslator;
 import com.coffee.gifu.web.rest.vm.ManagedUserVM;
+import com.coffee.gifu.web.rest.wrapper.CreateUserRequest;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -26,11 +31,14 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import java.time.Instant;
-import java.util.*;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.hasItem;
+import static org.hamcrest.Matchers.hasItems;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -44,21 +52,13 @@ public class UserResourceIT {
     private static final String UPDATED_LOGIN = "jhipster";
 
     private static final Long DEFAULT_ID = 1L;
+    private static final Long DEFAULT_ORGANISATION_ID = 99L;
 
     private static final String DEFAULT_PASSWORD = "passjohndoe";
     private static final String UPDATED_PASSWORD = "passjhipster";
 
     private static final String DEFAULT_EMAIL = "johndoe@localhost";
     private static final String UPDATED_EMAIL = "jhipster@localhost";
-
-    private static final String DEFAULT_FIRSTNAME = "john";
-    private static final String UPDATED_FIRSTNAME = "jhipsterFirstName";
-
-    private static final String DEFAULT_LASTNAME = "doe";
-    private static final String UPDATED_LASTNAME = "jhipsterLastName";
-
-    private static final String DEFAULT_IMAGEURL = "http://placehold.it/50x50";
-    private static final String UPDATED_IMAGEURL = "http://placehold.it/40x40";
 
     private static final String DEFAULT_LANGKEY = "en";
     private static final String UPDATED_LANGKEY = "fr";
@@ -71,6 +71,9 @@ public class UserResourceIT {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private OrganisationRepository organisationRepository;
 
     @Autowired
     private UserMapper userMapper;
@@ -98,7 +101,7 @@ public class UserResourceIT {
     public void setup() {
         cacheManager.getCache(UserRepository.USERS_BY_LOGIN_CACHE).clear();
         cacheManager.getCache(UserRepository.USERS_BY_EMAIL_CACHE).clear();
-        UserResource userResource = new UserResource(userService, userRepository, mailService);
+        UserResource userResource = new UserResource(userService, userRepository, mailService, organisationRepository);
 
         this.restUserMockMvc = MockMvcBuilders.standaloneSetup(userResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
@@ -118,10 +121,8 @@ public class UserResourceIT {
         user.setLogin(DEFAULT_LOGIN + RandomStringUtils.randomAlphabetic(5));
         user.setPassword(RandomStringUtils.random(60));
         user.setActivated(true);
+        user.setOrganisationID(DEFAULT_ORGANISATION_ID);
         user.setEmail(RandomStringUtils.randomAlphabetic(5) + DEFAULT_EMAIL);
-        user.setFirstName(DEFAULT_FIRSTNAME);
-        user.setLastName(DEFAULT_LASTNAME);
-        user.setImageUrl(DEFAULT_IMAGEURL);
         user.setLangKey(DEFAULT_LANGKEY);
         return user;
     }
@@ -142,17 +143,32 @@ public class UserResourceIT {
         ManagedUserVM managedUserVM = new ManagedUserVM();
         managedUserVM.setLogin(DEFAULT_LOGIN);
         managedUserVM.setPassword(DEFAULT_PASSWORD);
-        managedUserVM.setFirstName(DEFAULT_FIRSTNAME);
-        managedUserVM.setLastName(DEFAULT_LASTNAME);
+        managedUserVM.setOrganisationID(DEFAULT_ORGANISATION_ID);
         managedUserVM.setEmail(DEFAULT_EMAIL);
         managedUserVM.setActivated(true);
-        managedUserVM.setImageUrl(DEFAULT_IMAGEURL);
         managedUserVM.setLangKey(DEFAULT_LANGKEY);
         managedUserVM.setAuthorities(Collections.singleton(AuthoritiesConstants.USER));
 
+        LocationDTO locationDTO = new LocationDTO();
+        locationDTO.setCity("Test");
+        locationDTO.setPostalCode("77777");
+        locationDTO.setStreetAddress("Test");
+
+        OrganisationDTO organisationDTO = new OrganisationDTO();
+        organisationDTO.setDescription("Test");
+        organisationDTO.setContactMail(DEFAULT_EMAIL);
+        organisationDTO.setIdentificationCode("0123456789");
+        organisationDTO.setLogo("Test");
+        organisationDTO.setName("Test");
+        organisationDTO.setPhoneNumber("0123456789");
+        organisationDTO.setType(OrganisationType.ENTERPRISE);
+        organisationDTO.setLocationDTO(locationDTO);
+
+        CreateUserRequest createUserRequest = new CreateUserRequest(managedUserVM, organisationDTO);
+
         restUserMockMvc.perform(post("/api/users")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(managedUserVM)))
+            .content(TestUtil.convertObjectToJsonBytes(createUserRequest)))
             .andExpect(status().isCreated());
 
         // Validate the User in the database
@@ -160,10 +176,8 @@ public class UserResourceIT {
         assertThat(userList).hasSize(databaseSizeBeforeCreate + 1);
         User testUser = userList.get(userList.size() - 1);
         assertThat(testUser.getLogin()).isEqualTo(DEFAULT_LOGIN);
-        assertThat(testUser.getFirstName()).isEqualTo(DEFAULT_FIRSTNAME);
-        assertThat(testUser.getLastName()).isEqualTo(DEFAULT_LASTNAME);
         assertThat(testUser.getEmail()).isEqualTo(DEFAULT_EMAIL);
-        assertThat(testUser.getImageUrl()).isEqualTo(DEFAULT_IMAGEURL);
+        assertThat(testUser.getOrganisationID()).isNotNull();
         assertThat(testUser.getLangKey()).isEqualTo(DEFAULT_LANGKEY);
     }
 
@@ -176,18 +190,33 @@ public class UserResourceIT {
         managedUserVM.setId(1L);
         managedUserVM.setLogin(DEFAULT_LOGIN);
         managedUserVM.setPassword(DEFAULT_PASSWORD);
-        managedUserVM.setFirstName(DEFAULT_FIRSTNAME);
-        managedUserVM.setLastName(DEFAULT_LASTNAME);
+        managedUserVM.setOrganisationID(DEFAULT_ORGANISATION_ID);
         managedUserVM.setEmail(DEFAULT_EMAIL);
         managedUserVM.setActivated(true);
-        managedUserVM.setImageUrl(DEFAULT_IMAGEURL);
         managedUserVM.setLangKey(DEFAULT_LANGKEY);
         managedUserVM.setAuthorities(Collections.singleton(AuthoritiesConstants.USER));
+
+        LocationDTO locationDTO = new LocationDTO();
+        locationDTO.setCity("Test");
+        locationDTO.setPostalCode("77777");
+        locationDTO.setStreetAddress("Test");
+
+        OrganisationDTO organisationDTO = new OrganisationDTO();
+        organisationDTO.setDescription("Test");
+        organisationDTO.setContactMail(DEFAULT_EMAIL);
+        organisationDTO.setIdentificationCode("0123456789");
+        organisationDTO.setLogo("Test");
+        organisationDTO.setName("Test");
+        organisationDTO.setPhoneNumber("0123456789");
+        organisationDTO.setType(OrganisationType.ENTERPRISE);
+        organisationDTO.setLocationDTO(locationDTO);
+
+        CreateUserRequest createUserRequest = new CreateUserRequest(managedUserVM, organisationDTO);
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restUserMockMvc.perform(post("/api/users")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(managedUserVM)))
+            .content(TestUtil.convertObjectToJsonBytes(createUserRequest)))
             .andExpect(status().isBadRequest());
 
         // Validate the User in the database
@@ -205,18 +234,33 @@ public class UserResourceIT {
         ManagedUserVM managedUserVM = new ManagedUserVM();
         managedUserVM.setLogin(DEFAULT_LOGIN);// this login should already be used
         managedUserVM.setPassword(DEFAULT_PASSWORD);
-        managedUserVM.setFirstName(DEFAULT_FIRSTNAME);
-        managedUserVM.setLastName(DEFAULT_LASTNAME);
+        managedUserVM.setOrganisationID(DEFAULT_ORGANISATION_ID);
         managedUserVM.setEmail("anothermail@localhost");
         managedUserVM.setActivated(true);
-        managedUserVM.setImageUrl(DEFAULT_IMAGEURL);
         managedUserVM.setLangKey(DEFAULT_LANGKEY);
         managedUserVM.setAuthorities(Collections.singleton(AuthoritiesConstants.USER));
+
+        LocationDTO locationDTO = new LocationDTO();
+        locationDTO.setCity("Test");
+        locationDTO.setPostalCode("77777");
+        locationDTO.setStreetAddress("Test");
+
+        OrganisationDTO organisationDTO = new OrganisationDTO();
+        organisationDTO.setDescription("Test");
+        organisationDTO.setContactMail(DEFAULT_EMAIL);
+        organisationDTO.setIdentificationCode("0123456789");
+        organisationDTO.setLogo("Test");
+        organisationDTO.setName("Test");
+        organisationDTO.setPhoneNumber("0123456789");
+        organisationDTO.setType(OrganisationType.ENTERPRISE);
+        organisationDTO.setLocationDTO(locationDTO);
+
+        CreateUserRequest createUserRequest = new CreateUserRequest(managedUserVM, organisationDTO);
 
         // Create the User
         restUserMockMvc.perform(post("/api/users")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(managedUserVM)))
+            .content(TestUtil.convertObjectToJsonBytes(createUserRequest)))
             .andExpect(status().isBadRequest());
 
         // Validate the User in the database
@@ -234,18 +278,33 @@ public class UserResourceIT {
         ManagedUserVM managedUserVM = new ManagedUserVM();
         managedUserVM.setLogin("anotherlogin");
         managedUserVM.setPassword(DEFAULT_PASSWORD);
-        managedUserVM.setFirstName(DEFAULT_FIRSTNAME);
-        managedUserVM.setLastName(DEFAULT_LASTNAME);
+        managedUserVM.setOrganisationID(DEFAULT_ORGANISATION_ID);
         managedUserVM.setEmail(DEFAULT_EMAIL);// this email should already be used
         managedUserVM.setActivated(true);
-        managedUserVM.setImageUrl(DEFAULT_IMAGEURL);
         managedUserVM.setLangKey(DEFAULT_LANGKEY);
         managedUserVM.setAuthorities(Collections.singleton(AuthoritiesConstants.USER));
+
+        LocationDTO locationDTO = new LocationDTO();
+        locationDTO.setCity("Test");
+        locationDTO.setPostalCode("77777");
+        locationDTO.setStreetAddress("Test");
+
+        OrganisationDTO organisationDTO = new OrganisationDTO();
+        organisationDTO.setDescription("Test");
+        organisationDTO.setContactMail(DEFAULT_EMAIL);
+        organisationDTO.setIdentificationCode("0123456789");
+        organisationDTO.setLogo("Test");
+        organisationDTO.setName("Test");
+        organisationDTO.setPhoneNumber("0123456789");
+        organisationDTO.setType(OrganisationType.ENTERPRISE);
+        organisationDTO.setLocationDTO(locationDTO);
+
+        CreateUserRequest createUserRequest = new CreateUserRequest(managedUserVM, organisationDTO);
 
         // Create the User
         restUserMockMvc.perform(post("/api/users")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(managedUserVM)))
+            .content(TestUtil.convertObjectToJsonBytes(createUserRequest)))
             .andExpect(status().isBadRequest());
 
         // Validate the User in the database
@@ -265,10 +324,8 @@ public class UserResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].login").value(hasItem(DEFAULT_LOGIN)))
-            .andExpect(jsonPath("$.[*].firstName").value(hasItem(DEFAULT_FIRSTNAME)))
-            .andExpect(jsonPath("$.[*].lastName").value(hasItem(DEFAULT_LASTNAME)))
+            .andExpect(jsonPath("$.[*].organisationID").value(hasItem(99)))
             .andExpect(jsonPath("$.[*].email").value(hasItem(DEFAULT_EMAIL)))
-            .andExpect(jsonPath("$.[*].imageUrl").value(hasItem(DEFAULT_IMAGEURL)))
             .andExpect(jsonPath("$.[*].langKey").value(hasItem(DEFAULT_LANGKEY)));
     }
 
@@ -285,10 +342,8 @@ public class UserResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.login").value(user.getLogin()))
-            .andExpect(jsonPath("$.firstName").value(DEFAULT_FIRSTNAME))
-            .andExpect(jsonPath("$.lastName").value(DEFAULT_LASTNAME))
+            .andExpect(jsonPath("$.organisationID").value(DEFAULT_ORGANISATION_ID))
             .andExpect(jsonPath("$.email").value(DEFAULT_EMAIL))
-            .andExpect(jsonPath("$.imageUrl").value(DEFAULT_IMAGEURL))
             .andExpect(jsonPath("$.langKey").value(DEFAULT_LANGKEY));
 
         assertThat(cacheManager.getCache(UserRepository.USERS_BY_LOGIN_CACHE).get(user.getLogin())).isNotNull();
@@ -315,11 +370,9 @@ public class UserResourceIT {
         managedUserVM.setId(updatedUser.getId());
         managedUserVM.setLogin(updatedUser.getLogin());
         managedUserVM.setPassword(UPDATED_PASSWORD);
-        managedUserVM.setFirstName(UPDATED_FIRSTNAME);
-        managedUserVM.setLastName(UPDATED_LASTNAME);
+        managedUserVM.setOrganisationID(updatedUser.getOrganisationID());
         managedUserVM.setEmail(UPDATED_EMAIL);
         managedUserVM.setActivated(updatedUser.getActivated());
-        managedUserVM.setImageUrl(UPDATED_IMAGEURL);
         managedUserVM.setLangKey(UPDATED_LANGKEY);
         managedUserVM.setCreatedBy(updatedUser.getCreatedBy());
         managedUserVM.setCreatedDate(updatedUser.getCreatedDate());
@@ -336,10 +389,7 @@ public class UserResourceIT {
         List<User> userList = userRepository.findAll();
         assertThat(userList).hasSize(databaseSizeBeforeUpdate);
         User testUser = userList.get(userList.size() - 1);
-        assertThat(testUser.getFirstName()).isEqualTo(UPDATED_FIRSTNAME);
-        assertThat(testUser.getLastName()).isEqualTo(UPDATED_LASTNAME);
         assertThat(testUser.getEmail()).isEqualTo(UPDATED_EMAIL);
-        assertThat(testUser.getImageUrl()).isEqualTo(UPDATED_IMAGEURL);
         assertThat(testUser.getLangKey()).isEqualTo(UPDATED_LANGKEY);
     }
 
@@ -357,11 +407,9 @@ public class UserResourceIT {
         managedUserVM.setId(updatedUser.getId());
         managedUserVM.setLogin(UPDATED_LOGIN);
         managedUserVM.setPassword(UPDATED_PASSWORD);
-        managedUserVM.setFirstName(UPDATED_FIRSTNAME);
-        managedUserVM.setLastName(UPDATED_LASTNAME);
+        managedUserVM.setOrganisationID(updatedUser.getOrganisationID());
         managedUserVM.setEmail(UPDATED_EMAIL);
         managedUserVM.setActivated(updatedUser.getActivated());
-        managedUserVM.setImageUrl(UPDATED_IMAGEURL);
         managedUserVM.setLangKey(UPDATED_LANGKEY);
         managedUserVM.setCreatedBy(updatedUser.getCreatedBy());
         managedUserVM.setCreatedDate(updatedUser.getCreatedDate());
@@ -379,27 +427,22 @@ public class UserResourceIT {
         assertThat(userList).hasSize(databaseSizeBeforeUpdate);
         User testUser = userList.get(userList.size() - 1);
         assertThat(testUser.getLogin()).isEqualTo(UPDATED_LOGIN);
-        assertThat(testUser.getFirstName()).isEqualTo(UPDATED_FIRSTNAME);
-        assertThat(testUser.getLastName()).isEqualTo(UPDATED_LASTNAME);
         assertThat(testUser.getEmail()).isEqualTo(UPDATED_EMAIL);
-        assertThat(testUser.getImageUrl()).isEqualTo(UPDATED_IMAGEURL);
         assertThat(testUser.getLangKey()).isEqualTo(UPDATED_LANGKEY);
     }
 
     @Test
     @Transactional
     public void updateUserExistingEmail() throws Exception {
-        // Initialize the database with 2 users
+        // Initialize the database with 2 users (5 users already in base at app init)
         userRepository.saveAndFlush(user);
 
         User anotherUser = new User();
         anotherUser.setLogin("jhipster");
         anotherUser.setPassword(RandomStringUtils.random(60));
         anotherUser.setActivated(true);
+        anotherUser.setOrganisationID(100L);
         anotherUser.setEmail("jhipster@localhost");
-        anotherUser.setFirstName("java");
-        anotherUser.setLastName("hipster");
-        anotherUser.setImageUrl("");
         anotherUser.setLangKey("en");
         userRepository.saveAndFlush(anotherUser);
 
@@ -410,11 +453,9 @@ public class UserResourceIT {
         managedUserVM.setId(updatedUser.getId());
         managedUserVM.setLogin(updatedUser.getLogin());
         managedUserVM.setPassword(updatedUser.getPassword());
-        managedUserVM.setFirstName(updatedUser.getFirstName());
-        managedUserVM.setLastName(updatedUser.getLastName());
+        managedUserVM.setOrganisationID(updatedUser.getOrganisationID());
         managedUserVM.setEmail("jhipster@localhost");// this email should already be used by anotherUser
         managedUserVM.setActivated(updatedUser.getActivated());
-        managedUserVM.setImageUrl(updatedUser.getImageUrl());
         managedUserVM.setLangKey(updatedUser.getLangKey());
         managedUserVM.setCreatedBy(updatedUser.getCreatedBy());
         managedUserVM.setCreatedDate(updatedUser.getCreatedDate());
@@ -439,9 +480,6 @@ public class UserResourceIT {
         anotherUser.setPassword(RandomStringUtils.random(60));
         anotherUser.setActivated(true);
         anotherUser.setEmail("jhipster@localhost");
-        anotherUser.setFirstName("java");
-        anotherUser.setLastName("hipster");
-        anotherUser.setImageUrl("");
         anotherUser.setLangKey("en");
         userRepository.saveAndFlush(anotherUser);
 
@@ -452,11 +490,9 @@ public class UserResourceIT {
         managedUserVM.setId(updatedUser.getId());
         managedUserVM.setLogin("jhipster");// this login should already be used by anotherUser
         managedUserVM.setPassword(updatedUser.getPassword());
-        managedUserVM.setFirstName(updatedUser.getFirstName());
-        managedUserVM.setLastName(updatedUser.getLastName());
+        managedUserVM.setOrganisationID(updatedUser.getOrganisationID());
         managedUserVM.setEmail(updatedUser.getEmail());
         managedUserVM.setActivated(updatedUser.getActivated());
-        managedUserVM.setImageUrl(updatedUser.getImageUrl());
         managedUserVM.setLangKey(updatedUser.getLangKey());
         managedUserVM.setCreatedBy(updatedUser.getCreatedBy());
         managedUserVM.setCreatedDate(updatedUser.getCreatedDate());
@@ -498,7 +534,8 @@ public class UserResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$").isArray())
-            .andExpect(jsonPath("$").value(hasItems(AuthoritiesConstants.USER, AuthoritiesConstants.ADMIN)));
+            .andExpect(jsonPath("$").value(hasItems(AuthoritiesConstants.USER, AuthoritiesConstants.ADMIN,
+                AuthoritiesConstants.ASSOCIATION, AuthoritiesConstants.COMPANY)));
     }
 
     @Test
@@ -521,11 +558,9 @@ public class UserResourceIT {
         UserDTO userDTO = new UserDTO();
         userDTO.setId(DEFAULT_ID);
         userDTO.setLogin(DEFAULT_LOGIN);
-        userDTO.setFirstName(DEFAULT_FIRSTNAME);
-        userDTO.setLastName(DEFAULT_LASTNAME);
         userDTO.setEmail(DEFAULT_EMAIL);
+        userDTO.setOrganisationID(DEFAULT_ORGANISATION_ID);
         userDTO.setActivated(true);
-        userDTO.setImageUrl(DEFAULT_IMAGEURL);
         userDTO.setLangKey(DEFAULT_LANGKEY);
         userDTO.setCreatedBy(DEFAULT_LOGIN);
         userDTO.setLastModifiedBy(DEFAULT_LOGIN);
@@ -534,11 +569,9 @@ public class UserResourceIT {
         User user = userMapper.userDTOToUser(userDTO);
         assertThat(user.getId()).isEqualTo(DEFAULT_ID);
         assertThat(user.getLogin()).isEqualTo(DEFAULT_LOGIN);
-        assertThat(user.getFirstName()).isEqualTo(DEFAULT_FIRSTNAME);
-        assertThat(user.getLastName()).isEqualTo(DEFAULT_LASTNAME);
         assertThat(user.getEmail()).isEqualTo(DEFAULT_EMAIL);
+        assertThat(user.getOrganisationID()).isEqualTo(DEFAULT_ORGANISATION_ID);
         assertThat(user.getActivated()).isEqualTo(true);
-        assertThat(user.getImageUrl()).isEqualTo(DEFAULT_IMAGEURL);
         assertThat(user.getLangKey()).isEqualTo(DEFAULT_LANGKEY);
         assertThat(user.getCreatedBy()).isNull();
         assertThat(user.getCreatedDate()).isNotNull();
@@ -564,11 +597,9 @@ public class UserResourceIT {
 
         assertThat(userDTO.getId()).isEqualTo(DEFAULT_ID);
         assertThat(userDTO.getLogin()).isEqualTo(DEFAULT_LOGIN);
-        assertThat(userDTO.getFirstName()).isEqualTo(DEFAULT_FIRSTNAME);
-        assertThat(userDTO.getLastName()).isEqualTo(DEFAULT_LASTNAME);
+        assertThat(userDTO.getOrganisationID()).isEqualTo(DEFAULT_ORGANISATION_ID);
         assertThat(userDTO.getEmail()).isEqualTo(DEFAULT_EMAIL);
         assertThat(userDTO.isActivated()).isEqualTo(true);
-        assertThat(userDTO.getImageUrl()).isEqualTo(DEFAULT_IMAGEURL);
         assertThat(userDTO.getLangKey()).isEqualTo(DEFAULT_LANGKEY);
         assertThat(userDTO.getCreatedBy()).isEqualTo(DEFAULT_LOGIN);
         assertThat(userDTO.getCreatedDate()).isEqualTo(user.getCreatedDate());

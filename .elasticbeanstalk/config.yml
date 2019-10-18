@@ -1,6 +1,6 @@
 branch-defaults:
   develop:
-    environment: GifuApplication-prod
+    environment: GifuApplicationEnv
 environment-defaults:
   GifuApplicationEnv:
     branch: null
@@ -21,4 +21,4 @@ global:
   sc: git
   workspace_type: Application
 deploy:
-  artifact: Dockerrun.aws.json
+    artifact: Dockerrun.aws.json

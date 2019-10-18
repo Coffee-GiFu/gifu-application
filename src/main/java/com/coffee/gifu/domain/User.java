@@ -1,7 +1,6 @@
 package com.coffee.gifu.domain;
 
 import com.coffee.gifu.config.Constants;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.annotations.BatchSize;
@@ -46,14 +45,6 @@ public class User extends AbstractAuditingEntity implements Serializable {
     @Column(name = "password_hash", length = 60, nullable = false)
     private String password;
 
-    @Size(max = 50)
-    @Column(name = "first_name", length = 50)
-    private String firstName;
-
-    @Size(max = 50)
-    @Column(name = "last_name", length = 50)
-    private String lastName;
-
     @Email
     @Size(min = 5, max = 254)
     @Column(length = 254, unique = true)
@@ -63,13 +54,12 @@ public class User extends AbstractAuditingEntity implements Serializable {
     @Column(nullable = false)
     private boolean activated = false;
 
+    @Column(name = "organisation_id")
+    private Long organisationID;
+
     @Size(min = 2, max = 10)
     @Column(name = "lang_key", length = 10)
     private String langKey;
-
-    @Size(max = 256)
-    @Column(name = "image_url", length = 256)
-    private String imageUrl;
 
     @Size(max = 20)
     @Column(name = "activation_key", length = 20)
@@ -119,22 +109,6 @@ public class User extends AbstractAuditingEntity implements Serializable {
         this.password = password;
     }
 
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
     public String getEmail() {
         return email;
     }
@@ -143,20 +117,20 @@ public class User extends AbstractAuditingEntity implements Serializable {
         this.email = email;
     }
 
-    public String getImageUrl() {
-        return imageUrl;
-    }
-
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
-    }
-
     public boolean getActivated() {
         return activated;
     }
 
     public void setActivated(boolean activated) {
         this.activated = activated;
+    }
+
+    public Long getOrganisationID() {
+        return organisationID;
+    }
+
+    public void setOrganisationID(Long organisationID) {
+        this.organisationID = organisationID;
     }
 
     public String getActivationKey() {
@@ -219,13 +193,11 @@ public class User extends AbstractAuditingEntity implements Serializable {
     public String toString() {
         return "User{" +
             "login='" + login + '\'' +
-            ", firstName='" + firstName + '\'' +
-            ", lastName='" + lastName + '\'' +
             ", email='" + email + '\'' +
-            ", imageUrl='" + imageUrl + '\'' +
-            ", activated='" + activated + '\'' +
+            ", activated=" + activated +
+            ", organisationID=" + organisationID +
             ", langKey='" + langKey + '\'' +
             ", activationKey='" + activationKey + '\'' +
-            "}";
+            '}';
     }
 }

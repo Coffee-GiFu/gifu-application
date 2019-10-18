@@ -1,7 +1,6 @@
 package com.coffee.gifu.config.audit;
 
 import com.coffee.gifu.domain.PersistentAuditEvent;
-
 import org.springframework.boot.actuate.audit.AuditEvent;
 import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.stereotype.Component;

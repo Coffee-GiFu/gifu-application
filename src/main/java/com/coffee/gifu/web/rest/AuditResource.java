@@ -1,7 +1,6 @@
 package com.coffee.gifu.web.rest;
 
 import com.coffee.gifu.service.AuditEventService;
-
 import io.github.jhipster.web.util.PaginationUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.springframework.boot.actuate.audit.AuditEvent;

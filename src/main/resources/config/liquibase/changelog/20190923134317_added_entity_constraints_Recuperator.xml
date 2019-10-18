@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd">
+    <!--
+        Added the constraints for entity Recuperator.
+    -->
+    <changeSet id="20190923134317-2" author="jhipster">
+        
+        <addForeignKeyConstraint baseColumnNames="association_id"
+                                 baseTableName="recuperator"
+                                 constraintName="fk_recuperator_association_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="organisation"/>
+
+    </changeSet>
+</databaseChangeLog>

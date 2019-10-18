@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd">
+    <!--
+        Added the constraints for entity Offer.
+    -->
+    <changeSet id="20190924091749-2" author="jhipster">
+        
+        <addForeignKeyConstraint baseColumnNames="location_id"
+                                 baseTableName="offer"
+                                 constraintName="fk_offer_location_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="location"/>
+
+        <addForeignKeyConstraint baseColumnNames="offer_id"
+                                 baseTableName="offer_recuperators"
+                                 constraintName="fk_offer_recuperators_offer_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="offer"/>
+
+        <addForeignKeyConstraint baseColumnNames="recuperators_id"
+                                 baseTableName="offer_recuperators"
+                                 constraintName="fk_offer_recuperators_recuperators_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="recuperator"/>
+        
+        <addForeignKeyConstraint baseColumnNames="organisation_id"
+                                 baseTableName="offer"
+                                 constraintName="fk_offer_organisation_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="organisation"/>
+
+    </changeSet>
+</databaseChangeLog>
