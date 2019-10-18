@@ -1,16 +1,21 @@
 package com.coffee.gifu.web.rest;
 
+import com.coffee.gifu.service.EnterpriseNotFoundException;
 import com.coffee.gifu.service.OfferService;
+import com.coffee.gifu.service.OrganisationService;
 import com.coffee.gifu.service.dto.OfferDTO;
+import com.coffee.gifu.service.dto.OrganisationDTO;
 import com.coffee.gifu.service.exception.ManagementRulesException;
 import com.coffee.gifu.web.rest.errors.BadRequestAlertException;
 import com.coffee.gifu.web.rest.errors.WrongOrganisationTypeException;
+import com.coffee.gifu.web.rest.request.object.CreateOfferRequest;
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -34,33 +39,45 @@ public class OfferResource {
     private String applicationName;
 
     private final OfferService offerService;
+    private final OrganisationService organisationService;
 
-    public OfferResource(OfferService offerService) {
+    public OfferResource(OfferService offerService, OrganisationService organisationService) {
         this.offerService = offerService;
+        this.organisationService = organisationService;
     }
 
     /**
      * {@code POST  /offers} : Create a new offer.
      *
-     * @param offerDTO the offerDTO to create.
+     * @param createOfferRequest The request to create an offer.
      * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new offerDTO, or with status {@code 400 (Bad Request)} if the offer has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/offers")
-    public ResponseEntity<OfferDTO> createOffer(@Valid @RequestBody OfferDTO offerDTO) throws URISyntaxException {
-        log.debug("REST request to save Offer : {}", offerDTO);
-        if (offerDTO.getId() != null) {
-            throw new BadRequestAlertException("A new offer cannot already have an ID", ENTITY_NAME, "idexists");
+    public ResponseEntity<OfferDTO> createOffer(@Valid @RequestBody CreateOfferRequest createOfferRequest) throws URISyntaxException {
+        log.debug("REST request to save Offer : {}", createOfferRequest);
+
+        OfferDTO offerDTO = new OfferDTO();
+        offerDTO.setDescription(createOfferRequest.getDescription());
+        offerDTO.setAvailabilityBegin(createOfferRequest.getAvailabilityBegin());
+        offerDTO.setAvailabilityEnd(createOfferRequest.getAvailabilityEnd());
+        offerDTO.setTitle(createOfferRequest.getTitle());
+        offerDTO.setLocationDTO(createOfferRequest.getLocationDTO());
+        Optional<OrganisationDTO> optionalOrganisationDTO =
+                organisationService.findOne(createOfferRequest.getEnterpriseId());
+
+        if (!optionalOrganisationDTO.isPresent()){
+           throw new EnterpriseNotFoundException("Organisation not found for this id " + createOfferRequest.getEnterpriseId());
         }
-        OfferDTO result = null;
-        try {
-            result = offerService.save(offerDTO);
-        } catch (ManagementRulesException e) {
-            throw new WrongOrganisationTypeException();
-        }
-        return ResponseEntity.created(new URI("/api/offers/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
-            .body(result);
+        OrganisationDTO organisationDTO = optionalOrganisationDTO.get();
+        offerDTO.setEnterprise(organisationDTO);
+        OfferDTO savedOfferDTO = offerService.save(offerDTO);
+
+        return ResponseEntity.created(new URI("/api/offers/" + savedOfferDTO.getId()))
+            .headers(HeaderUtil
+                    .createEntityCreationAlert(applicationName, true,
+                            ENTITY_NAME, savedOfferDTO.getId().toString()))
+            .body(savedOfferDTO);
     }
 
     /**

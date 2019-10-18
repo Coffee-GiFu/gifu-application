@@ -6,9 +6,13 @@ import com.coffee.gifu.domain.Offer;
 import com.coffee.gifu.domain.Organisation;
 import com.coffee.gifu.repository.OfferRepository;
 import com.coffee.gifu.service.OfferService;
+import com.coffee.gifu.service.OrganisationService;
+import com.coffee.gifu.service.dto.LocationDTO;
 import com.coffee.gifu.service.dto.OfferDTO;
+import com.coffee.gifu.service.dto.OrganisationDTO;
 import com.coffee.gifu.service.mapper.OfferMapper;
 import com.coffee.gifu.web.rest.errors.ExceptionTranslator;
+import com.coffee.gifu.web.rest.request.object.CreateOfferRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -28,7 +32,9 @@ import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
+import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import static com.coffee.gifu.web.rest.TestUtil.createFormattingConversionService;
 import static com.coffee.gifu.web.rest.TestUtil.sameInstant;
@@ -76,6 +82,9 @@ public class OfferResourceIT {
     private OfferService offerService;
 
     @Autowired
+    private OrganisationService organisationService;
+
+    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -97,7 +106,7 @@ public class OfferResourceIT {
     @BeforeEach
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final OfferResource offerResource = new OfferResource(offerService);
+        final OfferResource offerResource = new OfferResource(offerService,organisationService);
         this.restOfferMockMvc = MockMvcBuilders.standaloneSetup(offerResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -173,19 +182,33 @@ public class OfferResourceIT {
 
     @BeforeEach
     public void initTest() {
+
         offer = createEntity(em);
     }
 
     @Test
-    @Transactional
+    @Transactional()
     public void createOffer() throws Exception {
+
         int databaseSizeBeforeCreate = offerRepository.findAll().size();
 
         // Create the Offer
-        OfferDTO offerDTO = offerMapper.toDto(offer);
+        LocationDTO locationDTO = new LocationDTO();
+        locationDTO.setCity("Paris");
+        locationDTO.setPostalCode("75012");
+        locationDTO.setStreetAddress("12 avenue de charenton");
+        CreateOfferRequest createOfferRequest = new CreateOfferRequest();
+        createOfferRequest.setAvailabilityBegin(DEFAULT_AVAILABILITY_BEGIN);
+        createOfferRequest.setAvailabilityEnd(DEFAULT_AVAILABILITY_END);
+        createOfferRequest.setCold(DEFAULT_IS_COLD);
+        createOfferRequest.setDescription(DEFAULT_DESCRIPTION);
+        createOfferRequest.setTitle(DEFAULT_TITLE);
+        createOfferRequest.setEnterpriseId(offer.getOrganisation().getId());
+        createOfferRequest.setLocationDTO(locationDTO);
+
         restOfferMockMvc.perform(post("/api/offers")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(offerDTO)))
+            .content(TestUtil.convertObjectToJsonBytes(createOfferRequest)))
             .andExpect(status().isCreated());
 
         // Validate the Offer in the database
@@ -197,6 +220,33 @@ public class OfferResourceIT {
         assertThat(testOffer.getAvailabilityBegin()).isEqualTo(DEFAULT_AVAILABILITY_BEGIN);
         assertThat(testOffer.getAvailabilityEnd()).isEqualTo(DEFAULT_AVAILABILITY_END);
         assertThat(testOffer.getTitle()).isEqualTo(DEFAULT_TITLE);
+        assertThat(testOffer.getOrganisation()).isEqualTo(offer.getOrganisation());
+        assertThat(testOffer.getLocation().getStreetAddress()).isEqualTo(locationDTO.getStreetAddress());
+    }
+
+    @Test
+    @Transactional()
+    public void createOffer_with_identerprise_should_return_exception_error_not_found() throws Exception {
+        int databaseSizeBeforeCreate = offerRepository.findAll().size();
+
+        // Create the Offer
+        LocationDTO locationDTO = new LocationDTO();
+        locationDTO.setCity("Paris");
+        locationDTO.setPostalCode("75012");
+        locationDTO.setStreetAddress("12 avenue de charenton");
+        CreateOfferRequest createOfferRequest = new CreateOfferRequest();
+        createOfferRequest.setAvailabilityBegin(DEFAULT_AVAILABILITY_BEGIN);
+        createOfferRequest.setAvailabilityEnd(DEFAULT_AVAILABILITY_END);
+        createOfferRequest.setCold(DEFAULT_IS_COLD);
+        createOfferRequest.setDescription(DEFAULT_DESCRIPTION);
+        createOfferRequest.setTitle(DEFAULT_TITLE);
+        createOfferRequest.setEnterpriseId(1000L);
+        createOfferRequest.setLocationDTO(locationDTO);
+
+        restOfferMockMvc.perform(post("/api/offers")
+                .contentType(TestUtil.APPLICATION_JSON_UTF8)
+                .content(TestUtil.convertObjectToJsonBytes(createOfferRequest)))
+                .andExpect(status().isCreated());
     }
 
     @Test
