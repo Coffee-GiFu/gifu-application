@@ -9,6 +9,7 @@ import './loginPage.scss';
 import { Button } from 'reactstrap';
 import RegisterModal from './register/register';
 import { translate } from 'react-jhipster/lib/src/language/translate';
+import Checkbox from 'app/shared/layout/checkbox/checkbox';
 
 export interface ILoginProps extends StateProps, DispatchProps, RouteComponentProps<{}> {}
 
@@ -35,6 +36,7 @@ export const LoginPage = (props: ILoginProps) => {
   }
   return (
     <div>
+      <Checkbox name="test" defaultValue={true}></Checkbox>
       <RegisterModal showModal={show} handleClose={setShow} isEntreprise={isEntreprise} />
       <div className="LoginPage">
         <div className="LoginForm"> 
