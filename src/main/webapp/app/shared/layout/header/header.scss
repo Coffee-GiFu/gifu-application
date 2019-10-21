@@ -1,6 +1,5 @@
-@import '../../../app.scss';
+@import '../../../color.scss';
 $header-color: $typo;
-$header-color-secondary: $typo-dark;
 $header-color-hover: darken($header-color, 20%);
 
 /* ==========================================================================
@@ -30,7 +29,7 @@ Developement Ribbon
     padding: 10px 50px;
     text-align: center;
     text-decoration: none;
-    text-shadow: 0 0 5px $typo-shadow;
+    text-shadow: 0 0 5px $typo;
     pointer-events: none;
   }
 }
@@ -41,6 +40,7 @@ Navbar styles
 .jh-navbar {
   background-color: $color-main-light;
   padding: 0.2em 1em;
+  height: 3rem;
   .profile-image {
     margin: -10px 0px;
     height: 40px;
@@ -78,14 +78,10 @@ Navbar styles
     color: $typo;
     font-size: 1.5em;
     padding: 10px;
-    &:hover {
-      color: $typo-dark;
-    }
   }
 }
 .navbar-version {
   font-size: 10px;
-  color: $header-color-secondary;
   padding: 0 0 0 10px;
 }
 
