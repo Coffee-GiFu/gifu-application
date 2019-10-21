@@ -1,6 +1,7 @@
 package com.coffee.gifu.service;
 
 import com.coffee.gifu.service.dto.OfferDTO;
+import com.coffee.gifu.service.exception.ManagementRulesException;
 
 import java.util.List;
 import java.util.Optional;
@@ -16,7 +17,7 @@ public interface OfferService {
      * @param offerDTO the entity to save.
      * @return the persisted entity.
      */
-    OfferDTO save(OfferDTO offerDTO);
+    OfferDTO save(OfferDTO offerDTO) throws ManagementRulesException;
 
     /**
      * Get all the offers.
@@ -40,4 +41,26 @@ public interface OfferService {
      * @param id the id of the entity.
      */
     void delete(Long id);
+
+    /**
+     * Get all the available offers.
+     *
+     * @param isColdFilter
+     * @return the list of available entities.
+     */
+    List<OfferDTO> searchAvailableOffer(boolean isColdFilter);
+
+    /**
+     * Get all the selected offers for actual account.
+     *
+     * @return the list of available entities.
+     */
+    List<OfferDTO> searchChosenOffer();
+
+    /**
+     * Get all the created offers for actual account.
+     *
+     * @return the list of available entities.
+     */
+    List<OfferDTO> searchCreatedOffer();
 }

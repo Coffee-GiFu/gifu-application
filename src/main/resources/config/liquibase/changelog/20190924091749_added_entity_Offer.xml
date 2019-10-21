@@ -1,13 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<databaseChangeLog
-    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
-    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd
-                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd">
 
     <property name="now" value="now()" dbms="h2"/>
-    
+
     <!--
         Added the entity Offer.
     -->
@@ -38,8 +34,8 @@
             <column name="location_id" type="bigint">
                 <constraints unique="true" nullable="false" uniqueConstraintName="ux_offer_location_id" />
             </column>
-            <column name="recuperator_id" type="bigint">
-                <constraints nullable="true" />
+            <column name="organisation_id" type="bigint">
+                <constraints nullable="false" />
             </column>
 
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
@@ -50,6 +46,17 @@
     </changeSet>
 
     <changeSet id="20190924091749-1-relations" author="jhipster">
+
+        <createTable tableName="offer_recuperators">
+            <column name="recuperators_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="offer_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addPrimaryKey columnNames="offer_id, recuperators_id" tableName="offer_recuperators"/>
 
     </changeSet>
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here, do not remove-->
@@ -74,6 +81,7 @@
             <column name="availability_end" type="datetime"/>
             <column name="title" type="string"/>
             <column name="location_id" type="numeric"/>
+            <column name="organisation_id" type="numeric"/>
             <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here, do not remove-->
         </loadData>
     </changeSet>

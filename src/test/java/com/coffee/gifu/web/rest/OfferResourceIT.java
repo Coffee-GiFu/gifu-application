@@ -1,16 +1,17 @@
 package com.coffee.gifu.web.rest;
 
 import com.coffee.gifu.GifuApp;
-import com.coffee.gifu.domain.Offer;
 import com.coffee.gifu.domain.Location;
+import com.coffee.gifu.domain.Offer;
+import com.coffee.gifu.domain.Organisation;
 import com.coffee.gifu.repository.OfferRepository;
 import com.coffee.gifu.service.OfferService;
 import com.coffee.gifu.service.dto.OfferDTO;
 import com.coffee.gifu.service.mapper.OfferMapper;
 import com.coffee.gifu.web.rest.errors.ExceptionTranslator;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -24,13 +25,13 @@ import org.springframework.validation.Validator;
 
 import javax.persistence.EntityManager;
 import java.time.Instant;
-import java.time.ZonedDateTime;
-import java.time.ZoneOffset;
 import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 import java.util.List;
 
-import static com.coffee.gifu.web.rest.TestUtil.sameInstant;
 import static com.coffee.gifu.web.rest.TestUtil.createFormattingConversionService;
+import static com.coffee.gifu.web.rest.TestUtil.sameInstant;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -62,8 +63,14 @@ public class OfferResourceIT {
     @Autowired
     private OfferRepository offerRepository;
 
+    @Mock
+    private OfferRepository offerRepositoryMock;
+
     @Autowired
     private OfferMapper offerMapper;
+
+    @Mock
+    private OfferService offerServiceMock;
 
     @Autowired
     private OfferService offerService;
@@ -114,14 +121,18 @@ public class OfferResourceIT {
             .title(DEFAULT_TITLE);
         // Add required entity
         Location location;
-        if (TestUtil.findAll(em, Location.class).isEmpty()) {
-            location = LocationResourceIT.createEntity(em);
-            em.persist(location);
+        location = LocationITResource.createEntity(em);
+        offer.setLocation(location);
+        // Add required entity
+        Organisation organisation;
+        if (TestUtil.findAll(em, Organisation.class).isEmpty()) {
+            organisation = OrganisationResourceIT.createEntity(em);
+            em.persist(organisation);
             em.flush();
         } else {
-            location = TestUtil.findAll(em, Location.class).get(0);
+            organisation = TestUtil.findAll(em, Organisation.class).get(0);
         }
-        offer.setLocation(location);
+        offer.setOrganisation(organisation);
         return offer;
     }
     /**
@@ -140,13 +151,23 @@ public class OfferResourceIT {
         // Add required entity
         Location location;
         if (TestUtil.findAll(em, Location.class).isEmpty()) {
-            location = LocationResourceIT.createUpdatedEntity(em);
+            location = LocationITResource.createUpdatedEntity(em);
             em.persist(location);
             em.flush();
         } else {
             location = TestUtil.findAll(em, Location.class).get(0);
         }
         offer.setLocation(location);
+        // Add required entity
+        Organisation organisation;
+        if (TestUtil.findAll(em, Organisation.class).isEmpty()) {
+            organisation = OrganisationResourceIT.createUpdatedEntity(em);
+            em.persist(organisation);
+            em.flush();
+        } else {
+            organisation = TestUtil.findAll(em, Organisation.class).get(0);
+        }
+        offer.setOrganisation(organisation);
         return offer;
     }
 

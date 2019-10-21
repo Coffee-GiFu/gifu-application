@@ -1,0 +1,12 @@
+version: '2'
+services:
+  gifu-backend:
+    image: gifu-backend-dev
+    environment:
+      - _JAVA_OPTIONS=-Xmx512m -Xms256m
+      - SPRING_PROFILES_ACTIVE=dev
+      - JHIPSTER_SLEEP=30 # gives time for other services to boot before the application
+    ports:
+      - 8888:8888
+  gifu-database:
+    image: oscarfonts/h2

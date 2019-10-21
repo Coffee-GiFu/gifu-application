@@ -44,7 +44,7 @@ export class Recuperator extends React.Component<IRecuperatorProps> {
                     <Translate contentKey="gifuApp.recuperator.phoneNumber">Phone Number</Translate>
                   </th>
                   <th>
-                    <Translate contentKey="gifuApp.recuperator.location">Location</Translate>
+                    <Translate contentKey="gifuApp.recuperator.association">Association</Translate>
                   </th>
                   <th />
                 </tr>
@@ -60,7 +60,11 @@ export class Recuperator extends React.Component<IRecuperatorProps> {
                     <td>{recuperator.name}</td>
                     <td>{recuperator.phoneNumber}</td>
                     <td>
-                      {recuperator.location ? <Link to={`location/${recuperator.location.id}`}>{recuperator.location.city}</Link> : ''}
+                      {recuperator.associationName ? (
+                        <Link to={`organisation/${recuperator.associationId}`}>{recuperator.associationName}</Link>
+                      ) : (
+                        ''
+                      )}
                     </td>
                     <td className="text-right">
                       <div className="btn-group flex-btn-group-container">

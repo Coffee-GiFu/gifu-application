@@ -1,4 +1,4 @@
-id;name;phone_number;location_id
+id;name;phone_number;association_id
 1;mobile Fish;Home Loan ;1
 2;Trace;Savings Ac;2
 3;Tasty Metal Bacon;red Chips ;3

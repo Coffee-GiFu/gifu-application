@@ -10,6 +10,7 @@
         "location": "Location",
         "recuperator": "Recuperator",
         "offer": "Offer",
+        "organisation": "Organisation",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "account": {
@@ -133,7 +134,9 @@
     "userexists": "Login name already used!",
     "emailexists": "Email is already in use!",
     "idexists": "A new {{ entityName }} cannot already have an ID",
-    "idnull": "Invalid ID"
+    "idnull": "Invalid ID",
+    "identificationcodeexists": "Identification Code already used!",
+    "wrongorganisationtype": "Wrong Organisation Type!"
   },
   "footer": "This is your footer"
 }

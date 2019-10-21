@@ -1,6 +1,5 @@
 package com.coffee.gifu.web.rest;
 
-import com.coffee.gifu.security.AuthoritiesConstants;
 import com.coffee.gifu.service.RecuperatorService;
 import com.coffee.gifu.web.rest.errors.BadRequestAlertException;
 import com.coffee.gifu.service.dto.RecuperatorDTO;
@@ -11,7 +10,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -49,7 +47,6 @@ public class RecuperatorResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/recuperators")
-    @PreAuthorize("hasRole(\"" + AuthoritiesConstants.ASSOCIATION + "\")")
     public ResponseEntity<RecuperatorDTO> createRecuperator(@Valid @RequestBody RecuperatorDTO recuperatorDTO) throws URISyntaxException {
         log.debug("REST request to save Recuperator : {}", recuperatorDTO);
         if (recuperatorDTO.getId() != null) {
@@ -71,7 +68,6 @@ public class RecuperatorResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/recuperators")
-    @PreAuthorize("hasRole(\"" + AuthoritiesConstants.ASSOCIATION + "\")")
     public ResponseEntity<RecuperatorDTO> updateRecuperator(@Valid @RequestBody RecuperatorDTO recuperatorDTO) throws URISyntaxException {
         log.debug("REST request to update Recuperator : {}", recuperatorDTO);
         if (recuperatorDTO.getId() == null) {
@@ -90,7 +86,6 @@ public class RecuperatorResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of recuperators in body.
      */
     @GetMapping("/recuperators")
-    @PreAuthorize("hasRole(\"" + AuthoritiesConstants.ASSOCIATION + "\")")
     public List<RecuperatorDTO> getAllRecuperators() {
         log.debug("REST request to get all Recuperators");
         return recuperatorService.findAll();
@@ -102,9 +97,7 @@ public class RecuperatorResource {
      * @param id the id of the recuperatorDTO to retrieve.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the recuperatorDTO, or with status {@code 404 (Not Found)}.
      */
-    //POST
     @GetMapping("/recuperators/{id}")
-    @PreAuthorize("hasRole(\"" + AuthoritiesConstants.ASSOCIATION + "\")")
     public ResponseEntity<RecuperatorDTO> getRecuperator(@PathVariable Long id) {
         log.debug("REST request to get Recuperator : {}", id);
         Optional<RecuperatorDTO> recuperatorDTO = recuperatorService.findOne(id);
@@ -118,7 +111,6 @@ public class RecuperatorResource {
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
     @DeleteMapping("/recuperators/{id}")
-    @PreAuthorize("hasRole(\"" + AuthoritiesConstants.ASSOCIATION + "\")")
     public ResponseEntity<Void> deleteRecuperator(@PathVariable Long id) {
         log.debug("REST request to delete Recuperator : {}", id);
         recuperatorService.delete(id);

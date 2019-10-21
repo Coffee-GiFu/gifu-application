@@ -18,7 +18,7 @@
       },
       "name": "Name",
       "phoneNumber": "Phone Number",
-      "location": "Location"
+      "association": "Association"
     }
   }
 }

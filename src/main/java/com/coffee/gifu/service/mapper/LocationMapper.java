@@ -1,9 +1,8 @@
 package com.coffee.gifu.service.mapper;
 
-import com.coffee.gifu.domain.*;
+import com.coffee.gifu.domain.Location;
 import com.coffee.gifu.service.dto.LocationDTO;
-
-import org.mapstruct.*;
+import org.mapstruct.Mapper;
 
 /**
  * Mapper for the entity {@link Location} and its DTO {@link LocationDTO}.

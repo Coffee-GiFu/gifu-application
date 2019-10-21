@@ -2,16 +2,18 @@ package com.coffee.gifu.service;
 
 import com.coffee.gifu.config.Constants;
 import com.coffee.gifu.domain.Authority;
+import com.coffee.gifu.domain.Organisation;
 import com.coffee.gifu.domain.User;
 import com.coffee.gifu.repository.AuthorityRepository;
 import com.coffee.gifu.repository.UserRepository;
 import com.coffee.gifu.security.AuthoritiesConstants;
 import com.coffee.gifu.security.SecurityUtils;
+import com.coffee.gifu.service.dto.OrganisationDTO;
 import com.coffee.gifu.service.dto.UserDTO;
 import com.coffee.gifu.service.util.RandomUtil;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.CacheManager;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -36,17 +38,22 @@ public class UserService {
 
     private final UserRepository userRepository;
 
+    private final OrganisationService organisationService;
+
     private final PasswordEncoder passwordEncoder;
 
     private final AuthorityRepository authorityRepository;
 
     private final CacheManager cacheManager;
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, AuthorityRepository authorityRepository, CacheManager cacheManager) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder,
+                       AuthorityRepository authorityRepository, CacheManager cacheManager,
+                       OrganisationService organisationService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.authorityRepository = authorityRepository;
         this.cacheManager = cacheManager;
+        this.organisationService = organisationService;
     }
 
     public Optional<User> activateRegistration(String key) {
@@ -119,9 +126,9 @@ public class UserService {
         return newUser;
     }
 
-    private boolean removeNonActivatedUser(User existingUser){
+    private boolean removeNonActivatedUser(User existingUser) {
         if (existingUser.getActivated()) {
-             return false;
+            return false;
         }
         userRepository.delete(existingUser);
         userRepository.flush();
@@ -129,10 +136,14 @@ public class UserService {
         return true;
     }
 
-    public User createUser(UserDTO userDTO) {
+    @Transactional
+    public User createUser(UserDTO userDTO, OrganisationDTO organisationDTO) {
+        //TODO : Ajouter Identification Code Vérification
+        OrganisationDTO organisationFromDatabase = organisationService.save(organisationDTO);
         User user = new User();
         user.setLogin(userDTO.getLogin().toLowerCase());
         user.setEmail(userDTO.getEmail().toLowerCase());
+        user.setOrganisationID(organisationFromDatabase.getId());
         if (userDTO.getLangKey() == null) {
             user.setLangKey(Constants.DEFAULT_LANGUAGE); // default language
         } else {
@@ -160,13 +171,10 @@ public class UserService {
     /**
      * Update basic information (first name, last name, email, language) for the current user.
      *
-     * @param firstName first name of user.
-     * @param lastName  last name of user.
-     * @param email     email id of user.
-     * @param langKey   language key.
-     * @param imageUrl  image URL of user.
+     * @param email   email id of user.
+     * @param langKey language key.
      */
-    public void updateUser( String email, String langKey) {
+    public void updateUser(String email, String langKey) {
         SecurityUtils.getCurrentUserLogin()
             .flatMap(userRepository::findOneByLogin)
             .ifPresent(user -> {
@@ -269,6 +277,7 @@ public class UserService {
 
     /**
      * Gets a list of all the authorities.
+     *
      * @return a list of all the authorities.
      */
     public List<String> getAuthorities() {

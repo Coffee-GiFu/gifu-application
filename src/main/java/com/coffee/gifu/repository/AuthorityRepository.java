@@ -1,7 +1,6 @@
 package com.coffee.gifu.repository;
 
 import com.coffee.gifu.domain.Authority;
-
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**

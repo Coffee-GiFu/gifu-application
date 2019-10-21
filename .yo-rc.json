@@ -21,15 +21,10 @@
     "buildTool": "maven",
     "useSass": true,
     "clientPackageManager": "npm",
-    "testFrameworks": [
-      "cucumber"
-    ],
+    "testFrameworks": ["cucumber"],
     "enableTranslation": true,
     "nativeLanguage": "fr",
-    "languages": [
-      "en",
-      "fr"
-    ],
+    "languages": ["en", "fr"],
     "clientFramework": "react",
     "jhiPrefix": "jhi",
     "jhipsterVersion": "6.3.0",
@@ -39,7 +34,11 @@
     "entitySuffix": "",
     "dtoSuffix": "DTO",
     "otherModules": [],
-    "blueprints": []
+    "blueprints": [],
+    "appsFolders": ["gifu-application"],
+    "directoryPath": "../",
+    "monitoring": "elk",
+    "consoleOptions": []
   },
   "git-provider": "GitHub",
   "git-company": "Senrokai",

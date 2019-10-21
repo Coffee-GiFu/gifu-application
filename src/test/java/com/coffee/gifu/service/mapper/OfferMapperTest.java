@@ -13,6 +13,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.time.ZonedDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -32,17 +34,14 @@ public class OfferMapperTest {
     @Test
     public void testEntityToDTO() {
         //Given
+        Set<Recuperator> recuperators = new HashSet<>();
         Recuperator recuperator = new Recuperator();
         Location location = new Location();
         Offer offer = new Offer();
         recuperator.setId(134526L);
         recuperator.setName("Toto");
         recuperator.setPhoneNumber("13456475");
-        location.setId(1345L);
-        location.setPostalCode("675679");
-        location.setStreetAddress("AREGDGJFJDSDGNG");
-        location.setCity("arhsgjdhgkfjlgkh");
-        recuperator.setLocation(location);
+        recuperators.add(recuperator);
         location.setId(13465L);
         location.setPostalCode("34553");
         location.setStreetAddress("AREGDGJsdgsdfsgFJDSDGNG");
@@ -54,15 +53,14 @@ public class OfferMapperTest {
         offer.setAvailabilityEnd(ZonedDateTime.now());
         offer.setTitle("TROREALARL");
         offer.setLocation(location);
-        offer.setRecuperator(recuperator);
+        offer.setRecuperators(recuperators);
 
         //When
         OfferDTO offerDTO = offerMapper.toDto(offer);
 
         //Then
         assertThat(offerDTO).isNotNull();
-        assertThat(offerDTO.getRecuperatorDTO()).isEqualTo(recuperatorMapper.toDto(recuperator));
-        assertThat(offerDTO.getLocationDTO()).isEqualTo(locationMapper.toDto(recuperator.getLocation()));
+        assertThat(offerDTO.getRecuperatorDTOs().toArray()[0]).isEqualTo(recuperatorMapper.toDto(recuperators).toArray()[0]);
         assertThat(offerDTO.getDescription()).isEqualTo(offer.getDescription());
         assertThat(offerDTO.getTitle()).isEqualTo(offer.getTitle());
         assertThat(offerDTO.getAvailabilityBegin()).isEqualTo(offer.getAvailabilityBegin());
@@ -73,6 +71,7 @@ public class OfferMapperTest {
     @Test
     public void testDTOToEntity() {
         //Given
+        Set<RecuperatorDTO> recuperatorDTOs = new HashSet<>();
         RecuperatorDTO recuperatorDTO = new RecuperatorDTO();
         LocationDTO locationDTO = new LocationDTO();
         OfferDTO offerDTO = new OfferDTO();
@@ -83,7 +82,7 @@ public class OfferMapperTest {
         locationDTO.setStreetAddress("AREGDGJFJDSDGNG");
         locationDTO.setCity("arhsgjdhgkfjlgkh");
         locationDTO.setId(132452L);
-        recuperatorDTO.setLocationDTO(locationDTO);
+        recuperatorDTOs.add(recuperatorDTO);
         offerDTO.setId(149876L);
         offerDTO.setDescription("gergsghshsgfh");
         offerDTO.setIsCold(true);
@@ -91,15 +90,14 @@ public class OfferMapperTest {
         offerDTO.setAvailabilityEnd(ZonedDateTime.now());
         offerDTO.setTitle("TROREALARL");
         offerDTO.setLocationDTO(locationDTO);
-        offerDTO.setRecuperatorDTO(recuperatorDTO);
+        offerDTO.setRecuperatorDTOs(recuperatorDTOs);
 
         //When
         Offer offer = offerMapper.toEntity(offerDTO);
 
         //Then
         assertThat(offer).isNotNull();
-        assertThat(offer.getRecuperator()).isEqualTo(recuperatorMapper.toEntity(recuperatorDTO));
-        assertThat(offer.getLocation()).isEqualTo(locationMapper.toEntity(recuperatorDTO.getLocationDTO()));
+        assertThat(offer.getRecuperators().toArray()[0]).isEqualTo(recuperatorMapper.toEntity(recuperatorDTOs).toArray()[0]);
         assertThat(offer.getDescription()).isEqualTo(offer.getDescription());
         assertThat(offer.getTitle()).isEqualTo(offer.getTitle());
         assertThat(offer.getAvailabilityBegin()).isEqualTo(offer.getAvailabilityBegin());

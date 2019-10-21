@@ -35,7 +35,7 @@ public class Recuperator implements Serializable {
     @OneToOne(optional = false)    @NotNull
 
     @JoinColumn(unique = true)
-    private Location location;
+    private Organisation association;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -72,17 +72,17 @@ public class Recuperator implements Serializable {
         this.phoneNumber = phoneNumber;
     }
 
-    public Location getLocation() {
-        return location;
+    public Organisation getAssociation() {
+        return association;
     }
 
-    public Recuperator location(Location location) {
-        this.location = location;
+    public Recuperator association(Organisation organisation) {
+        this.association = organisation;
         return this;
     }
 
-    public void setLocation(Location location) {
-        this.location = location;
+    public void setAssociation(Organisation organisation) {
+        this.association = organisation;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
