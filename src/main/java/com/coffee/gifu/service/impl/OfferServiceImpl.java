@@ -2,16 +2,20 @@ package com.coffee.gifu.service.impl;
 
 import com.coffee.gifu.domain.Offer;
 import com.coffee.gifu.domain.OrganisationType;
+import com.coffee.gifu.domain.Recuperator;
 import com.coffee.gifu.repository.OfferRepository;
 import com.coffee.gifu.service.OfferService;
 import com.coffee.gifu.service.dto.OfferDTO;
+import com.coffee.gifu.service.dto.RecuperatorDTO;
 import com.coffee.gifu.service.exception.ManagementRulesException;
 import com.coffee.gifu.service.mapper.OfferMapper;
+import com.coffee.gifu.service.mapper.RecuperatorMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -30,9 +34,12 @@ public class OfferServiceImpl implements OfferService {
 
     private final OfferMapper offerMapper;
 
-    public OfferServiceImpl(OfferRepository offerRepository, OfferMapper offerMapper) {
+    private final RecuperatorMapper recuperatorMapper;
+
+    public OfferServiceImpl(OfferRepository offerRepository, OfferMapper offerMapper, com.coffee.gifu.service.mapper.RecuperatorMapper recuperatorMapper) {
         this.offerRepository = offerRepository;
         this.offerMapper = offerMapper;
+        this.recuperatorMapper = recuperatorMapper;
     }
 
     /**
@@ -42,12 +49,37 @@ public class OfferServiceImpl implements OfferService {
      * @return the persisted entity.
      */
     @Override
-    public OfferDTO save(OfferDTO offerDTO) throws ManagementRulesException {
+    public OfferDTO save(OfferDTO offerDTO) {
         if (offerDTO.getEnterprise().getType() != OrganisationType.ENTERPRISE) {
             throw new ManagementRulesException("An offer need an Enterprise Type to be created/updated !");
         }
         log.debug("Request to save Offer : {}", offerDTO);
         Offer offer = offerMapper.toEntity(offerDTO);
+        offer = offerRepository.save(offer);
+        return offerMapper.toDto(offer);
+    }
+
+    @Override
+    public OfferDTO addRecuperator(Long offerId, RecuperatorDTO recuperatorDTO) {
+        Optional<Offer> offerFromDB = offerRepository.findById(offerId);
+        if (offerFromDB.isEmpty()) {
+            throw new EntityNotFoundException("Offer with id " + offerId);
+        }
+        Offer offer = offerFromDB.get();
+        Recuperator recuperator = recuperatorMapper.toEntity(recuperatorDTO);
+        offer.getRecuperators().add(recuperator);
+        offer = offerRepository.save(offer);
+        return offerMapper.toDto(offer);
+    }
+
+    @Override
+    public OfferDTO validateRecuperator(Long offerId, Long selectedRecuperator) {
+        Optional<Offer> offerFromDB = offerRepository.findById(offerId);
+        if (offerFromDB.isEmpty()) {
+            throw new EntityNotFoundException("Offer with id " + offerId);
+        }
+        Offer offer = offerFromDB.get();
+        offer.setSelectedRecuperator(selectedRecuperator);
         offer = offerRepository.save(offer);
         return offerMapper.toDto(offer);
     }
@@ -65,7 +97,6 @@ public class OfferServiceImpl implements OfferService {
             .map(offerMapper::toDto)
             .collect(Collectors.toCollection(LinkedList::new));
     }
-
 
     /**
      * Get one offer by id.

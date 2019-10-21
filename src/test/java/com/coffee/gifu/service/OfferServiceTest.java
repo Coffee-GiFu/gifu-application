@@ -8,6 +8,7 @@ import com.coffee.gifu.service.dto.OrganisationDTO;
 import com.coffee.gifu.service.dto.RecuperatorDTO;
 import com.coffee.gifu.service.impl.OfferServiceImpl;
 import com.coffee.gifu.service.mapper.OfferMapper;
+import com.coffee.gifu.service.mapper.RecuperatorMapper;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -30,6 +31,9 @@ public class OfferServiceTest {
     @Mock
     private OfferMapper offerMapper;
 
+    @Mock
+    private RecuperatorMapper recuperatorMapper;
+
     private OfferService offerService;
 
     private Offer offer;
@@ -38,7 +42,7 @@ public class OfferServiceTest {
 
     @Before
     public void setup(){
-        offerService = new OfferServiceImpl(offerRepository,offerMapper);
+        offerService = new OfferServiceImpl(offerRepository,offerMapper, recuperatorMapper);
 
         ZonedDateTime begin = ZonedDateTime.now();
         ZonedDateTime end = ZonedDateTime.now();

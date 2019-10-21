@@ -34,6 +34,8 @@ public class OfferDTO implements Serializable {
     @NotNull
     private LocationDTO locationDTO;
 
+    private Long selectedRecuperator;
+
     private Set<RecuperatorDTO> recuperatorDTOs = new HashSet<>();
 
     @NotNull
@@ -85,6 +87,14 @@ public class OfferDTO implements Serializable {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public Long getSelectedRecuperator() {
+        return selectedRecuperator;
+    }
+
+    public void setSelectedRecuperator(Long selectedRecuperator) {
+        this.selectedRecuperator = selectedRecuperator;
     }
 
     public LocationDTO getLocationDTO() {
@@ -141,6 +151,7 @@ public class OfferDTO implements Serializable {
             ", availabilityBegin='" + getAvailabilityBegin() + "'" +
             ", availabilityEnd='" + getAvailabilityEnd() + "'" +
             ", title='" + getTitle() + "'" +
+            ", selectedRecuperator=" + getSelectedRecuperator() +
             ", location=" + getLocationDTO() +
             ", organisation=" + getEnterprise() +
             "}";

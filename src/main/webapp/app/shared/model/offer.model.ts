@@ -8,6 +8,7 @@ export interface IOffer {
   availabilityBegin?: Moment;
   availabilityEnd?: Moment;
   title?: string;
+  selectedRecuperator?: number;
   locationId?: number;
   recuperators?: IRecuperator[];
   organisationName?: string;

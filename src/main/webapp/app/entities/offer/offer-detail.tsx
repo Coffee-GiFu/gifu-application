@@ -60,6 +60,12 @@ export class OfferDetail extends React.Component<IOfferDetailProps> {
             </dt>
             <dd>{offerEntity.title}</dd>
             <dt>
+              <span id="selectedRecuperator">
+                <Translate contentKey="gifuApp.offer.selectedRecuperator">Selected Recuperator</Translate>
+              </span>
+            </dt>
+            <dd>{offerEntity.selectedRecuperator}</dd>
+            <dt>
               <Translate contentKey="gifuApp.offer.location">Location</Translate>
             </dt>
             <dd>{offerEntity.locationId ? offerEntity.locationId : ''}</dd>

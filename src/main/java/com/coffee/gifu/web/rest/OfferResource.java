@@ -2,9 +2,8 @@ package com.coffee.gifu.web.rest;
 
 import com.coffee.gifu.service.OfferService;
 import com.coffee.gifu.service.dto.OfferDTO;
-import com.coffee.gifu.service.exception.ManagementRulesException;
+import com.coffee.gifu.service.dto.RecuperatorDTO;
 import com.coffee.gifu.web.rest.errors.BadRequestAlertException;
-import com.coffee.gifu.web.rest.errors.WrongOrganisationTypeException;
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
@@ -44,7 +43,6 @@ public class OfferResource {
      *
      * @param offerDTO the offerDTO to create.
      * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new offerDTO, or with status {@code 400 (Bad Request)} if the offer has already an ID.
-     * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/offers")
     public ResponseEntity<OfferDTO> createOffer(@Valid @RequestBody OfferDTO offerDTO) throws URISyntaxException {
@@ -53,11 +51,7 @@ public class OfferResource {
             throw new BadRequestAlertException("A new offer cannot already have an ID", ENTITY_NAME, "idexists");
         }
         OfferDTO result = null;
-        try {
-            result = offerService.save(offerDTO);
-        } catch (ManagementRulesException e) {
-            throw new WrongOrganisationTypeException();
-        }
+        result = offerService.save(offerDTO);
         return ResponseEntity.created(new URI("/api/offers/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -70,7 +64,6 @@ public class OfferResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated offerDTO,
      * or with status {@code 400 (Bad Request)} if the offerDTO is not valid,
      * or with status {@code 500 (Internal Server Error)} if the offerDTO couldn't be updated.
-     * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/offers")
     public ResponseEntity<OfferDTO> updateOffer(@Valid @RequestBody OfferDTO offerDTO) {
@@ -79,15 +72,54 @@ public class OfferResource {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
         OfferDTO result = null;
-        try {
-            result = offerService.save(offerDTO);
-        } catch (ManagementRulesException e) {
-            throw new WrongOrganisationTypeException();
-        }
+        result = offerService.save(offerDTO);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, offerDTO.getId().toString()))
             .body(result);
     }
+
+    /**
+     * {@code PUT  /offers/recuperators} : Updates an existing offer.
+     *
+     * @param recuperatorDTO the recuperatorDTO to update the Offer.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated offerDTO,
+     * or with status {@code 400 (Bad Request)} if the recuperatorDTO is not valid,
+     * or with status {@code 500 (Internal Server Error)} if the offerDTO couldn't be updated.
+     */
+    @PutMapping("/offers/recuperators")
+    public ResponseEntity<OfferDTO> addRecuperator(@RequestParam("offerId") Long offerId, @Valid @RequestBody RecuperatorDTO recuperatorDTO) {
+        log.debug("REST request to add a Recuperator to an Offer: {}", recuperatorDTO);
+        if (offerId == null) {
+            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
+        }
+        OfferDTO result = null;
+        result = offerService.addRecuperator(offerId, recuperatorDTO);
+        return ResponseEntity.ok()
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, offerId.toString()))
+            .body(result);
+    }
+
+    /**
+     * {@code PUT  /offers/recuperator} : Updates an existing offer.
+     *
+     * @param selectedRecuperator the selectedRecuperatorID to update the Offer.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated offerDTO,
+     * or with status {@code 400 (Bad Request)} if the offerDTO is not valid,
+     * or with status {@code 500 (Internal Server Error)} if the offerDTO couldn't be updated.
+     */
+    @PutMapping("/offers/recuperator")
+    public ResponseEntity<OfferDTO> validateRecuperator(@RequestParam("offerId") Long offerId, @Valid @RequestBody Long selectedRecuperator) {
+        log.debug("REST request to validate Recuperator on Offer : {}", selectedRecuperator);
+        if (offerId == null) {
+            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
+        }
+        OfferDTO result = null;
+        result = offerService.validateRecuperator(offerId, selectedRecuperator);
+        return ResponseEntity.ok()
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, offerId.toString()))
+            .body(result);
+    }
+
 
     /**
      * {@code GET  /offers} : get all the offers.
@@ -125,40 +157,5 @@ public class OfferResource {
         log.debug("REST request to delete Offer : {}", id);
         offerService.delete(id);
         return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString())).build();
-    }
-
-    /**
-     * {@code GET  /offers/selected} : get the selecte offer.
-     *
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the offerDTO,
-     * or with status {@code 404 (Not Found)}.
-     */
-    @GetMapping("/offers/selected")
-    public List<OfferDTO> searchChosenOffer() {
-        log.debug("REST request to get Offer.");
-        return offerService.searchChosenOffer();
-    }
-    /**
-     * {@code GET  /offers/create} : get the create offer.
-     *
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the offerDTO,
-     * or with status {@code 404 (Not Found)}.
-     */
-    @GetMapping("/offers/create")
-    public List<OfferDTO> searchCreatedOffer() {
-        log.debug("REST request to get Offer.");
-        return offerService.searchCreatedOffer();
-    }
-    /**
-     * {@code POST  /offers/available : get the available offer.
-     *
-     * @param isColdFilter
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the offerDTO,
-     * or with status {@code 404 (Not Found)}.
-     */
-    @GetMapping("/offers/available/{isColdFilter}")
-    public List<OfferDTO> searchAvailableOffer(@PathVariable boolean isColdFilter) {
-        log.debug("REST request to get available Offer : {}", isColdFilter);
-        return offerService.searchAvailableOffer(isColdFilter);
     }
 }

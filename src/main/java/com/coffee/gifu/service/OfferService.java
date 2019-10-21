@@ -1,7 +1,7 @@
 package com.coffee.gifu.service;
 
 import com.coffee.gifu.service.dto.OfferDTO;
-import com.coffee.gifu.service.exception.ManagementRulesException;
+import com.coffee.gifu.service.dto.RecuperatorDTO;
 
 import java.util.List;
 import java.util.Optional;
@@ -17,7 +17,23 @@ public interface OfferService {
      * @param offerDTO the entity to save.
      * @return the persisted entity.
      */
-    OfferDTO save(OfferDTO offerDTO) throws ManagementRulesException;
+    OfferDTO save(OfferDTO offerDTO);
+
+    /**
+     * Save a offer.
+     *
+     * @param offerId the entity to save.
+     * @return the persisted entity.
+     */
+    OfferDTO addRecuperator(Long offerId, RecuperatorDTO recuperatorDTO);
+
+    /**
+     * Save a offer.
+     *
+     * @param offerId the entity to save.
+     * @return the persisted entity.
+     */
+    OfferDTO validateRecuperator(Long offerId, Long selectedRecuperator);
 
     /**
      * Get all the offers.

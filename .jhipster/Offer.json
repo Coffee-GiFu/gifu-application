@@ -76,6 +76,11 @@
             ],
             "fieldValidateRulesMinlength": "10",
             "fieldValidateRulesMaxlength": "100"
+        },
+        {
+            "fieldName": "selectedRecuperator",
+            "fieldType": "Long",
+            "fieldValidateRules": []
         }
     ],
     "changelogDate": "20190924091749",

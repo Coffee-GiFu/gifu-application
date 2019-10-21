@@ -21,6 +21,7 @@
       "availabilityBegin": "Availability Begin",
       "availabilityEnd": "Availability End",
       "title": "Title",
+      "selectedRecuperator": "Selected Recuperator",
       "location": "Location",
       "recuperators": "Recuperators",
       "organisation": "Organisation"

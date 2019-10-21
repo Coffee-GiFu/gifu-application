@@ -60,6 +60,10 @@ public class OfferResourceIT {
     private static final String DEFAULT_TITLE = "AAAAAAAAAA";
     private static final String UPDATED_TITLE = "BBBBBBBBBB";
 
+    private static final Long DEFAULT_SELECTED_RECUPERATOR = 1L;
+    private static final Long UPDATED_SELECTED_RECUPERATOR = 2L;
+    private static final Long SMALLER_SELECTED_RECUPERATOR = 1L - 1L;
+
     @Autowired
     private OfferRepository offerRepository;
 
@@ -118,7 +122,8 @@ public class OfferResourceIT {
             .isCold(DEFAULT_IS_COLD)
             .availabilityBegin(DEFAULT_AVAILABILITY_BEGIN)
             .availabilityEnd(DEFAULT_AVAILABILITY_END)
-            .title(DEFAULT_TITLE);
+            .title(DEFAULT_TITLE)
+            .selectedRecuperator(DEFAULT_SELECTED_RECUPERATOR);
         // Add required entity
         Location location;
         location = LocationITResource.createEntity(em);
@@ -147,7 +152,8 @@ public class OfferResourceIT {
             .isCold(UPDATED_IS_COLD)
             .availabilityBegin(UPDATED_AVAILABILITY_BEGIN)
             .availabilityEnd(UPDATED_AVAILABILITY_END)
-            .title(UPDATED_TITLE);
+            .title(UPDATED_TITLE)
+            .selectedRecuperator(UPDATED_SELECTED_RECUPERATOR);
         // Add required entity
         Location location;
         if (TestUtil.findAll(em, Location.class).isEmpty()) {
@@ -197,6 +203,7 @@ public class OfferResourceIT {
         assertThat(testOffer.getAvailabilityBegin()).isEqualTo(DEFAULT_AVAILABILITY_BEGIN);
         assertThat(testOffer.getAvailabilityEnd()).isEqualTo(DEFAULT_AVAILABILITY_END);
         assertThat(testOffer.getTitle()).isEqualTo(DEFAULT_TITLE);
+        assertThat(testOffer.getSelectedRecuperator()).isEqualTo(DEFAULT_SELECTED_RECUPERATOR);
     }
 
     @Test
@@ -329,7 +336,8 @@ public class OfferResourceIT {
             .andExpect(jsonPath("$.isCold").value(DEFAULT_IS_COLD.booleanValue()))
             .andExpect(jsonPath("$.availabilityBegin").value(sameInstant(DEFAULT_AVAILABILITY_BEGIN)))
             .andExpect(jsonPath("$.availabilityEnd").value(sameInstant(DEFAULT_AVAILABILITY_END)))
-            .andExpect(jsonPath("$.title").value(DEFAULT_TITLE.toString()));
+            .andExpect(jsonPath("$.title").value(DEFAULT_TITLE.toString()))
+            .andExpect(jsonPath("$.selectedRecuperator").value(DEFAULT_SELECTED_RECUPERATOR.intValue()));
     }
 
     @Test
@@ -357,7 +365,8 @@ public class OfferResourceIT {
             .isCold(UPDATED_IS_COLD)
             .availabilityBegin(UPDATED_AVAILABILITY_BEGIN)
             .availabilityEnd(UPDATED_AVAILABILITY_END)
-            .title(UPDATED_TITLE);
+            .title(UPDATED_TITLE)
+            .selectedRecuperator(UPDATED_SELECTED_RECUPERATOR);
         OfferDTO offerDTO = offerMapper.toDto(updatedOffer);
 
         restOfferMockMvc.perform(put("/api/offers")
@@ -374,6 +383,7 @@ public class OfferResourceIT {
         assertThat(testOffer.getAvailabilityBegin()).isEqualTo(UPDATED_AVAILABILITY_BEGIN);
         assertThat(testOffer.getAvailabilityEnd()).isEqualTo(UPDATED_AVAILABILITY_END);
         assertThat(testOffer.getTitle()).isEqualTo(UPDATED_TITLE);
+        assertThat(testOffer.getSelectedRecuperator()).isEqualTo(UPDATED_SELECTED_RECUPERATOR);
     }
 
     @Test

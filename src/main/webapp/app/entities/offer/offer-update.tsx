@@ -171,6 +171,12 @@ export class OfferUpdate extends React.Component<IOfferUpdateProps, IOfferUpdate
                   />
                 </AvGroup>
                 <AvGroup>
+                  <Label id="selectedRecuperatorLabel" for="offer-selectedRecuperator">
+                    <Translate contentKey="gifuApp.offer.selectedRecuperator">Selected Recuperator</Translate>
+                  </Label>
+                  <AvField id="offer-selectedRecuperator" type="string" className="form-control" name="selectedRecuperator" />
+                </AvGroup>
+                <AvGroup>
                   <Label for="offer-location">
                     <Translate contentKey="gifuApp.offer.location">Location</Translate>
                   </Label>

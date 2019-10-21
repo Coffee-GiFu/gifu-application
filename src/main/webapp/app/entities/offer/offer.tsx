@@ -52,6 +52,9 @@ export class Offer extends React.Component<IOfferProps> {
                     <Translate contentKey="gifuApp.offer.title">Title</Translate>
                   </th>
                   <th>
+                    <Translate contentKey="gifuApp.offer.selectedRecuperator">Selected Recuperator</Translate>
+                  </th>
+                  <th>
                     <Translate contentKey="gifuApp.offer.location">Location</Translate>
                   </th>
                   <th>
@@ -80,6 +83,7 @@ export class Offer extends React.Component<IOfferProps> {
                       <TextFormat type="date" value={offer.availabilityEnd} format={APP_DATE_FORMAT} />
                     </td>
                     <td>{offer.title}</td>
+                    <td>{offer.selectedRecuperator}</td>
                     <td>{offer.locationId ? <Link to={`location/${offer.locationId}`}>{offer.locationId}</Link> : ''}</td>
                     <td>
                       {offer.recuperators

@@ -47,7 +47,10 @@ public class Offer implements Serializable {
     @Column(name = "title", length = 100, nullable = false)
     private String title;
 
-    @OneToOne(optional = false, cascade = CascadeType.ALL)
+    @Column(name = "selected_recuperator")
+    private Long selectedRecuperator;
+
+    @OneToOne(optional = false, cascade = CascadeType.ALL, orphanRemoval = true)
     @NotNull
     private Location location;
 
@@ -136,6 +139,19 @@ public class Offer implements Serializable {
         this.title = title;
     }
 
+    public Long getSelectedRecuperator() {
+        return selectedRecuperator;
+    }
+
+    public Offer selectedRecuperator(Long selectedRecuperator) {
+        this.selectedRecuperator = selectedRecuperator;
+        return this;
+    }
+
+    public void setSelectedRecuperator(Long selectedRecuperator) {
+        this.selectedRecuperator = selectedRecuperator;
+    }
+
     public Location getLocation() {
         return location;
     }
@@ -201,6 +217,7 @@ public class Offer implements Serializable {
             ", availabilityBegin='" + getAvailabilityBegin() + "'" +
             ", availabilityEnd='" + getAvailabilityEnd() + "'" +
             ", title='" + getTitle() + "'" +
+            ", selectedRecuperator=" + getSelectedRecuperator() +
             "}";
     }
 }
