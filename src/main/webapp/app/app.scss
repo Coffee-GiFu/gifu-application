@@ -1,7 +1,6 @@
 // Override Boostrap variables
 // Import Bootstrap source files from node_modules
 @import 'node_modules/bootstrap/scss/bootstrap';
-@import './global.scss';
 body {
   background: #fafafa;
   margin: 0;
@@ -24,17 +23,14 @@ a {
 
 .app-container {
   box-sizing: border-box;
-  min-height: calc(100vh);
-  height: calc(100vh);
   .view-container {
-    min-height: calc(100%);
-    height: calc(100%);
+    width: 100%;
+    height: calc(100% - 40px);
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 1rem;
     .card {
-      padding: 2rem;
-      min-height: calc(100% - 3.3rem);
-    }
-    .jh-card {
-      padding: 0 2rem;
+      padding: 1rem;
     }
     .view-routes {
       height: 100%;
@@ -319,3 +315,20 @@ http://stackoverflow.com/questions/23436430/bootstrap-3-input-group-100-width */
 }
 
 /* jhipster-needle-scss-add-main JHipster will add new css style */
+
+.control-dots {
+  padding: 0;
+}
+.jh-card {
+  border: none;
+  background-color: transparent !important;
+}
+
+$color-info: rgb(160, 219, 242);
+$color-main-light: rgb(242, 240, 206);
+$color-main-dark: rgb(242, 195, 53);
+$color-btn: rgb(242, 129, 29);
+$color-warnning: rgb(166, 38, 27);
+$typo: #333;
+$typo-dark: #222;
+$typo-shadow: #000;

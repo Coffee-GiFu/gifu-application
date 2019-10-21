@@ -4,16 +4,13 @@ import React from 'react';
 import { Translate } from 'react-jhipster';
 import { connect } from 'react-redux';
 import { Row, Col, Alert } from 'reactstrap';
-import { OfferCard } from '../../shared/layout/offer/offerCard';
-import { Redirect } from 'react-router';
 
+
+import { OfferCard } from '../../shared/layout/offer/offerCard';
 export type IHomeProp = StateProps;
 
 export const HomePage = (props: IHomeProp) => {
   const { account } = props;
-  if(!(account && account.login)){
-    return (<Redirect to="/login" />);
-  }
   const offs= [{id: 21,description: `eeesddsf e 
   sdf ds fds eee`,isCold: true,availabilityBegin: null,availabilityEnd: null,title: "titre",location: null,recuperator: null}, {id: 24,description: `eeesddsf e 
   sdf ds fds eeeeeesddsf e 

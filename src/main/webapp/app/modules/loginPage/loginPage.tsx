@@ -1,79 +1,53 @@
-import React, { useState, useEffect } from 'react';
-import { connect } from 'react-redux';
-import { Redirect, RouteComponentProps } from 'react-router-dom';
-
-import { IRootState } from 'app/shared/reducers';
-import { login } from 'app/shared/reducers/authentication';
-import LoginForm from './loginForm';
 import './loginPage.scss';
-import { Button } from 'reactstrap';
-import RegisterModal from './register/register';
-import { translate } from 'react-jhipster/lib/src/language/translate';
-import Checkbox from 'app/shared/layout/checkbox/checkbox';
-import { OfferCard } from 'app/shared/layout/offer/offerCard';
-import OfferCardAdd from 'app/shared/layout/offer/offerCardAdd';
 
-export interface ILoginProps extends StateProps, DispatchProps, RouteComponentProps<{}> {}
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { Translate } from 'react-jhipster';
+import { connect } from 'react-redux';
+import { Row, Col, Alert } from 'reactstrap';
 
-export const LoginPage = (props: ILoginProps) => {
-  const [show, setShow] = useState(false);
+export type IHomeProp = StateProps;
 
-  const [isEntreprise, setIsEntreprise] = useState(false);
-
-  const handleShowEntreprise = () => {
-    setShow(true);
-    setIsEntreprise(true);
-  };
-  const handleShowAssociation = () => {
-    setShow(true);
-    setIsEntreprise(false);
-  };
-
-  const handleLogin = (username, password, rememberMe = false) => props.login(username, password, rememberMe);
-
-  const { location, isAuthenticated } = props;
-  const { from } = location.state || { from: { pathname: '/', search: location.search } };
-  if (isAuthenticated) {
-    return <Redirect to={from} />;
-  }
+export const LoginPage = (props: IHomeProp) => {
   return (
-    <div className="LoginPage">
-      <RegisterModal showModal={show} handleClose={setShow} isEntreprise={isEntreprise} />
-        <div className="LoginForm"> 
-          <div className="createAccount entrepriseIco" onClick={handleShowEntreprise}>
-            <p>
-              {translate('register.type.base')}<br/>
-              {translate('register.type.entreprise')}
-            </p>
+    <Row>
+      <Col md="12">
+        <h2>
+          <Translate contentKey="home.title">Welcome, Java Hipster!</Translate>
+        </h2>
+        <p className="lead">
+          <Translate contentKey="home.subtitle">This is your homepage</Translate>
+        </p>
+          <div>
+            <Alert color="warning">
+              <Translate contentKey="global.messages.info.authenticated.prefix">If you want to </Translate>
+              <Link to="/login" className="alert-link">
+                <Translate contentKey="global.messages.info.authenticated.link"> sign in</Translate>
+              </Link>
+              <Translate contentKey="global.messages.info.authenticated.suffix">
+                , you can try the default accounts:
+                <br />- Administrator (login=&quot;admin&quot; and password=&quot;admin&quot;)
+                <br />- User (login=&quot;user&quot; and password=&quot;user&quot;).
+              </Translate>
+            </Alert>
+
+            <Alert color="warning">
+              <Translate contentKey="global.messages.info.register.noaccount">You do not have an account yet?</Translate>&nbsp;
+              <Link to="/account/register" className="alert-link">
+                <Translate contentKey="global.messages.info.register.link">Register a new account</Translate>
+              </Link>
+            </Alert>
           </div>
-        </div>
-        <div className="LoginForm">
-          <LoginForm handleLogin={handleLogin} loginError={props.loginError} />
-        </div>
-        <div className="LoginForm">
-          <div className="createAccount associationIco" onClick={handleShowAssociation}>
-            <p>
-              {translate('register.type.base')}<br/>
-              {translate('register.type.association')}
-            </p>
-          </div>
-        </div>
-    </div>
+      </Col>
+    </Row>
   );
 };
 
-const mapStateToProps = ({ authentication }: IRootState) => ({
-  isAuthenticated: authentication.isAuthenticated,
-  loginError: authentication.loginError,
-  showModal: authentication.showModalLogin
+const mapStateToProps = storeState => ({
+  account: storeState.authentication.account,
+  isAuthenticated: storeState.authentication.isAuthenticated
 });
 
-const mapDispatchToProps = { login };
-
 type StateProps = ReturnType<typeof mapStateToProps>;
-type DispatchProps = typeof mapDispatchToProps;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(LoginPage);
+export default connect(mapStateToProps)(LoginPage);

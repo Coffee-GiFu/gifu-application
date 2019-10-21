@@ -1,4 +1,4 @@
-@import './color.scss';
+@import './app.scss';
 @keyframes heartbeat {
   from {
     -webkit-transform: scale(1);
@@ -87,7 +87,7 @@
   height: 20px;
   background: rgba(255, 255, 255, 0.5);
   animation: animate 25s linear infinite;
-  top: -50px;
+  bottom: -150px;
 }
 $SVGs: 'food.svg', 'cupcake.svg', 'pizzaFull.svg';
 $colors: $color-info, $color-main-light, $color-main-dark, $color-btn, $color-warnning;
@@ -100,20 +100,20 @@ $colors: $color-info, $color-main-light, $color-main-dark, $color-btn, $color-wa
     background-color: nth($colors, random(length($colors)));
     mask-image: url('../content/images/svgFood/'+nth($SVGs, random(length($SVGs))));
     left: 0% + $randomLeft;
-    width: 26 + $randomSize + px;
-    height: 26 + $randomSize + px;
+    width: 50 + $randomSize + px;
+    height: 50 + $randomSize + px;
     animation-delay: $randomAnimation + s;
   }
 }
 @keyframes animate {
   0% {
-    transform: translateY(-200px) rotate(720deg);
+    transform: translateY(0) rotate(0deg);
     opacity: 1;
     border-radius: 0;
   }
 
   100% {
-    transform: translateY(90vh) rotate(0deg);
+    transform: translateY(-1000px) rotate(720deg);
     opacity: 0;
     border-radius: 50%;
   }
