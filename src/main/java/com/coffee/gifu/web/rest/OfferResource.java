@@ -10,6 +10,8 @@ import com.coffee.gifu.service.dto.OfferDTO;
 import com.coffee.gifu.service.dto.OrganisationDTO;
 import com.coffee.gifu.service.exception.ManagementRulesException;
 import com.coffee.gifu.web.rest.errors.BadRequestAlertException;
+import com.coffee.gifu.web.rest.errors.CurrentUserLoginNotFound;
+import com.coffee.gifu.web.rest.errors.FieldErrorVM;
 import com.coffee.gifu.web.rest.errors.WrongOrganisationTypeException;
 import com.coffee.gifu.web.rest.request.object.CreateOfferRequest;
 import io.github.jhipster.web.util.HeaderUtil;
@@ -63,36 +65,57 @@ public class OfferResource {
     public ResponseEntity<OfferDTO> createOffer(@Valid @RequestBody CreateOfferRequest createOfferRequest) throws URISyntaxException {
         log.debug("REST request to save Offer : {}", createOfferRequest);
 
+        Optional<User> userWithAuthoritiesByLogin = checkIfUserExists();
+
+
+        Optional<OrganisationDTO> organisation = checkIfOrganisationExists(createOfferRequest, userWithAuthoritiesByLogin);
+
+        OfferDTO savedOfferToReturn = createOfferDTO(createOfferRequest, organisation);
+
+        return ResponseEntity.created(new URI("/api/offers/" + savedOfferToReturn.getId()))
+                .headers(HeaderUtil
+                        .createEntityCreationAlert(applicationName, true,
+                                ENTITY_NAME, savedOfferToReturn.getId().toString()))
+                .body(savedOfferToReturn);
+    }
+
+    private Optional<OrganisationDTO> checkIfOrganisationExists(@RequestBody @Valid CreateOfferRequest createOfferRequest, Optional<User> userWithAuthoritiesByLogin) {
+        Optional<OrganisationDTO> optionalOrganisationDTO = organisationService.findOne(userWithAuthoritiesByLogin.get().getOrganisationID());
+        if (optionalOrganisationDTO.isEmpty()) {
+            throw new EnterpriseNotFoundException("Organisation not found for this id " + createOfferRequest.getEnterpriseId());
+        }
+        return optionalOrganisationDTO;
+    }
+
+    private OfferDTO createOfferDTO(@RequestBody @Valid CreateOfferRequest createOfferRequest, Optional<OrganisationDTO> optionalOrganisationDTO) {
+        OfferDTO offerDTO = createOfferDTOFromRequest(createOfferRequest);
+        OrganisationDTO organisationDTO = optionalOrganisationDTO.get();
+        offerDTO.setEnterprise(organisationDTO);
+        return offerService.save(offerDTO);
+    }
+
+    private Optional<User> checkIfUserExists() {
         Optional<String> currentUserLogin = SecurityUtils.getCurrentUserLogin();
+        if (currentUserLogin.isEmpty()) {
+            throw new CurrentUserLoginNotFound("currentUserLogin is not found");
+        }
+
         Optional<User> userWithAuthoritiesByLogin =
                 userService.getUserWithAuthoritiesByLogin(currentUserLogin.get());
+        if (userWithAuthoritiesByLogin.isEmpty()) {
+            throw new CurrentUserLoginNotFound("userWithAuthoritiesByLogin is not found");
+        }
+        return userWithAuthoritiesByLogin;
+    }
 
-        System.out.println("**********");
-        System.out.println(userWithAuthoritiesByLogin.get());
-        System.out.println("**********");
-
+    private OfferDTO createOfferDTOFromRequest(@RequestBody @Valid CreateOfferRequest createOfferRequest) {
         OfferDTO offerDTO = new OfferDTO();
         offerDTO.setDescription(createOfferRequest.getDescription());
         offerDTO.setAvailabilityBegin(createOfferRequest.getAvailabilityBegin());
         offerDTO.setAvailabilityEnd(createOfferRequest.getAvailabilityEnd());
         offerDTO.setTitle(createOfferRequest.getTitle());
         offerDTO.setLocationDTO(createOfferRequest.getLocationDTO());
-
-        Optional<OrganisationDTO> optionalOrganisationDTO =
-                organisationService.findOne(userWithAuthoritiesByLogin.get().getOrganisationID());
-
-        if (!optionalOrganisationDTO.isPresent()){
-           throw new EnterpriseNotFoundException("Organisation not found for this id " + createOfferRequest.getEnterpriseId());
-        }
-        OrganisationDTO organisationDTO = optionalOrganisationDTO.get();
-        offerDTO.setEnterprise(organisationDTO);
-        OfferDTO savedOfferDTO = offerService.save(offerDTO);
-
-        return ResponseEntity.created(new URI("/api/offers/" + savedOfferDTO.getId()))
-            .headers(HeaderUtil
-                    .createEntityCreationAlert(applicationName, true,
-                            ENTITY_NAME, savedOfferDTO.getId().toString()))
-            .body(savedOfferDTO);
+        return offerDTO;
     }
 
     /**
@@ -117,8 +140,8 @@ public class OfferResource {
             throw new WrongOrganisationTypeException();
         }
         return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, offerDTO.getId().toString()))
-            .body(result);
+                .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, offerDTO.getId().toString()))
+                .body(result);
     }
 
     /**
@@ -170,6 +193,7 @@ public class OfferResource {
         log.debug("REST request to get Offer.");
         return offerService.searchChosenOffer();
     }
+
     /**
      * {@code GET  /offers/create} : get the create offer.
      *
@@ -181,6 +205,7 @@ public class OfferResource {
         log.debug("REST request to get Offer.");
         return offerService.searchCreatedOffer();
     }
+
     /**
      * {@code POST  /offers/available : get the available offer.
      *

@@ -4,7 +4,10 @@ import com.coffee.gifu.GifuApp;
 import com.coffee.gifu.domain.Location;
 import com.coffee.gifu.domain.Offer;
 import com.coffee.gifu.domain.Organisation;
+import com.coffee.gifu.repository.AuthorityRepository;
 import com.coffee.gifu.repository.OfferRepository;
+import com.coffee.gifu.repository.UserRepository;
+import com.coffee.gifu.service.MailService;
 import com.coffee.gifu.service.OfferService;
 import com.coffee.gifu.service.OrganisationService;
 import com.coffee.gifu.service.UserService;
@@ -22,7 +25,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.MediaType;
+import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
@@ -106,7 +111,28 @@ public class OfferResourceIT {
     private MockMvc restOfferMockMvc;
 
     private Offer offer;
+    @Autowired
+    private UserRepository userRepository;
 
+    @Autowired
+    private AuthorityRepository authorityRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private HttpMessageConverter<?>[] httpMessageConverters;
+
+
+    @Mock
+    private UserService mockUserService;
+
+    @Mock
+    private MailService mockMailService;
+
+    private MockMvc restMvc;
+
+    private MockMvc restUserMockMvc;
     @BeforeEach
     public void setup() {
         MockitoAnnotations.initMocks(this);
@@ -117,6 +143,17 @@ public class OfferResourceIT {
             .setConversionService(createFormattingConversionService())
             .setMessageConverters(jacksonMessageConverter)
             .setValidator(validator).build();
+        AccountResource accountResource =
+                new AccountResource(userRepository, userService, mockMailService);
+        AccountResource accountUserMockResource =
+                new AccountResource(userRepository, mockUserService, mockMailService);
+        this.restMvc = MockMvcBuilders.standaloneSetup(accountResource)
+                .setMessageConverters(httpMessageConverters)
+                .setControllerAdvice(exceptionTranslator)
+                .build();
+        this.restUserMockMvc = MockMvcBuilders.standaloneSetup(accountUserMockResource)
+                .setControllerAdvice(exceptionTranslator)
+                .build();
     }
 
     /**
@@ -196,6 +233,7 @@ public class OfferResourceIT {
 
         int databaseSizeBeforeCreate = offerRepository.findAll().size();
 
+
         // Create the Offer
         LocationDTO locationDTO = new LocationDTO();
         locationDTO.setCity("Paris");
@@ -209,7 +247,7 @@ public class OfferResourceIT {
         createOfferRequest.setTitle(DEFAULT_TITLE);
         createOfferRequest.setEnterpriseId(offer.getOrganisation().getId());
         createOfferRequest.setLocationDTO(locationDTO);
-
+        testAuthenticatedUser();
         restOfferMockMvc.perform(post("/api/offers")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(createOfferRequest)))
@@ -218,6 +256,7 @@ public class OfferResourceIT {
         // Validate the Offer in the database
         List<Offer> offerList = offerRepository.findAll();
         assertThat(offerList).hasSize(databaseSizeBeforeCreate + 1);
+
         Offer testOffer = offerList.get(offerList.size() - 1);
         assertThat(testOffer.getDescription()).isEqualTo(DEFAULT_DESCRIPTION);
         assertThat(testOffer.isIsCold()).isEqualTo(DEFAULT_IS_COLD);
@@ -226,6 +265,18 @@ public class OfferResourceIT {
         assertThat(testOffer.getTitle()).isEqualTo(DEFAULT_TITLE);
         assertThat(testOffer.getOrganisation()).isEqualTo(offer.getOrganisation());
         assertThat(testOffer.getLocation().getStreetAddress()).isEqualTo(locationDTO.getStreetAddress());
+    }
+
+    @Test
+    public void testAuthenticatedUser() throws Exception {
+        restUserMockMvc.perform(get("/api/authenticate")
+                .with(request -> {
+                    request.setRemoteUser("test");
+                    return request;
+                })
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string("test"));
     }
 
     @Test

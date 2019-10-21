@@ -155,6 +155,16 @@ public class ExceptionTranslator implements ProblemHandling, SecurityAdviceTrait
     }
 
     @ExceptionHandler
+    public ResponseEntity<Problem> handleCurrentUserLoginNotFoundException(CurrentUserLoginNotFound ex, NativeWebRequest request) {
+        com.coffee.gifu.web.rest.errors.CurrentUserLoginNotFound currentUserLoginNotFound = new com.coffee.gifu.web.rest.errors.CurrentUserLoginNotFound(ex.getMessage());
+        Problem problem = Problem.builder()
+                .withStatus(Status.NOT_FOUND)
+                .with(MESSAGE_KEY, ErrorConstants.ENTITY_NOT_FOUND_TYPE)
+                .build();
+        return create(currentUserLoginNotFound, problem, request);
+    }
+
+    @ExceptionHandler
     public ResponseEntity<Problem> handleInterruptedException(InterruptedException ex, NativeWebRequest request) {
         Problem problem = Problem.builder()
                 .withStatus(Status.INTERNAL_SERVER_ERROR)
