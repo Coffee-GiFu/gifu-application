@@ -18,15 +18,16 @@ export const OfferCard = ({ offer, handleClick }: OfferCardProps) => {
       <div className="styledOfferCardOrganisation">
         <img src="http://lorempixel.com/output/cats-q-c-640-480-1.jpg" />
         <div>
-          <h5 title="Cat Corp." >Cat Corp.</h5>
-          <h6 title="1 rue du bout du monde" >1 rue du bout du monde</h6>
-          <h6 title="Alfortville - 94140" >Alfortville - 94140</h6>
+          <h3 title="Cat Corp." >Cat Corp.</h3>
+          <h5 title="Alfortville - 94140" >Alfortville - 94140</h5>
         </div>
       </div>
       <div className="styledOfferCardBody">
-        <h6>30/10/2017 17h35</h6>
-        <h6>31/10/2017 17h35</h6>
         <p>{offer.description}</p>
+        <div className="dateGroup">
+          <span>30/10/2017 17h35</span>
+          <span>31/10/2017 17h35</span>
+        </div>
       </div>
       {
         offer.isCold && (<img className="styledOfferCardIsCold" src="../../../../content/images/snowflake.png" />)
