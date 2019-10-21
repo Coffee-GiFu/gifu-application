@@ -20,17 +20,9 @@ const accountMenuItemsAuthenticated = (
   </>
 );
 
-const accountMenuItems = (
-  <>
-    <MenuItem icon="sign-in-alt" to="/account/register">
-      <Translate contentKey="global.menu.account.register">Register</Translate>
-    </MenuItem>
-  </>
-);
-
 export const AccountMenu = ({ isAuthenticated = false }) => (
   <NavDropdown icon="user" name={translate('global.menu.account.main')} id="account-menu">
-    {isAuthenticated ? accountMenuItemsAuthenticated : accountMenuItems}
+    {isAuthenticated ? accountMenuItemsAuthenticated : ""}
   </NavDropdown>
 );
 
