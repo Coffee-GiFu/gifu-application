@@ -1,6 +1,4 @@
-/* ==========================================================================
-Main page styles
-========================================================================== */
+@import '../../color.scss';
 .hipster {
   display: inline-block;
   width: 100%;
@@ -10,15 +8,19 @@ Main page styles
 }
 
 .LoginPage {
+  min-height: calc(100vh - 10rem);
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
   width: 100%;
 }
 
 .LoginForm {
   flex: 3;
-  text-align: center;
+  height: fit-content;
   padding: 10px;
   .card {
     padding-top: 10px;
@@ -31,46 +33,50 @@ Main page styles
 }
 
 .createAccount.entrepriseIco {
+  border: 3px solid #f2811d;
+  border-radius: 100px 5px;
   background-image: url(../../../content/images/enterprise.svg);
 }
 
 .createAccount.associationIco {
+  border: 3px solid #a0dbf2;
+  border-radius: 5px 100px;
   background-image: url(../../../content/images/association.svg);
 }
 
 .createAccount {
-  background-color: red;
   display: inline-grid;
   cursor: pointer;
+  opacity: 1;
+  width: 100%;
+  height: auto;
+  background-color: #fff;
+  padding: 20px;
   p {
     margin: 0 10px;
   }
 }
-@media (min-width: 577px) {
+
+@media (min-width: 860px) {
   .createAccount {
     background-position-x: center;
-    background-position-y: 3px;
+    background-position-y: 20px;
     background-repeat: no-repeat;
-    background-size: 3rem;
-    padding-top: 3rem;
-    border-radius: 100% 100% 14% 14%;
-    //height: 4.5rem;
-    width: fit-content;
-    margin-top: 40%;
+    background-size: 40%;
+    padding-top: 50%;
     p {
-      background-color: inherit;
       padding: 0 10px !important;
     }
   }
 }
 
-@media (min-width: 577px) and (max-width: 992px) {
+@media (min-width: 860px) and (max-width: 992px) {
   .LoginForm:nth-child(1),
   .LoginForm:nth-child(3) {
     flex: 1;
   }
 }
-@media (max-width: 576px) {
+@media (max-width: 859px) {
   .createAccount {
     background-image: none !important;
   }
@@ -82,4 +88,19 @@ Main page styles
     flex: 1 0 100%;
     order: 2;
   }
+}
+.LoginForm form {
+  background: #ffffff 0% 0% no-repeat padding-box;
+  box-shadow: 0px 5px 6px #00000029;
+  border: 3px solid $color-main-dark;
+  border-radius: 100px;
+  opacity: 1;
+  text-align: left;
+  min-height: fit-content;
+  padding-bottom: 16px !important;
+}
+.forgotPassword {
+  font-size: 20px;
+  position: relative;
+  top: -21px;
 }

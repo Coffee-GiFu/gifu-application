@@ -36,41 +36,11 @@ export const LoginPage = (props: ILoginProps) => {
   if (isAuthenticated) {
     return <Redirect to={from} />;
   }
-  const offs= [{id: 21,description: `eeesddsf e 
-  sdf ds fds eee`,isCold: true,availabilityBegin: null,availabilityEnd: null,title: "titre",location: null,recuperator: null}, {id: 24,description: `eeesddsf e 
-  sdf ds fds eeeeeesddsf e 
-  sdf ds fds eeeeeesddsf e 
-  sdf ds fds eeeeeesddsf e 
-  sdf ds fds eee`,isCold: true,availabilityBegin: null,availabilityEnd: null,title: "titre",location: null,recuperator: null}, {id: 24,description: `eeesddsf e 
-  sdf ds fds eeeeeesddsf e 
-  sdf ds fds eeeeeesddsf e 
-  sdf ds fds eeeeeesddsf e 
-  sdf ds fds eee`,isCold: true,availabilityBegin: null,availabilityEnd: null,title: "titre",location: null,recuperator: null}, {id: 24,description: `eeesddsf e 
-  sdf ds fds eeeeeesddsf e 
-  sdf ds fds eeeeeesddsf e 
-  sdf ds fds eeeeeesddsf e 
-  sdf ds fds eee`,isCold: true,availabilityBegin: null,availabilityEnd: null,title: "titre",location: null,recuperator: null}, {id: 24,description: `eeesddsf e 
-  sdf ds fds eeeeeesddsf e 
-  sdf ds fds eeeeeesddsf e 
-  sdf ds fds eeeeeesddsf e 
-  sdf ds fds eee`,isCold: false,availabilityBegin: null,availabilityEnd: null,title: "titre",location: null,recuperator: null},{id: 21,description: `eeesddsf e 
-  sdf ds fds eee`,isCold: true,availabilityBegin: null,availabilityEnd: null,title: "titre",location: null,recuperator: null}, {id: 24,description: `eeesddsf e 
-  sdf ds fds eeeeeesddsf e 
-  sdf ds fds eeeeeesddsf e 
-  sdf ds fds eeeeeesddsf eukhfu dsfdsh fez h fuhezufh  ezufufze fuiezfueufy gezyfgu dsfdsh fez h fuhezufh  ezufufze fuiezfueufy gezyfgez ifgezigfezi gf ziyfg eig i 
-  sdf ds fds eee`,isCold: false,availabilityBegin: null,availabilityEnd: null,title: "titre",location: null,recuperator: null}];
   return (
-    <div>
-      
-      {offs.map((off,index) => {
-          return <OfferCard key={index} offer={off} handleClick={(id)=>{window.console.log(id)}} />;
-        })}
-        <OfferCardAdd handleClick={()=>{window.console.log("lol")}}/>
-        <div className="OfferCardAdd"/>
+    <div className="LoginPage">
       <RegisterModal showModal={show} handleClose={setShow} isEntreprise={isEntreprise} />
-      <div className="LoginPage">
         <div className="LoginForm"> 
-          <div className="createAccount entrepriseIco btn btn-primary" onClick={handleShowEntreprise}>
+          <div className="createAccount entrepriseIco" onClick={handleShowEntreprise}>
             <p>
               {translate('register.type.base')}<br/>
               {translate('register.type.entreprise')}
@@ -81,14 +51,13 @@ export const LoginPage = (props: ILoginProps) => {
           <LoginForm handleLogin={handleLogin} loginError={props.loginError} />
         </div>
         <div className="LoginForm">
-          <div className="createAccount associationIco btn btn-primary" onClick={handleShowAssociation}>
+          <div className="createAccount associationIco" onClick={handleShowAssociation}>
             <p>
               {translate('register.type.base')}<br/>
               {translate('register.type.association')}
             </p>
           </div>
         </div>
-      </div>
     </div>
   );
 };

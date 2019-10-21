@@ -3,6 +3,7 @@ import { Translate, translate } from 'react-jhipster';
 import { Button, Label, Alert, Row, Col } from 'reactstrap';
 import { AvForm, AvField, AvGroup, AvInput } from 'availity-reactstrap-validation';
 import { Link } from 'react-router-dom';
+import Checkbox from 'app/shared/layout/checkbox/checkbox';
 
 export interface ILoginFormProps {
   loginError: boolean;
@@ -20,7 +21,6 @@ class LoginForm extends React.Component<ILoginFormProps> {
 
     return (
       <AvForm onSubmit={this.handleSubmit} className="card">
-            <Translate contentKey="login.title">Sign in</Translate>
             <Row>
               <Col md="12">
                 {loginError ? (
@@ -37,6 +37,7 @@ class LoginForm extends React.Component<ILoginFormProps> {
                   label={translate('global.form.username.label')}
                   placeholder={translate('global.form.username.placeholder')}
                   required
+                  className="input"
                   errorMessage="Username cannot be empty!"
                   autoFocus
                 />
@@ -46,32 +47,17 @@ class LoginForm extends React.Component<ILoginFormProps> {
                   label={translate('login.form.password')}
                   placeholder={translate('login.form.password.placeholder')}
                   required
+                  className="input"
                   errorMessage="Password cannot be empty!"
                 />
-                <AvGroup check inline>
-                  <Label className="form-check-label">
-                    <AvInput type="checkbox" name="rememberMe" /> <Translate contentKey="login.form.rememberme">Remember me</Translate>
-                  </Label>
-                </AvGroup>
+                <Link className="forgotPassword" to="/account/reset/request">
+                  <Translate contentKey="login.password.forgot">Did you forget your password?</Translate>
+                </Link>
               </Col>
             </Row>
-            <div className="mt-1">&nbsp;</div>
-            <Alert color="warning">
-              <Link to="/account/reset/request">
-                <Translate contentKey="login.password.forgot">Did you forget your password?</Translate>
-              </Link>
-            </Alert>
-            <Alert color="warning">
-              <span>
-                <Translate contentKey="global.messages.info.register.noaccount">You don&apos;t have an account yet?</Translate>
-              </span>{' '}<br/>
-              <Link to="/account/register">
-                <Translate contentKey="global.messages.info.register.link">Register a new account</Translate>
-              </Link>
-            </Alert>
-            <Button color="primary" type="submit">
+            <button type="submit" className="button">
               <Translate contentKey="login.form.button">Sign in</Translate>
-            </Button>
+            </button>
         </AvForm>
     );
   }
