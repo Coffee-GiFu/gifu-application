@@ -28,6 +28,7 @@ import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.coffee.gifu.web.rest.TestUtil.createFormattingConversionService;
@@ -460,5 +461,39 @@ public class OfferResourceIT {
     public void testEntityFromId() {
         assertThat(offerMapper.fromId(42L).getId()).isEqualTo(42);
         assertThat(offerMapper.fromId(null)).isNull();
+    }
+
+    @Test
+    @Transactional
+    public void should_search_available_offer_when_any_offers_is_cold() throws Exception {
+        // Initialize the database
+        offerRepository.saveAndFlush(offer);
+
+        // Get all the offerList
+        restOfferMockMvc.perform(get("/api/offers?isCold=false"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+                .andExpect(jsonPath("$.[*].id").value(hasItem(offer.getId().intValue())))
+                .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION.toString())))
+                .andExpect(jsonPath("$.[*].isCold").value(hasItem(DEFAULT_IS_COLD.booleanValue())))
+                .andExpect(jsonPath("$.[*].availabilityBegin").value(hasItem(sameInstant(DEFAULT_AVAILABILITY_BEGIN))))
+                .andExpect(jsonPath("$.[*].availabilityEnd").value(hasItem(sameInstant(DEFAULT_AVAILABILITY_END))))
+                .andExpect(jsonPath("$.[*].title").value(hasItem(DEFAULT_TITLE.toString())));
+    }
+
+    @Test
+    public void should_search_chosen_offer() throws Exception {
+        // Initialize the database
+        offerRepository.saveAndFlush(offer);
+
+        // Get all the offerList
+        restOfferMockMvc.perform(get("/api/offers?sort=availabilityEnd,asc"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+                .andExpect(jsonPath("$.[*].id").value(hasItem(offer.getId().intValue())))
+                .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION.toString())))
+                .andExpect(jsonPath("$.[*].availabilityBegin").value(hasItem(sameInstant(DEFAULT_AVAILABILITY_BEGIN))))
+                .andExpect(jsonPath("$.[*].availabilityEnd").value(hasItem(sameInstant(DEFAULT_AVAILABILITY_END))))
+                .andExpect(jsonPath("$.[*].title").value(hasItem(DEFAULT_TITLE.toString())));
     }
 }
