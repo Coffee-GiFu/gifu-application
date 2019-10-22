@@ -3,6 +3,7 @@ os:
 services:
   - docker
 language: java
+jdk: openjdk11
 node_js:
   - '10.16.3'
 cache:
@@ -12,21 +13,11 @@ cache:
     - $HOME/.m2
 env:
   global:
-    - NODE_VERSION=10.16.3
     - SPRING_OUTPUT_ANSI_ENABLED=ALWAYS
     - SPRING_JPA_SHOW_SQL=false
     - JHI_DISABLE_WEBPACK_LOGS=true
     - NG_CLI_ANALYTICS="false"
     - VERSION=$(mvn -q -Dexec.executable="echo" -Dexec.args='${project.version}' --non-recursive exec:exec)
-before_install:
-  - echo '*** Using OpenJDK 11 by default'
-  - sudo add-apt-repository ppa:openjdk-r/ppa -y
-  - sudo apt-get update
-  - sudo apt install openjdk-11-jdk
-  - sudo update-java-alternatives -s java-1.11.0-openjdk-amd64
-  - nvm install $NODE_VERSION
-  - npm install -g npm
-  - chmod +x mvnw
 install:
   - npm install
 jobs:
@@ -34,22 +25,22 @@ jobs:
     - stage: test
       script:
         - npm run test-ci
-        - ./mvnw -ntp org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar
+        - mvn -ntp org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar
     - stage: deploy dev
       script:
         - sudo apt-get install python3
         - pip install awsebcli --upgrade --user
         - echo $DOCKER_PASSWORD | docker login -u AWS --password-stdin https://249114954752.dkr.ecr.eu-west-1.amazonaws.com
         - eb init --platform "arn:aws:elasticbeanstalk:eu-west-1::platform/Docker running on 64bit Amazon Linux/2.12.17"
-        - ./mvnw -ntp package verify -DskipTests jib:dockerBuild
+        - mvn -ntp package verify -DskipTests jib:dockerBuild
         - docker tag gifu-backend:$VERSION 249114954752.dkr.ecr.eu-west-1.amazonaws.com/gifu-backend-dev:$VERSION
         - docker push 249114954752.dkr.ecr.eu-west-1.amazonaws.com/gifu-backend-dev:$VERSION
         - eb deploy
     - script:
         - docker build -f ./docker_front/Dockerfile-dev -t gifu-frontend-dev:$VERSION .
         - echo $GITHUB_PASSWORD | docker login -u Senrokai --password-stdin docker.pkg.github.com
-        - docker tag gifu-frontend-dev:$VERSION docker.pkg.github.com/Coffee-GiFu/gifu-application/gifu-frontend-dev:$VERSION
-        - docker push docker.pkg.github.com/Coffee-GiFu/gifu-application/gifu-frontend-dev:$VERSION
+        - docker tag gifu-frontend-dev:$VERSION docker.pkg.github.com/coffee-gifu/gifu-application/gifu-frontend-dev:$VERSION
+        - docker push docker.pkg.github.com/coffee-gifu/gifu-application/gifu-frontend-dev:$VERSION
         - docker stack deploy --compose-file ./docker_front/docker-compose.dev.yml gifu-frontend-dev
     - stage: deploy prod
       script:
@@ -57,7 +48,7 @@ jobs:
         - pip install awsebcli --upgrade --user
         - eb init --platform "arn:aws:elasticbeanstalk:eu-west-1::platform/Docker running on 64bit Amazon Linux/2.12.17"
         - echo $DOCKER_PASSWORD | docker login -u AWS --password-stdin https://249114954752.dkr.ecr.eu-west-1.amazonaws.com
-        - ./mvnw -ntp package -Pprod verify -DskipTests jib:dockerBuild
+        - mvn -ntp package -Pprod verify -DskipTests jib:dockerBuild
         - docker tag gifu-backend:$VERSION 249114954752.dkr.ecr.eu-west-1.amazonaws.com/gifu-backend:$VERSION
         - docker push 249114954752.dkr.ecr.eu-west-1.amazonaws.com/gifu-backend:$VERSION
         - eb deploy GifuApplication-prod
