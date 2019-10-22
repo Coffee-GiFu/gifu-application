@@ -5,7 +5,7 @@ services:
 language: java
 jdk: openjdk11
 node_js:
-  - '10.16.3'
+  - '12.13.0'
 cache:
   directories:
     - node
@@ -13,17 +13,18 @@ cache:
     - $HOME/.m2
 env:
   global:
+    - NODE_VERSION=10.16.3
     - SPRING_OUTPUT_ANSI_ENABLED=ALWAYS
     - SPRING_JPA_SHOW_SQL=false
     - JHI_DISABLE_WEBPACK_LOGS=true
     - NG_CLI_ANALYTICS="false"
     - VERSION=$(mvn -q -Dexec.executable="echo" -Dexec.args='${project.version}' --non-recursive exec:exec)
 before_install:
-  - chmod +x mvnw
+  - nvm install $NODE_VERSION
   - npm install -g npm
+  - chmod +x mvnw
 install:
   - npm install
-  - npm audit fix
 jobs:
   include:
     - stage: test
@@ -39,13 +40,13 @@ jobs:
         - ./mvnw -ntp package verify -DskipTests jib:dockerBuild
         - docker tag gifu-backend:$VERSION 249114954752.dkr.ecr.eu-west-1.amazonaws.com/gifu-backend-dev:$VERSION
         - docker push 249114954752.dkr.ecr.eu-west-1.amazonaws.com/gifu-backend-dev:$VERSION
-        - eb deploy
+        - eb deploy GifuApplicationEnv
     - script:
         - docker build -f ./docker_front/Dockerfile-dev -t gifu-frontend-dev:$VERSION .
         - echo $GITHUB_PASSWORD | docker login -u Senrokai --password-stdin docker.pkg.github.com
         - docker tag gifu-frontend-dev:$VERSION docker.pkg.github.com/coffee-gifu/gifu-application/gifu-frontend-dev:$VERSION
         - docker push docker.pkg.github.com/coffee-gifu/gifu-application/gifu-frontend-dev:$VERSION
-        - docker stack deploy --compose-file ./docker_front/docker-compose.dev.yml gifu-frontend-dev
+        - DOCKER_HOST=ec2-54-154-134-172.eu-west-1.compute.amazonaws.com:2376 docker stack deploy --compose-file ./docker_front/docker-compose.dev.yml gifu-frontend-dev
     - stage: deploy prod
       script:
         - sudo apt-get install python3
