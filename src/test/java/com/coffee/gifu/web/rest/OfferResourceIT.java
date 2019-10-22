@@ -184,6 +184,7 @@ public class OfferResourceIT {
 
     @Test
     @Transactional
+    /** TODO BUG test create OFFER **/
     public void createOffer() throws Exception {
         int databaseSizeBeforeCreate = offerRepository.findAll().size();
 

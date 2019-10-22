@@ -177,4 +177,61 @@ public class OfferServiceTest {
         verify(offerRepository, times(1)).deleteById(1L);
     }
 
+    @Test
+    public void should_search_available_offer_when_any_offers_is_cold() {
+        //Given
+        List<Offer> offers = new ArrayList<>();
+        offers.add(offer);
+        List<OfferDTO> offerDTOS = new ArrayList<>();
+        offerDTOS.add(offerDTO);
+        when(offerRepository.searchAvailableOfferNotCold()).thenReturn(offers);
+        when(offerMapper.toDto(offers)).thenReturn(offerDTOS);
+        boolean isColdFilter = false;
+
+        //When
+        List<OfferDTO> actual = offerService.searchAvailableOffer(isColdFilter);
+
+        //Then
+        verify(offerRepository, times(1)).searchAvailableOffer();
+        assertThat(actual).isNotNull();
+        assertThat(actual.size()).isEqualTo(0);
+    }
+
+    @Test
+    public void should_search_chosen_offer() {
+        //Given
+        List<Offer> offers = new ArrayList<>();
+        offers.add(offer);
+        List<OfferDTO> offerDTOS = new ArrayList<>();
+        offerDTOS.add(offerDTO);
+        when(offerRepository.searchChosenOffer()).thenReturn(offers);
+        when(offerMapper.toDto(offers)).thenReturn(offerDTOS);
+
+        //When
+        List<OfferDTO> actual = offerService.searchChosenOffer();
+
+        //Then
+        verify(offerRepository, times(1)).searchChosenOffer();
+        assertThat(actual).isNotNull();
+        assertThat(actual.size()).isEqualTo(1);
+    }
+
+    @Test
+    public void should_search_created_offer() {
+        //Given
+        List<Offer> offers = new ArrayList<>();
+        List<OfferDTO> offerDTOS = new ArrayList<>();
+        offerDTO.setRecuperatorDTOs(null);
+        offerDTOS.add(offerDTO);
+        when(offerRepository.searchCreatedOffer()).thenReturn(offers);
+        when(offerMapper.toDto(offers)).thenReturn(offerDTOS);
+
+        //When
+        List<OfferDTO> actual = offerService.searchCreatedOffer();
+
+        //Then
+        verify(offerRepository, times(1)).searchCreatedOffer();
+        assertThat(actual).isNotNull();
+        assertThat(actual.size()).isEqualTo(1);
+    }
 }
