@@ -31,10 +31,6 @@ public class CreateOfferRequest implements Serializable {
     @NotNull
     private LocationDTO locationDTO;
 
-    @NotNull
-    private Long enterpriseId;
-
-
     public String getDescription() {
         return description;
     }
@@ -81,13 +77,5 @@ public class CreateOfferRequest implements Serializable {
 
     public void setLocationDTO(LocationDTO locationDTO) {
         this.locationDTO = locationDTO;
-    }
-
-    public Long getEnterpriseId() {
-        return enterpriseId;
-    }
-
-    public void setEnterpriseId(Long enterpriseId) {
-        this.enterpriseId = enterpriseId;
     }
 }

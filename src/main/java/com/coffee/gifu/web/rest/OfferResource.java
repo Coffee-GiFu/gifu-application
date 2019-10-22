@@ -11,7 +11,6 @@ import com.coffee.gifu.service.dto.OrganisationDTO;
 import com.coffee.gifu.service.exception.ManagementRulesException;
 import com.coffee.gifu.web.rest.errors.BadRequestAlertException;
 import com.coffee.gifu.web.rest.errors.CurrentUserLoginNotFound;
-import com.coffee.gifu.web.rest.errors.FieldErrorVM;
 import com.coffee.gifu.web.rest.errors.WrongOrganisationTypeException;
 import com.coffee.gifu.web.rest.request.object.CreateOfferRequest;
 import io.github.jhipster.web.util.HeaderUtil;
@@ -20,7 +19,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -64,11 +62,9 @@ public class OfferResource {
     @PostMapping("/offers")
     public ResponseEntity<OfferDTO> createOffer(@Valid @RequestBody CreateOfferRequest createOfferRequest) throws URISyntaxException {
         log.debug("REST request to save Offer : {}", createOfferRequest);
-
         Optional<User> userWithAuthoritiesByLogin = checkIfUserExists();
 
-
-        Optional<OrganisationDTO> organisation = checkIfOrganisationExists(createOfferRequest, userWithAuthoritiesByLogin);
+        Optional<OrganisationDTO> organisation = checkIfOrganisationExists(userWithAuthoritiesByLogin);
 
         OfferDTO savedOfferToReturn = createOfferDTO(createOfferRequest, organisation);
 
@@ -79,10 +75,10 @@ public class OfferResource {
                 .body(savedOfferToReturn);
     }
 
-    private Optional<OrganisationDTO> checkIfOrganisationExists(@RequestBody @Valid CreateOfferRequest createOfferRequest, Optional<User> userWithAuthoritiesByLogin) {
+    private Optional<OrganisationDTO> checkIfOrganisationExists(@RequestBody @Valid Optional<User> userWithAuthoritiesByLogin) {
         Optional<OrganisationDTO> optionalOrganisationDTO = organisationService.findOne(userWithAuthoritiesByLogin.get().getOrganisationID());
         if (optionalOrganisationDTO.isEmpty()) {
-            throw new EnterpriseNotFoundException("Organisation not found for this id " + createOfferRequest.getEnterpriseId());
+            throw new EnterpriseNotFoundException("Organisation not found for this id " + optionalOrganisationDTO.get().getId());
         }
         return optionalOrganisationDTO;
     }

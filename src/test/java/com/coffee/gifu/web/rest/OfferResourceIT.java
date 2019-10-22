@@ -1,12 +1,11 @@
 package com.coffee.gifu.web.rest;
 
 import com.coffee.gifu.GifuApp;
-import com.coffee.gifu.domain.Location;
-import com.coffee.gifu.domain.Offer;
-import com.coffee.gifu.domain.Organisation;
+import com.coffee.gifu.domain.*;
 import com.coffee.gifu.repository.AuthorityRepository;
 import com.coffee.gifu.repository.OfferRepository;
 import com.coffee.gifu.repository.UserRepository;
+import com.coffee.gifu.security.AuthoritiesConstants;
 import com.coffee.gifu.service.MailService;
 import com.coffee.gifu.service.OfferService;
 import com.coffee.gifu.service.OrganisationService;
@@ -38,14 +37,13 @@ import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static com.coffee.gifu.web.rest.TestUtil.createFormattingConversionService;
 import static com.coffee.gifu.web.rest.TestUtil.sameInstant;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -227,30 +225,54 @@ public class OfferResourceIT {
         offer = createEntity(em);
     }
 
+
     @Test
     @Transactional()
     public void createOffer() throws Exception {
 
         int databaseSizeBeforeCreate = offerRepository.findAll().size();
+        // Login
+        restUserMockMvc.perform(get("/api/authenticate")
+                .with(request -> {
+                    request.setRemoteUser("admin");
+                    return request;
+                })
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string("admin"));
+        Optional<User> userWithAuthoritiesByLogin =
+                userService.getUserWithAuthoritiesByLogin("admin");
 
 
+        // check if user is log
+        userWithAuthoritiesByLogin.get().getLogin();
+
+        // Create the Offer
         // Create the Offer
         LocationDTO locationDTO = new LocationDTO();
         locationDTO.setCity("Paris");
         locationDTO.setPostalCode("75012");
         locationDTO.setStreetAddress("12 avenue de charenton");
+
         CreateOfferRequest createOfferRequest = new CreateOfferRequest();
         createOfferRequest.setAvailabilityBegin(DEFAULT_AVAILABILITY_BEGIN);
         createOfferRequest.setAvailabilityEnd(DEFAULT_AVAILABILITY_END);
         createOfferRequest.setCold(DEFAULT_IS_COLD);
         createOfferRequest.setDescription(DEFAULT_DESCRIPTION);
         createOfferRequest.setTitle(DEFAULT_TITLE);
-        createOfferRequest.setEnterpriseId(offer.getOrganisation().getId());
-        createOfferRequest.setLocationDTO(locationDTO);
-        testAuthenticatedUser();
+
+        OfferDTO offerDTO = new OfferDTO();
+        offerDTO.setDescription(createOfferRequest.getDescription());
+        offerDTO.setAvailabilityBegin(createOfferRequest.getAvailabilityBegin());
+        offerDTO.setAvailabilityEnd(createOfferRequest.getAvailabilityEnd());
+        offerDTO.setTitle(createOfferRequest.getTitle());
+        offerDTO.setLocationDTO(locationDTO);
+        Optional<OrganisationDTO> optionalOrganisationDTO = organisationService.findOne(userWithAuthoritiesByLogin.get().getOrganisationID());
+        offerDTO.setEnterprise(optionalOrganisationDTO.get());
+
         restOfferMockMvc.perform(post("/api/offers")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(createOfferRequest)))
+            .content(TestUtil.convertObjectToJsonBytes(offerDTO)))
             .andExpect(status().isCreated());
 
         // Validate the Offer in the database
@@ -268,21 +290,8 @@ public class OfferResourceIT {
     }
 
     @Test
-    public void testAuthenticatedUser() throws Exception {
-        restUserMockMvc.perform(get("/api/authenticate")
-                .with(request -> {
-                    request.setRemoteUser("test");
-                    return request;
-                })
-                .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(content().string("test"));
-    }
-
-    @Test
     @Transactional()
     public void createOffer_should_return_not_found_if_idEnterprise_not_found() throws Exception {
-        int databaseSizeBeforeCreate = offerRepository.findAll().size();
 
         // Create the Offer
         LocationDTO locationDTO = new LocationDTO();
@@ -295,12 +304,20 @@ public class OfferResourceIT {
         createOfferRequest.setCold(DEFAULT_IS_COLD);
         createOfferRequest.setDescription(DEFAULT_DESCRIPTION);
         createOfferRequest.setTitle(DEFAULT_TITLE);
-        createOfferRequest.setEnterpriseId(1000L);
-        createOfferRequest.setLocationDTO(locationDTO);
+
+        OfferDTO offerDTO = new OfferDTO();
+        offerDTO.setDescription(createOfferRequest.getDescription());
+        offerDTO.setAvailabilityBegin(createOfferRequest.getAvailabilityBegin());
+        offerDTO.setAvailabilityEnd(createOfferRequest.getAvailabilityEnd());
+        offerDTO.setTitle(createOfferRequest.getTitle());
+        offerDTO.setLocationDTO(locationDTO);
+        OrganisationDTO organisationDTO = new OrganisationDTO();
+        organisationDTO.setId(11111L);
+        offerDTO.setEnterprise(organisationDTO);
 
         restOfferMockMvc.perform(post("/api/offers")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
-                .content(TestUtil.convertObjectToJsonBytes(createOfferRequest)))
+                .content(TestUtil.convertObjectToJsonBytes(offerDTO)))
                 .andExpect(status().isNotFound());
     }
 
