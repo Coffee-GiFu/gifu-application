@@ -50,7 +50,7 @@ jobs:
         - echo $GITHUB_PASSWORD | docker login -u Senrokai --password-stdin docker.pkg.github.com
         - docker tag gifu-frontend-dev:$VERSION docker.pkg.github.com/coffee-gifu/gifu-application/gifu-frontend-dev:$VERSION
         - docker push docker.pkg.github.com/coffee-gifu/gifu-application/gifu-frontend-dev:$VERSION
-        - DOCKER_HOST=ec2-54-154-134-172.eu-west-1.compute.amazonaws.com:2376 docker stack deploy --compose-file ./docker_front/docker-compose.dev.yml gifu-frontend-dev
+        - DOCKER_HOST=ec2-34-241-150-218.eu-west-1.compute.amazonaws.com:2376 docker stack deploy --compose-file ./docker_front/docker-compose.dev.yml gifu-frontend-dev
     - stage: deploy prod
       script:
         - sudo apt-get install python3
