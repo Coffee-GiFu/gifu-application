@@ -42,15 +42,15 @@ jobs:
         - echo $DOCKER_PASSWORD | docker login -u AWS --password-stdin https://249114954752.dkr.ecr.eu-west-1.amazonaws.com
         - eb init --platform "arn:aws:elasticbeanstalk:eu-west-1::platform/Docker running on 64bit Amazon Linux/2.12.17"
         - ./mvnw -ntp package verify -DskipTests jib:dockerBuild
-        - docker tag gifu-backend:$VERSION 249114954752.dkr.ecr.eu-west-1.amazonaws.com/gifu-backend-dev:$VERSION
+        - docker tag gifu-dev:$VERSION 249114954752.dkr.ecr.eu-west-1.amazonaws.com/gifu-backend-dev:$VERSION
         - docker push 249114954752.dkr.ecr.eu-west-1.amazonaws.com/gifu-backend-dev:$VERSION
         - eb deploy GifuApplicationEnv
-    - script:
-        - docker build -f ./docker_front/Dockerfile-dev -t gifu-frontend-dev:$VERSION .
-        - echo $GITHUB_PASSWORD | docker login -u Senrokai --password-stdin docker.pkg.github.com
-        - docker tag gifu-frontend-dev:$VERSION docker.pkg.github.com/coffee-gifu/gifu-application/gifu-frontend-dev:$VERSION
-        - docker push docker.pkg.github.com/coffee-gifu/gifu-application/gifu-frontend-dev:$VERSION
-        - DOCKER_HOST=ec2-34-241-150-218.eu-west-1.compute.amazonaws.com:2376 docker stack deploy --compose-file ./docker_front/docker-compose.dev.yml gifu-frontend-dev
+    #    - script:
+    #        - docker build -f ./docker_front/Dockerfile-dev -t gifu-frontend-dev:$VERSION .
+    #        - echo $GITHUB_PASSWORD | docker login -u Senrokai --password-stdin docker.pkg.github.com
+    #        - docker tag gifu-frontend-dev:$VERSION docker.pkg.github.com/coffee-gifu/gifu-application/gifu-frontend-dev:$VERSION
+    #        - docker push docker.pkg.github.com/coffee-gifu/gifu-application/gifu-frontend-dev:$VERSION
+    #        - DOCKER_HOST=ec2-34-241-150-218.eu-west-1.compute.amazonaws.com:2376 docker stack deploy --compose-file ./docker_front/docker-compose.dev.yml gifu-frontend-dev
     - stage: deploy prod
       script:
         - sudo apt-get install python3
@@ -64,7 +64,7 @@ jobs:
 stages:
   - test
   - name: deploy dev
-  #    if: branch = develop
+    if: branch = develop
   - name: deploy prod
     if: branch = master
 addons:
