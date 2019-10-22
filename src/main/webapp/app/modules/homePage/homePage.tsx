@@ -1,64 +1,39 @@
 import './homePage.scss';
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Translate } from 'react-jhipster';
 import { connect } from 'react-redux';
 import { Row, Col, Alert } from 'reactstrap';
-import { OfferCard } from '../../shared/layout/offer/offerCard';
 import { Redirect } from 'react-router';
+import OfferCardAdd from 'app/shared/layout/offer/offerCardAdd';
+import  OfferPrint  from './offer/offerPrint'
 
 export type IHomeProp = StateProps;
 
 export const HomePage = (props: IHomeProp) => {
   const { account } = props;
+  const [show, setShow] = useState(false);
   if(!(account && account.login)){
     return (<Redirect to="/login" />);
   }
-  const offs= [{id: 21,description: `eeesddsf e 
-  sdf ds fds eee`,isCold: true,availabilityBegin: null,availabilityEnd: null,title: "titre",location: null,recuperator: null}, {id: 24,description: `eeesddsf e 
-  sdf ds fds eeeeeesddsf e 
-  sdf ds fds eeeeeesddsf e 
-  sdf ds fds eeeeeesddsf e 
-  sdf ds fds eee`,isCold: false,availabilityBegin: null,availabilityEnd: null,title: "titre",location: null,recuperator: null},{id: 21,description: `eeesddsf e 
-  sdf ds fds eee`,isCold: true,availabilityBegin: null,availabilityEnd: null,title: "titre",location: null,recuperator: null}, {id: 24,description: `eeesddsf e 
-  sdf ds fds eeeeeesddsf e 
-  sdf ds fds eeeeeesddsf e 
-  sdf ds fds eeeeeesddsf e 
-  sdf ds fds eee`,isCold: false,availabilityBegin: null,availabilityEnd: null,title: "titre",location: null,recuperator: null},{id: 21,description: `eeesddsf e 
-  sdf ds fds eee`,isCold: true,availabilityBegin: null,availabilityEnd: null,title: "titre",location: null,recuperator: null}, {id: 24,description: `eeesddsf e 
-  sdf ds fds eeeeeesddsf e 
-  sdf ds fds eeeeeesddsf e 
-  sdf ds fds eeeeeesddsf e 
-  sdf ds fds eee`,isCold: false,availabilityBegin: null,availabilityEnd: null,title: "titre",location: null,recuperator: null},{id: 21,description: `eeesddsf e 
-  sdf ds fds eee`,isCold: true,availabilityBegin: null,availabilityEnd: null,title: "titre",location: null,recuperator: null}, {id: 24,description: `eeesddsf e 
-  sdf ds fds eeeeeesddsf e 
-  sdf ds fds eeeeeesddsf e 
-  sdf ds fds eeeeeesddsf e 
-  sdf ds fds eee`,isCold: false,availabilityBegin: null,availabilityEnd: null,title: "titre",location: null,recuperator: null},{id: 21,description: `eeesddsf e 
-  sdf ds fds eee`,isCold: true,availabilityBegin: null,availabilityEnd: null,title: "titre",location: null,recuperator: null}, {id: 24,description: `eeesddsf e 
-  sdf ds fds eeeeeesddsf e 
-  sdf ds fds eeeeeesddsf e 
-  sdf ds fds eeeeeesddsf e 
-  sdf ds fds eee`,isCold: false,availabilityBegin: null,availabilityEnd: null,title: "titre",location: null,recuperator: null}];
   return (
     <Row>
       <Col md="12">
-        <h2>
-          <Translate contentKey="home.title">Welcome, Java Hipster!</Translate>
-        </h2>
-        <p className="lead">
-          <Translate contentKey="home.subtitle">This is your homepage</Translate>
-        </p>
-          <div>
-            <Alert color="success">
-              <Translate contentKey="home.logged.message" interpolate={{ username: account.login }}>
-                You are logged in as user {account.login}.
-              </Translate>
-            </Alert>
-          </div>
-        {offs.map((off,index) => {
-          return <OfferCard key={index} offer={off} handleClick={(id)=>{window.console.log(id)}} />;
-        })}
+        <div>
+          <Alert color="success">
+            <Translate contentKey="home.logged.message" interpolate={{ username: account.login }}>
+              You are logged in as user {account.login}.
+            </Translate>
+          </Alert>
+        </div>
+        <div>
+          {
+            (account.authorities.includes("ROLE_COMPANY"))?(
+              <OfferCardAdd handleClick={()=>{window.console.log("createoffer")}}/>
+            ):("")
+          }          
+          <OfferPrint showModal={show} handleClose={setShow}/>
+        </div>
       </Col>
     </Row>
   );

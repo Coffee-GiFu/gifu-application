@@ -18,8 +18,8 @@ export const OfferCard = ({ offer, handleClick }: OfferCardProps) => {
       <div className="styledOfferCardOrganisation">
         <img src="http://lorempixel.com/output/cats-q-c-640-480-1.jpg" />
         <div>
-          <h3 title="Cat Corp." >Cat Corp.</h3>
-          <h5 title="Alfortville - 94140" >Alfortville - 94140</h5>
+          <h3 title={offer.enterprise.name} >{offer.enterprise.name}</h3>
+          <h5 title={offer.locationDTO.city+" - "+offer.locationDTO.postalCode} >{offer.locationDTO.city} - {offer.locationDTO.postalCode}</h5>
         </div>
       </div>
       <div className="styledOfferCardBody">

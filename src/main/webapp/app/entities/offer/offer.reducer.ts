@@ -140,6 +140,21 @@ export const deleteEntity: ICrudDeleteAction<IOffer> = id => async dispatch => {
   return result;
 };
 
+export const searchChosenOffer: ICrudGetAllAction<IOffer> = (page, size, sort) => ({
+  type: ACTION_TYPES.FETCH_OFFER_LIST,
+  payload: axios.get<IOffer>(`${apiUrl}/selected`)
+});
+
+export const searchCreatedOffer: ICrudGetAllAction<IOffer> = (page, size, sort) => ({
+  type: ACTION_TYPES.FETCH_OFFER_LIST,
+  payload: axios.get<IOffer>(`${apiUrl}/create`)
+});
+
+export const searchAvailableOffer: ICrudGetAllAction<IOffer> = (page, size, sort) => ({
+  type: ACTION_TYPES.FETCH_OFFER_LIST,
+  payload: axios.get<IOffer>(`${apiUrl}/available/true`)
+});
+
 export const reset = () => ({
   type: ACTION_TYPES.RESET
 });
