@@ -20,8 +20,10 @@ env:
     - VERSION=$(mvn -q -Dexec.executable="echo" -Dexec.args='${project.version}' --non-recursive exec:exec)
 before_install:
   - chmod +x mvnw
+  - npm install -g npm
 install:
   - npm install
+  - npm audit fix
 jobs:
   include:
     - stage: test
