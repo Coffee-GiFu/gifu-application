@@ -3,9 +3,8 @@ os:
 services:
   - docker
 language: java
-jdk: openjdk11
 node_js:
-  - '12.13.0'
+  - '10.16.3'
 cache:
   directories:
     - node
@@ -20,6 +19,11 @@ env:
     - NG_CLI_ANALYTICS="false"
     - VERSION=$(mvn -q -Dexec.executable="echo" -Dexec.args='${project.version}' --non-recursive exec:exec)
 before_install:
+  - echo '*** Using OpenJDK 11 by default'
+  - sudo add-apt-repository ppa:openjdk-r/ppa -y
+  - sudo apt-get update
+  - sudo apt install openjdk-11-jdk
+  - sudo update-java-alternatives -s java-1.11.0-openjdk-amd64
   - nvm install $NODE_VERSION
   - npm install -g npm
   - chmod +x mvnw
