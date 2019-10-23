@@ -1,5 +1,6 @@
 package com.coffee.gifu.web.rest;
 
+import com.coffee.gifu.security.AuthoritiesConstants;
 import com.coffee.gifu.service.OrganisationService;
 import com.coffee.gifu.service.dto.OrganisationDTO;
 import com.coffee.gifu.web.rest.errors.BadRequestAlertException;
@@ -9,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -44,6 +46,7 @@ public class OrganisationResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/organisations")
+    @PreAuthorize("hasRole(\"" + AuthoritiesConstants.ADMIN + "\")")
     public ResponseEntity<OrganisationDTO> createOrganisation(@Valid @RequestBody OrganisationDTO organisationDTO) throws URISyntaxException {
         log.debug("REST request to save Organisation : {}", organisationDTO);
         if (organisationDTO.getId() != null) {
@@ -65,6 +68,7 @@ public class OrganisationResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/organisations")
+    @PreAuthorize("hasRole(\"" + AuthoritiesConstants.ADMIN + "\")")
     public ResponseEntity<OrganisationDTO> updateOrganisation(@Valid @RequestBody OrganisationDTO organisationDTO) throws URISyntaxException {
         log.debug("REST request to update Organisation : {}", organisationDTO);
         if (organisationDTO.getId() == null) {
@@ -83,6 +87,7 @@ public class OrganisationResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the organisationDTO, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/organisations/{id}")
+    @PreAuthorize("hasRole(\"" + AuthoritiesConstants.ADMIN + "\")")
     public ResponseEntity<OrganisationDTO> getOrganisation(@PathVariable Long id) {
         log.debug("REST request to get Organisation : {}", id);
         Optional<OrganisationDTO> organisationDTO = organisationService.findOne(id);
