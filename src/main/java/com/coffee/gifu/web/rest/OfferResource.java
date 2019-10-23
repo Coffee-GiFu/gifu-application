@@ -82,7 +82,7 @@ public class OfferResource {
     private Optional<OrganisationDTO> checkIfOrganisationExists
             (@RequestBody @Valid Optional<User> userWithAuthoritiesByLogin) {
         if(userWithAuthoritiesByLogin.isEmpty()){
-            throw new CurrentUserLoginNotFound("User not found for this id " + userWithAuthoritiesByLogin.get().getId());
+            throw new CurrentUserLoginNotFound("User not found");
         }
         if (organisationService.findOne(userWithAuthoritiesByLogin.get().getOrganisationID()).isEmpty()) {
             throw new CurrentUserLoginNotFound("Organisation not found for this id User " + userWithAuthoritiesByLogin.get().getId());
