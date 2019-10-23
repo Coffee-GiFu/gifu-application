@@ -1,6 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import './offerPrint.scss'
+import OfferCardAdd from 'app/shared/layout/offer/offerCardAdd';
 import {RouteComponentProps} from 'react-router-dom';
 import {Translate} from 'react-jhipster';
 
@@ -9,6 +10,7 @@ import {getEntities, searchAvailableOffer, searchCreatedOffer, searchChosenOffer
 import OfferCard from 'app/shared/layout/offer/offerCard';
 
 interface IofferPrint {
+    isAllow: boolean;
     showModal: boolean;
     handleClose: Function;
 }
@@ -24,6 +26,11 @@ export class OfferPrint extends React.Component<IOfferPrintProps> {
     window.console.log(offerList[0])
     return (
       <div className="offerPrintBody">
+        {
+            (this.props.isAllow)?(
+              <OfferCardAdd handleClick={()=>{window.console.log("createoffer")}}/>
+            ):("")
+          }   
         {
           offerList && offerList.length > 0 ? (
             offerList.map((off,index) => {
