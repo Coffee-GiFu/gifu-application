@@ -10,6 +10,7 @@ import {
   searchCreatedOffer
 } from '../../../entities/offer/offer.reducer';
 import OfferCard from 'app/shared/layout/offer/offerCard';
+import OfferCardAdd from 'app/shared/layout/offer/offerCardAdd';
 
 interface IofferPrint {
     isAllow: boolean;
