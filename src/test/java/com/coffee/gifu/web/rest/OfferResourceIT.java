@@ -310,7 +310,7 @@ public class OfferResourceIT {
         CreateOfferRequest createOfferRequest = new CreateOfferRequest();
         createOfferRequest.setAvailabilityBegin(DEFAULT_AVAILABILITY_BEGIN);
         createOfferRequest.setAvailabilityEnd(DEFAULT_AVAILABILITY_END);
-        createOfferRequest.setCold(DEFAULT_IS_COLD);
+        createOfferRequest.setIsCold(DEFAULT_IS_COLD);
         createOfferRequest.setDescription(DEFAULT_DESCRIPTION);
         createOfferRequest.setTitle(DEFAULT_TITLE);
 

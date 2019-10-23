@@ -1,13 +1,12 @@
 package com.coffee.gifu.web.rest.request.object;
 
 import com.coffee.gifu.service.dto.LocationDTO;
-import com.coffee.gifu.service.dto.RecuperatorDTO;
+import org.checkerframework.common.value.qual.BoolVal;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.time.ZonedDateTime;
-import java.util.Set;
 
 public class CreateOfferRequest implements Serializable {
 
@@ -15,7 +14,7 @@ public class CreateOfferRequest implements Serializable {
     @NotNull
     @Size(min = 10, max = 255)
     private String description;
-
+    
     private boolean isCold;
 
     @NotNull
@@ -39,11 +38,11 @@ public class CreateOfferRequest implements Serializable {
         this.description = description;
     }
 
-    public boolean isCold() {
+    public boolean getIsCold() {
         return isCold;
     }
 
-    public void setCold(boolean cold) {
+    public void setIsCold(boolean cold) {
         isCold = cold;
     }
 
