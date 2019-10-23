@@ -1,0 +1,12 @@
+FROM node:12-alpine
+WORKDIR /app
+COPY package.json .
+COPY package-lock.json .
+COPY tsconfig.json .
+COPY .eslintrc.json .
+COPY .eslintignore .
+COPY postcss.config.js .
+RUN  npm install
+COPY webpack webpack/
+COPY src/main/webapp/ src/main/webapp/
+CMD npm start
