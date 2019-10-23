@@ -81,12 +81,15 @@ public class OfferResource {
 
     private Optional<OrganisationDTO> checkIfOrganisationExists
             (@RequestBody @Valid Optional<User> userWithAuthoritiesByLogin) {
+        if(userWithAuthoritiesByLogin.isEmpty()){
+            throw new CurrentUserLoginNotFound("User not found for this id " + userWithAuthoritiesByLogin.get().getId());
+        }
         if (organisationService.findOne(userWithAuthoritiesByLogin.get().getOrganisationID()).isEmpty()) {
-            throw new CurrentUserLoginNotFound("Organisation not found for this id " + userWithAuthoritiesByLogin.get().getId());
+            throw new CurrentUserLoginNotFound("Organisation not found for this id User " + userWithAuthoritiesByLogin.get().getId());
         }
         Optional<OrganisationDTO> optionalOrganisationDTO = organisationService.findOne(userWithAuthoritiesByLogin.get().getOrganisationID());
         if (optionalOrganisationDTO.isEmpty()) {
-            throw new EnterpriseNotFoundException("Organisation not found for this id " + optionalOrganisationDTO.get().getId());
+            throw new EnterpriseNotFoundException("Organisation not found for this id " + userWithAuthoritiesByLogin.get().getId());
         }
         return optionalOrganisationDTO;
     }

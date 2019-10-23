@@ -1,7 +1,6 @@
 package com.coffee.gifu.web.rest.request.object;
 
 import com.coffee.gifu.service.dto.LocationDTO;
-import org.checkerframework.common.value.qual.BoolVal;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
