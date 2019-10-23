@@ -11,8 +11,10 @@ import {
   searchAvailableOfferCold
 } from '../../../entities/offer/offer.reducer';
 import OfferCard from 'app/shared/layout/offer/offerCard';
+import OfferCardAdd from 'app/shared/layout/offer/offerCardAdd';
 
 interface IofferPrint {
+    isAllow: boolean;
     showModal: boolean;
     handleClose: Function;
     coldFilter: boolean;
@@ -35,19 +37,24 @@ export class OfferPrint extends React.Component<IOfferPrintProps> {
   render() {
     const { offerList } = this.props;
     return (
-        <div>
-            {
-                offerList && offerList.length > 0 ? (
-                    offerList.map((off,index) => {
-                        return <OfferCard key={index} offer={off} handleClick={(id)=>{window.console.log(id)}} />;
-                    })
-                ) : (
-                    <div className="alert alert-warning">
-                        <Translate contentKey="gifuApp.offer.home.notFound">No Offers found</Translate>
-                    </div>
-                )
-            }
-        </div>
+      <div className="offerPrintBody">
+        {
+            (this.props.isAllow)?(
+              <OfferCardAdd handleClick={()=>{window.console.log("createoffer")}}/>
+            ):("")
+          }   
+        {
+          offerList && offerList.length > 0 ? (
+            offerList.map((off,index) => {
+              return <OfferCard key={index} offer={off} handleClick={(id)=>{window.console.log(id)}} />;
+            })
+          ) : (
+            <div className="alert alert-warning">
+              <Translate contentKey="gifuApp.offer.home.notFound">No Offers found</Translate>
+            </div>
+          )
+        }
+      </div>
     );
   }
 }

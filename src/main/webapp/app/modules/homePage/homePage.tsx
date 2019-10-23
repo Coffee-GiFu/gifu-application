@@ -5,7 +5,6 @@ import { Translate } from 'react-jhipster';
 import { connect } from 'react-redux';
 import { Row, Col, Alert } from 'reactstrap';
 import { Redirect } from 'react-router';
-import OfferCardAdd from 'app/shared/layout/offer/offerCardAdd';
 import  OfferPrint  from './offer/offerPrint'
 import Checkbox from 'app/shared/layout/checkbox/checkbox';
 
@@ -37,15 +36,8 @@ export const HomePage = (props: IHomeProp) => {
             <Translate contentKey="home.logged.message" interpolate={{ username: account.login }}>
               You are logged in as user {account.login}.
             </Translate>
-        </div>
-        <div>
-          {
-            (account.authorities.includes("ROLE_COMPANY"))?(
-              <OfferCardAdd handleClick={()=>{window.console.log("createoffer")}}/>
-            ):("")
-          }          
-          <OfferPrint showModal={show} handleClose={setShow} coldFilter={coldFilter}/>
-        </div>
+        </div>    
+        <OfferPrint showModal={show} handleClose={setShow} coldFilter={coldFilter} isAllow={account.authorities.includes("ROLE_COMPANY")}/>
       </Col>
     </Row>
   );
