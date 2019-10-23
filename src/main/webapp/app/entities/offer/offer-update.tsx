@@ -15,7 +15,7 @@ import { convertDateTimeFromServer, convertDateTimeToServer } from 'app/shared/u
 import { mapIdList } from 'app/shared/util/entity-utils';
 import { LocationPage } from '../../modules/locationPage/locationPage';
 
-export interface IOfferUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> { }
+export interface IOfferUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
 
 export interface IOfferUpdateState {
   isNew: boolean;
@@ -23,7 +23,6 @@ export interface IOfferUpdateState {
   locationId: string;
   organisationId: string;
 }
-
 
 export class OfferUpdate extends React.Component<IOfferUpdateProps, IOfferUpdateState> {
   constructor(props) {
@@ -55,21 +54,15 @@ export class OfferUpdate extends React.Component<IOfferUpdateProps, IOfferUpdate
   }
 
   saveEntity = (event, errors, values) => {
-    window.console.log(this.props);
-    window.console.log(event);
     values.availabilityBegin = convertDateTimeToServer(values.availabilityBegin);
     values.availabilityEnd = convertDateTimeToServer(values.availabilityEnd);
-    window.console.log(this.props.getOrganisations());
-    window.console.log(this.props.getRecuperators());
+
     if (errors.length === 0) {
-      window.console.log(this.props.getOrganisations());
-      window.console.log(this.props.getRecuperators());
       const { offerEntity } = this.props;
-      window.console.log("----");
-      window.console.log(offerEntity);
       const entity = {
         ...offerEntity,
-        ...values
+        ...values,
+        recuperators: mapIdList(values.recuperators)
       };
 
       if (this.state.isNew) {
@@ -85,15 +78,9 @@ export class OfferUpdate extends React.Component<IOfferUpdateProps, IOfferUpdate
   };
 
   render() {
-    
-    window.console.log("slslslslsslsls");
-    window.console.log(this.props);
     const { offerEntity, locations, recuperators, organisations, loading, updating } = this.props;
     const { isNew } = this.state;
-    window.console.log("wwwwwlsls");
-    window.console.log(recuperators);
-    window.console.log("wwwwwlsls");
-    window.console.log(recuperators);
+
     return (
       <div>
         <Row className="justify-content-center">
@@ -196,17 +183,17 @@ export class OfferUpdate extends React.Component<IOfferUpdateProps, IOfferUpdate
                     <FontAwesomeIcon icon="arrow-left" />
                     &nbsp;
                   <span className="d-none d-md-inline">
-                      <Translate contentKey="entity.action.back">Back</Translate>
-                    </span>
-                  </Button>
-                  &nbsp;
+                    <Translate contentKey="entity.action.back">Back</Translate>
+                  </span>
+                </Button>
+                &nbsp;
                 <Button color="primary" id="save-entity" type="submit" disabled={updating}>
-                    <FontAwesomeIcon icon="save" />
-                    &nbsp;
+                  <FontAwesomeIcon icon="save" />
+                  &nbsp;
                   <Translate contentKey="entity.action.save">Save</Translate>
-                  </Button>
-                </AvForm>
-              )}
+                </Button>
+              </AvForm>
+            )}
           </Col>
         </Row>
       </div>

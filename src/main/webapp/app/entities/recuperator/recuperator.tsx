@@ -1,12 +1,14 @@
 import React from 'react';
-import {connect} from 'react-redux';
-import {Link, RouteComponentProps} from 'react-router-dom';
-import {Button, Table} from 'reactstrap';
-import {Translate} from 'react-jhipster';
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import { connect } from 'react-redux';
+import { Link, RouteComponentProps } from 'react-router-dom';
+import { Button, Col, Row, Table } from 'reactstrap';
+import { Translate, ICrudGetAllAction } from 'react-jhipster';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import {IRootState} from 'app/shared/reducers';
-import {getEntities} from './recuperator.reducer';
+import { IRootState } from 'app/shared/reducers';
+import { getEntities } from './recuperator.reducer';
+import { IRecuperator } from 'app/shared/model/recuperator.model';
+import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
 
 export interface IRecuperatorProps extends StateProps, DispatchProps, RouteComponentProps<{ url: string }> {}
 
@@ -42,9 +44,6 @@ export class Recuperator extends React.Component<IRecuperatorProps> {
                     <Translate contentKey="gifuApp.recuperator.phoneNumber">Phone Number</Translate>
                   </th>
                   <th>
-                    <Translate contentKey="gifuApp.recuperator.location">Location</Translate>
-                  </th>
-                  <th>
                     <Translate contentKey="gifuApp.recuperator.association">Association</Translate>
                   </th>
                   <th />
@@ -60,9 +59,6 @@ export class Recuperator extends React.Component<IRecuperatorProps> {
                     </td>
                     <td>{recuperator.name}</td>
                     <td>{recuperator.phoneNumber}</td>
-                    <td>
-                      {recuperator.locationCity ? <Link to={`location/${recuperator.locationId}`}>{recuperator.locationCity}</Link> : ''}
-                    </td>
                     <td>
                       {recuperator.associationName ? (
                         <Link to={`organisation/${recuperator.associationId}`}>{recuperator.associationName}</Link>

@@ -18,21 +18,15 @@ env:
     - JHI_DISABLE_WEBPACK_LOGS=true
     - NG_CLI_ANALYTICS="false"
     - VERSION=$(mvn -q -Dexec.executable="echo" -Dexec.args='${project.version}' --non-recursive exec:exec)
-    - AWS_ACCESS_KEY_ID=AKIATUADIRQAGNTL2YGH
-    - secure: oWYhFM2cptMKx4ilPOekvRRu4sPmr/WI4w+L8tg0z9xtlboXVHsMD5v3Vx0pViwl9j5mgjRmDfwhtYvH+J91//LdbakMgkeqPvwwjYtZR4jIk4sVmBgeJOjcakcP/V8XhvV17H5+4Gs2sMiVRfCU6Tw2RvXlYA829PpPdUUZ+dzyZ2go6hNG/G1b6pbiGex8kryEUfW5ObOeYB15J/9Ccv2bovbKIxE0k+Hpmmr/zjywFde1EPLfSR2+3k3hvcC49pK/wmtzprLeBf6jPgTCjvSWrc0s462heoW+1S/85NzWZJw2jVD348EKrJeeQhM0xl3FRU1xfBXj48qI0nOsDk2O/R+rAc2/4j8OSVcpdVTP63Rec4KkXmTR7TA2LXVmr5z2/i+hqfF6WhCWBLBBPcrrjNjcQYfZ1oYPCs36iqXYbaWRtpcXyqxEuVgRmzAvtWVzkYCcOFQWmaKmwYpbe8VVykfwMzlPBxTHEuoECrvCJfto+v9Te/V9CY1w6PB9zUVQIeiP2MWBWzBSUAML6ZklZMR/t91RtnzI8CL8FC4N4DZ8YjedA7nRNvv2xHAYryEMzsnXua+QfIlmhuXNBqkk/BdElV30afPwWuSAK7jQOVSg8iAqipPTCWWylijFHzntYkzel5xiHJN8jLrvTm5NfF5ifEYhA1KqNDwdTCo=
 before_install:
   - echo '*** Using OpenJDK 11 by default'
   - sudo add-apt-repository ppa:openjdk-r/ppa -y
   - sudo apt-get update
   - sudo apt install openjdk-11-jdk
   - sudo update-java-alternatives -s java-1.11.0-openjdk-amd64
-  - sudo apt-get install python3
-  - pip install awscli --upgrade --user
-  - pip install awsebcli --upgrade --user
   - nvm install $NODE_VERSION
   - npm install -g npm
   - chmod +x mvnw
-  - echo eyJwYXlsb2FkIjoiY2gwR08vYmZsOWh3a1dDdmRFcUN5VHU5QkZldytZeWUvVG1aZk9obklwcUthWjBtamxCbmVLNlNlTm82SjBiWDc3ZUZTcWhVbjVjdWZnRDVCZzBYMzlkM0hsYnE5MmVJKzBFQlBtZ2ltSHRJcElDOWpxa1hjVDRZQlVhU0VxZ2U5cU0wRkFXTk5FQlhJSS9ZV1NIViszZksvZFBJNUVwV3FjVTZ3KzY4ZjhINDFXVStsdk5NdWg3K29MTnNtanlGSkRoQW42K2xiSzRaTG1LcmRIWS9uMlRyN1h2K1VKZzBBK2twdFcraGwvazdNUk13bzhRdjUxb1JuNTliLzBKbVdhd3ZnbEE5TERYKzF4S3FqSFlaTjN3ckszb3gyd1E3MHBKSFBseXVWVmIwWi9ITjJIOVF4Z2JWWjdyc3dSb2hydlJ0eGx1c3M1WGhNQnpGVjhMUVI0WVE2c2VQc1RRalNIZWE4eFpoRlJFeXMvVytuOGVsMlgvYXVRMHJEQ0NhalJzWE1QR2dCYXN6VmFDdnNmaUozY1BlamRUY2ZxMHYySVBNMW1DRzVaclNyVGRrSVVyQUs1Nk5mcmMvN0NkODMwQ2tpeVZZb3YzemViM3VRM3AzZGhRcFpueGJaaE9SNDlrL3FQcHMvTVpUU1QrSU5sZHpZOHVmN3JOUmpNVkRRSEE3czkwZ2hwbU9uaXhacFRMbXdRbml5WDlMc0R3VFd6RlJjc3YyWDF2K1Q3NnRoaHR1MlpaS2RNa2FTTWpXV1E5ckdPSjhIVGsrU3NOTzB1Y2xBQ3BpQkRjY1NVYjhwUGpLY0tzWmNLcy8vZWs4N0ovdnF0MWdZTS95WHEwRXJ4M29Db0RCYVYzc3cya1E3YWJMd2NnVnhtNHVIb2VPZnpnVmNCSkJBclYwQVNRTjkxQytFNmZuK1NjN0d3RWxqSjZMQURFZmdGQ3IrOVVSVGlhN2RBY0E1K0dXck9RbEdLN1A5WGV4YUZpRDFpazJqTDRna3I2Z21jalMwcjBkajIySWY5bGNWR0syL0dBV3hKaUpHbFFwOE44NE91VlRHeUJmN0wwRXY5UTRwdEl1ZGxaVFd0eExJckZVRm5zUGJaT0ZpU0xIdlVBVUloSXpHVHQyc3hVYWhBYXNDelhJOTFUM0dNZC96Qzk4a096MWROMjU4b0t6QVJqcE9XcCtDZTEya0xPbEhrSE5jT2FBSUg1akRGenhRMTJTVm4xL3F0TDd0NFpDd291a25GOWxoTEppSTBacGVGdHBhajNPRmhVOEowbGNIVnhONkIyWXNFOGdyRU4xbkthcVlzeS84RHJJOWQrQU9YZlhYN21ZWnJFeHphL1pXTXprZlFWWXp1bFpBaGQ4VmkwY0NIa0ZPMVRnZTRxalEvMkNnWmdpTlBEVkloSlczZlJQTWVDNGVjcmh4U3pQNDNxeTg3WmJhZmxmaEU2ZFBtRTNzZUdaM2d0SzBhR1YiLCJkYXRha2V5IjoiQVFFQkFIaCtkUytCbE51ME54blh3b3diSUxzMTE1eWpkK0xOQVpoQkxac3VuT3hrM0FBQUFINHdmQVlKS29aSWh2Y05BUWNHb0c4d2JRSUJBREJvQmdrcWhraUc5dzBCQndFd0hnWUpZSVpJQVdVREJBRXVNQkVFRE5saGlENXowQ2ptOUZMclJBSUJFSUE3T1FBblZJMHNtVVEvNmlaOUd3OXZFL1VPaEx3QjVwK0Z1WkNZNGlqVkN3YWlSWXExaTV3MU95ODBlRUx6bURwODlWQW5OU0NiZUVOd0dYQT0iLCJ2ZXJzaW9uIjoiMiIsInR5cGUiOiJEQVRBX0tFWSIsImV4cGlyYXRpb24iOjE1NzExNzMzNDR9 | docker login -u AWS --password-stdin https://249114954752.dkr.ecr.eu-west-1.amazonaws.com
 install:
   - npm install
 jobs:
@@ -43,16 +37,30 @@ jobs:
         - ./mvnw -ntp org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar
     - stage: deploy dev
       script:
+        - sudo apt-get install python3
+        - pip install awsebcli --upgrade --user
+        - echo $DOCKER_PASSWORD | docker login -u AWS --password-stdin https://249114954752.dkr.ecr.eu-west-1.amazonaws.com
+        - eb init --platform "arn:aws:elasticbeanstalk:eu-west-1::platform/Docker running on 64bit Amazon Linux/2.12.17"
         - ./mvnw -ntp package verify -DskipTests jib:dockerBuild
-        - docker tag gifu-backend:$VERSION 249114954752.dkr.ecr.eu-west-1.amazonaws.com/gifu-backend-dev:$VERSION
+        - docker tag gifu-dev:$VERSION 249114954752.dkr.ecr.eu-west-1.amazonaws.com/gifu-backend-dev:$VERSION
         - docker push 249114954752.dkr.ecr.eu-west-1.amazonaws.com/gifu-backend-dev:$VERSION
-        - eb init --region eu-west-1 --source . --keyname GifuApplicationEnv
+        - eb deploy GifuApplicationEnv
+    #    - script:
+    #        - docker build -f ./docker_front/Dockerfile-dev -t gifu-frontend-dev:$VERSION .
+    #        - echo $GITHUB_PASSWORD | docker login -u Senrokai --password-stdin docker.pkg.github.com
+    #        - docker tag gifu-frontend-dev:$VERSION docker.pkg.github.com/coffee-gifu/gifu-application/gifu-frontend-dev:$VERSION
+    #        - docker push docker.pkg.github.com/coffee-gifu/gifu-application/gifu-frontend-dev:$VERSION
+    #        - DOCKER_HOST=ec2-34-241-150-218.eu-west-1.compute.amazonaws.com:2376 docker stack deploy --compose-file ./docker_front/docker-compose.dev.yml gifu-frontend-dev
     - stage: deploy prod
       script:
+        - sudo apt-get install python3
+        - pip install awsebcli --upgrade --user
+        - eb init --platform "arn:aws:elasticbeanstalk:eu-west-1::platform/Docker running on 64bit Amazon Linux/2.12.17"
+        - echo $DOCKER_PASSWORD | docker login -u AWS --password-stdin https://249114954752.dkr.ecr.eu-west-1.amazonaws.com
         - ./mvnw -ntp package -Pprod verify -DskipTests jib:dockerBuild
         - docker tag gifu-backend:$VERSION 249114954752.dkr.ecr.eu-west-1.amazonaws.com/gifu-backend:$VERSION
         - docker push 249114954752.dkr.ecr.eu-west-1.amazonaws.com/gifu-backend:$VERSION
-        - eb init --region eu-west-1 --source . --keyname GifuApplication-prod
+        - eb deploy GifuApplication-prod
 stages:
   - test
   - name: deploy dev
@@ -64,8 +72,3 @@ addons:
     organization: 'senrokai-github'
     token:
       secure: 'I/wL5yd23iEr7/HXnCbfhd+lQVjEIqmcZAuVaiv/00xM/KWBLhodu7pAVSDTXhmRiTCuqkb+OxGo/M6MytJrZJc/XKzW8g7OtiBBN3M2gIfbfWiT02SA6RqBKEz3gbImEC5ahqVOEFTEhIXEQbfk03FeJTc5HiNmr+F8QIQVnEgYqcG6WZwubnM/Df6aR/KOWZcV9oaA6ZJgkrJqaDg5lxT/kjF5zm4YFmpGYlAzlRBmCzrvPoGhd4SCUKJ0Ca GousgF6fsrWbBhoWIC7B5ePQsOZBX8ODbZ2zGgTQbeCRqB5QRq9IGQAa+9UoEgHhRUmmaf8qPfKAFnjqxKwLTIzsyc9xcw+25EI/bxL/ui5vC1yo+F0nPTluB+S6qb4oUKCgLR1oPyjFbrax6Xo0W9s4tkgqV6Z77VWzI9wxI8Yla4m4ydIPb2XLWJaKUfG8cCGRxbBp8/M/KNaN+gpzJ0egSDQT2t3RGur0CS9Wi6sMLUvCR1yfyMbeWC+cdFH2A1m83o6mvqlZ0Bs0UeYIvloaXTydv22YF7Jyk23zk1jgrMSN/9nbkyWdfM3e5lqU8So2CYt/6Mnf2SY1e7cIpBqnw6DSJNkkDRn36e48a6fzier5zaQZUWqh6bPrXoWW6bogCTHofwIX/0QVpuouYK1Kytz13xNFH36fBeRfsDzcY='
-notifications:
-  webhooks:
-    on_success: change
-    on_failure: always
-    on_start: false

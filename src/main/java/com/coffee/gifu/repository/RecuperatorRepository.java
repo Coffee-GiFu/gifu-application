@@ -1,7 +1,6 @@
 package com.coffee.gifu.repository;
-
 import com.coffee.gifu.domain.Recuperator;
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.*;
 import org.springframework.stereotype.Repository;
 
 

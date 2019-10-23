@@ -1,6 +1,11 @@
 {
   "register": {
-    "title": "Création de compte utilisateur",
+    "title": "Création de compte ",
+    "type": {
+      "base": "Créer un compte",
+      "entreprise": "Entreprise",
+      "association": "Association"
+    },
     "form": {
       "button": "Enregistrement"
     },

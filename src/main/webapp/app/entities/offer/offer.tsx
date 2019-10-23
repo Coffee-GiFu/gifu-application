@@ -80,19 +80,19 @@ export class Offer extends React.Component<IOfferProps> {
                       <TextFormat type="date" value={offer.availabilityEnd} format={APP_DATE_FORMAT} />
                     </td>
                     <td>{offer.title}</td>
-                    <td>{offer.locationId ? <Link to={`location/${offer.locationId}`}>{offer.locationId}</Link> : ''}</td>
+                    <td>{offer.locationDTO&& offer.locationDTO.id ? <Link to={`location/${offer.locationDTO.id}`}>{offer.locationDTO.id}</Link> : ''}</td>
                     <td>
-                      {offer.recuperators
-                        ? offer.recuperators.map((val, j) => (
+                      {offer.recuperatorDTOs
+                        ? offer.recuperatorDTOs.map((val, j) => (
                             <span key={j}>
                               <Link to={`recuperator/${val.id}`}>{val.name}</Link>
-                              {j === offer.recuperators.length - 1 ? '' : ', '}
+                              {j === offer.recuperatorDTOs.length - 1 ? '' : ', '}
                             </span>
                           ))
                         : null}
                     </td>
                     <td>
-                      {offer.organisationName ? <Link to={`organisation/${offer.organisationId}`}>{offer.organisationName}</Link> : ''}
+                      {offer.enterprise && offer.enterprise.name ? <Link to={`organisation/${offer.enterprise.name}`}>{offer.enterprise.name}</Link> : ''}
                     </td>
                     <td className="text-right">
                       <div className="btn-group flex-btn-group-container">

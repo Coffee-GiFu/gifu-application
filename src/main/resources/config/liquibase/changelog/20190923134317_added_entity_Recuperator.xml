@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd">
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
 
     <property name="now" value="now()" dbms="h2"/>
-
+    
     <!--
         Added the entity Recuperator.
     -->
@@ -19,12 +23,8 @@
             <column name="phone_number" type="varchar(10)">
                 <constraints nullable="false" />
             </column>
-            <column name="location_id" type="bigint">
-                <constraints unique="true" nullable="false" uniqueConstraintName="ux_recuperator_location_id" />
-            </column>
-
             <column name="association_id" type="bigint">
-                <constraints nullable="false"/>
+                <constraints unique="true" nullable="false" uniqueConstraintName="ux_recuperator_association_id" />
             </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
@@ -52,7 +52,6 @@
             <column name="id" type="numeric"/>
             <column name="name" type="string"/>
             <column name="phone_number" type="string"/>
-            <column name="location_id" type="numeric"/>
             <column name="association_id" type="numeric"/>
             <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here, do not remove-->
         </loadData>

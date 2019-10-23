@@ -4,6 +4,7 @@
 /src/main/webapp/content/css/main.css
 /target/classes/static/**
 /src/test/javascript/coverage/
+/src/main/webapp/config/constants.ts
 
 ######################
 # Node
@@ -150,4 +151,5 @@ package-lock.json
 # Elastic Beanstalk Files
 .elasticbeanstalk/*
 !.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/config.yml
 !.elasticbeanstalk/*.global.yml

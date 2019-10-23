@@ -1,13 +1,11 @@
 package com.coffee.gifu.domain;
-
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
+
 import java.io.Serializable;
-import java.util.Objects;
 
 /**
  * A Recuperator.
@@ -34,11 +32,9 @@ public class Recuperator implements Serializable {
     @Column(name = "phone_number", length = 10, nullable = false)
     private String phoneNumber;
 
-    @OneToOne(optional = false, cascade = CascadeType.ALL)
-    @NotNull
-    private Location location;
-
     @OneToOne(optional = false)    @NotNull
+
+    @JoinColumn(unique = true)
     private Organisation association;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
@@ -76,19 +72,6 @@ public class Recuperator implements Serializable {
         this.phoneNumber = phoneNumber;
     }
 
-    public Location getLocation() {
-        return location;
-    }
-
-    public Recuperator location(Location location) {
-        this.location = location;
-        return this;
-    }
-
-    public void setLocation(Location location) {
-        this.location = location;
-    }
-
     public Organisation getAssociation() {
         return association;
     }
@@ -116,17 +99,15 @@ public class Recuperator implements Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getName(), getPhoneNumber(), getLocation(), getAssociation());
+        return 31;
     }
 
     @Override
     public String toString() {
         return "Recuperator{" +
-            "id=" + id +
-            ", name='" + name + '\'' +
-            ", phoneNumber='" + phoneNumber + '\'' +
-            ", location=" + location +
-            ", association=" + association +
-            '}';
+            "id=" + getId() +
+            ", name='" + getName() + "'" +
+            ", phoneNumber='" + getPhoneNumber() + "'" +
+            "}";
     }
 }

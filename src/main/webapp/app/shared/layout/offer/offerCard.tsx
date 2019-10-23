@@ -1,9 +1,7 @@
-
-import React from 'react'
-
+import React from 'react';
 import { OfferCarousel } from "./offerCarousel";
-import { StyledOfferCard, StyledOfferCardIsCold, StyledOfferCardOrganisation, StyledOfferCardBody} from './offerCardStyle'
-import { IOffer } from '../../model/offer.model'
+import './offerCardStyle.scss'
+import { IOffer } from '../../model/offer.model';
 
 export interface OfferCardProps {
     offer: IOffer
@@ -13,26 +11,28 @@ export const OfferCard = ({ offer, handleClick }: OfferCardProps) => {
   const pictures = [];
   const autoPlay = true;
   return (    
-    <StyledOfferCard
+    <div className="styledOfferCard"
       onClick={() => { handleClick(offer.id) }}
     >
     <OfferCarousel pictures={pictures} autoPlay={autoPlay}/>
-      <StyledOfferCardOrganisation>
+      <div className="styledOfferCardOrganisation">
         <img src="http://lorempixel.com/output/cats-q-c-640-480-1.jpg" />
         <div>
-          <h5 title="Cat Corp." >Cat Corp.</h5>
-          <h6 title="1 rue du bout du monde" >1 rue du bout du monde</h6>
-          <h6 title="Alfortville - 94140" >Alfortville - 94140</h6>
+          <h3 title={offer.enterprise.name} >{offer.enterprise.name}</h3>
+          <h5 title={offer.locationDTO.city+" - "+offer.locationDTO.postalCode} >{offer.locationDTO.city} - {offer.locationDTO.postalCode}</h5>
         </div>
-      </StyledOfferCardOrganisation>
-      <StyledOfferCardBody>
-        <h6>30/10/2017 17h35</h6>
-        <h6>31/10/2017 17h35</h6>
+      </div>
+      <div className="styledOfferCardBody">
         <p>{offer.description}</p>
-      </StyledOfferCardBody>
+        <div className="dateGroup">
+          <span>30/10/2017 17h35</span>
+          <span>31/10/2017 17h35</span>
+        </div>
+      </div>
       {
-        offer.isCold && (<StyledOfferCardIsCold src="../../../../content/images/snowflake.png" />)
+        offer.isCold && (<img className="styledOfferCardIsCold" src="../../../../content/images/snowflake.png" />)
       }
-    </StyledOfferCard>
+    </div>
   )
 }
+export default OfferCard;

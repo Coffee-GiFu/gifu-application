@@ -3,18 +3,6 @@
     "clientRootFolder": "",
     "relationships": [
         {
-            "relationshipName": "location",
-            "otherEntityName": "location",
-            "relationshipType": "one-to-one",
-            "relationshipValidateRules": [
-                "required"
-            ],
-            "otherEntityField": "city",
-            "ownerSide": true,
-            "useJPADerivedIdentifier": false,
-            "otherEntityRelationshipName": "recuperator"
-        },
-        {
             "relationshipName": "association",
             "otherEntityName": "organisation",
             "relationshipType": "one-to-one",

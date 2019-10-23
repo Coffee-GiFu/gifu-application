@@ -1,20 +1,23 @@
 import React from 'react';
-import {connect} from 'react-redux';
-import {Link, RouteComponentProps} from 'react-router-dom';
-import {Button, Col, Label, Row} from 'reactstrap';
-import {AvField, AvForm, AvGroup, AvInput} from 'availity-reactstrap-validation';
-import {Translate, translate} from 'react-jhipster';
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import {IRootState} from 'app/shared/reducers';
-import {getEntities as getLocations} from 'app/entities/location/location.reducer';
-import {getEntities as getOrganisations} from 'app/entities/organisation/organisation.reducer';
-import {createEntity, getEntity, reset, updateEntity} from './recuperator.reducer';
+import { connect } from 'react-redux';
+import { Link, RouteComponentProps } from 'react-router-dom';
+import { Button, Row, Col, Label } from 'reactstrap';
+import { AvFeedback, AvForm, AvGroup, AvInput, AvField } from 'availity-reactstrap-validation';
+import { Translate, translate, ICrudGetAction, ICrudGetAllAction, ICrudPutAction } from 'react-jhipster';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { IRootState } from 'app/shared/reducers';
+
+import { IOrganisation } from 'app/shared/model/organisation.model';
+import { getEntities as getOrganisations } from 'app/entities/organisation/organisation.reducer';
+import { getEntity, updateEntity, createEntity, reset } from './recuperator.reducer';
+import { IRecuperator } from 'app/shared/model/recuperator.model';
+import { convertDateTimeFromServer, convertDateTimeToServer } from 'app/shared/util/date-utils';
+import { mapIdList } from 'app/shared/util/entity-utils';
 
 export interface IRecuperatorUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
 
 export interface IRecuperatorUpdateState {
   isNew: boolean;
-  locationId: string;
   associationId: string;
 }
 
@@ -22,7 +25,6 @@ export class RecuperatorUpdate extends React.Component<IRecuperatorUpdateProps, 
   constructor(props) {
     super(props);
     this.state = {
-      locationId: '0',
       associationId: '0',
       isNew: !this.props.match.params || !this.props.match.params.id
     };
@@ -41,7 +43,6 @@ export class RecuperatorUpdate extends React.Component<IRecuperatorUpdateProps, 
       this.props.getEntity(this.props.match.params.id);
     }
 
-    this.props.getLocations();
     this.props.getOrganisations();
   }
 
@@ -66,7 +67,7 @@ export class RecuperatorUpdate extends React.Component<IRecuperatorUpdateProps, 
   };
 
   render() {
-    const { recuperatorEntity, locations, organisations, loading, updating } = this.props;
+    const { recuperatorEntity, organisations, loading, updating } = this.props;
     const { isNew } = this.state;
 
     return (
@@ -123,21 +124,6 @@ export class RecuperatorUpdate extends React.Component<IRecuperatorUpdateProps, 
                   />
                 </AvGroup>
                 <AvGroup>
-                  <Label for="recuperator-location">
-                    <Translate contentKey="gifuApp.recuperator.location">Location</Translate>
-                  </Label>
-                  <AvInput id="recuperator-location" type="select" className="form-control" name="locationId">
-                    <option value="" key="0" />
-                    {locations
-                      ? locations.map(otherEntity => (
-                          <option value={otherEntity.id} key={otherEntity.id}>
-                            {otherEntity.city}
-                          </option>
-                        ))
-                      : null}
-                  </AvInput>
-                </AvGroup>
-                <AvGroup>
                   <Label for="recuperator-association">
                     <Translate contentKey="gifuApp.recuperator.association">Association</Translate>
                   </Label>
@@ -175,7 +161,6 @@ export class RecuperatorUpdate extends React.Component<IRecuperatorUpdateProps, 
 }
 
 const mapStateToProps = (storeState: IRootState) => ({
-  locations: storeState.location.entities,
   organisations: storeState.organisation.entities,
   recuperatorEntity: storeState.recuperator.entity,
   loading: storeState.recuperator.loading,
@@ -184,7 +169,6 @@ const mapStateToProps = (storeState: IRootState) => ({
 });
 
 const mapDispatchToProps = {
-  getLocations,
   getOrganisations,
   getEntity,
   updateEntity,
