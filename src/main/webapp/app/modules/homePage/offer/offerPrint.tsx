@@ -7,24 +7,33 @@ import {
   getEntities,
   searchAvailableOffer,
   searchChosenOffer,
-  searchCreatedOffer
+  searchCreatedOffer,
+  searchAvailableOfferCold
 } from '../../../entities/offer/offer.reducer';
 import OfferCard from 'app/shared/layout/offer/offerCard';
 
 interface IofferPrint {
     showModal: boolean;
     handleClose: Function;
+    coldFilter: boolean;
 }
 export interface IOfferPrintProps extends IofferPrint, StateProps, DispatchProps {}
 
 export class OfferPrint extends React.Component<IOfferPrintProps> {
   componentDidMount() {
-    this.props.getEntities();
+    this.props.searchAvailableOffer();
   }
-
+  componentDidUpdate(prevProps, prevState) {
+    if (prevProps.coldFilter !== this.props.coldFilter) {
+      if(this.props.coldFilter){
+        this.props.searchAvailableOfferCold()
+      } else {
+        this.props.searchAvailableOffer();
+      }
+    }
+  }
   render() {
     const { offerList } = this.props;
-    window.console.log(offerList[0]);
     return (
         <div>
             {
@@ -51,7 +60,8 @@ const mapDispatchToProps = {
   getEntities,
   searchAvailableOffer,
   searchCreatedOffer,
-  searchChosenOffer
+  searchChosenOffer,
+  searchAvailableOfferCold
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
