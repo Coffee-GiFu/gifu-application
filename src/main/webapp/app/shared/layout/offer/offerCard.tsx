@@ -2,6 +2,7 @@ import React from 'react';
 import { OfferCarousel } from "./offerCarousel";
 import './offerCardStyle.scss'
 import { IOffer } from '../../model/offer.model';
+import moment from 'moment';
 
 export interface OfferCardProps {
     offer: IOffer
@@ -10,6 +11,7 @@ export interface OfferCardProps {
 export const OfferCard = ({ offer, handleClick }: OfferCardProps) => {
   const pictures = [];
   const autoPlay = true;
+  
   return (    
     <div className="styledOfferCard"
       onClick={() => { handleClick(offer.id) }}
@@ -25,8 +27,8 @@ export const OfferCard = ({ offer, handleClick }: OfferCardProps) => {
       <div className="styledOfferCardBody">
         <p>{offer.description}</p>
         <div className="dateGroup">
-          <span>30/10/2017 17h35</span>
-          <span>31/10/2017 17h35</span>
+          <span>{moment(offer.availabilityBegin).format("DD/MM/YYYY HH:mm")}</span>
+          <span>{moment(offer.availabilityEnd).format("DD/MM/YYYY HH:mm")}</span>
         </div>
       </div>
       {
