@@ -58,7 +58,7 @@ jobs:
         - eb init --platform "arn:aws:elasticbeanstalk:eu-west-1::platform/Docker running on 64bit Amazon Linux/2.12.17"
         - echo $DOCKER_PASSWORD | docker login -u AWS --password-stdin https://249114954752.dkr.ecr.eu-west-1.amazonaws.com
         - ./mvnw -ntp package -Pprod verify -DskipTests jib:dockerBuild
-        - docker tag gifu-backend:$VERSION 249114954752.dkr.ecr.eu-west-1.amazonaws.com/gifu-backend:$VERSION
+        - docker tag gifu:$VERSION 249114954752.dkr.ecr.eu-west-1.amazonaws.com/gifu-backend:$VERSION
         - docker push 249114954752.dkr.ecr.eu-west-1.amazonaws.com/gifu-backend:$VERSION
         - eb deploy GifuApplication-prod
 stages:

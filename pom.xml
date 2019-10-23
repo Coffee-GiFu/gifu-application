@@ -5,7 +5,7 @@
 
     <groupId>com.coffee.gifu</groupId>
     <artifactId>gifu-backend</artifactId>
-    <version>0.0.2-SNAPSHOT</version>
+    <version>0.0.2</version>
     <packaging>jar</packaging>
     <name>Gifu-backend</name>
 
@@ -23,8 +23,6 @@
         <!-- Build properties -->
         <maven.version>3.3.9</maven.version>
         <java.version>1.11</java.version>
-        <node.version>v10.16.3</node.version>
-        <npm.version>6.11.3</npm.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <project.testresult.directory>${project.build.directory}/test-results</project.testresult.directory>
@@ -589,7 +587,7 @@
                             <image>adoptopenjdk:11-jre-hotspot</image>
                         </from>
                         <to>
-                            <image>gifu-dev:${version}</image>
+                            <image>gifu:${project.version}</image>
                         </to>
                         <container>
                             <entrypoint>
