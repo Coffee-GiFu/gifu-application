@@ -62,16 +62,16 @@ export class OfferDetail extends React.Component<IOfferDetailProps> {
             <dt>
               <Translate contentKey="gifuApp.offer.location">Location</Translate>
             </dt>
-            <dd>{offerEntity.locationId ? offerEntity.locationId : ''}</dd>
+            <dd>{offerEntity.locationDTO && offerEntity.locationDTO.postalCode? offerEntity.locationDTO.postalCode : ''}</dd>
             <dt>
               <Translate contentKey="gifuApp.offer.recuperators">Recuperators</Translate>
             </dt>
             <dd>
-              {offerEntity.recuperators
-                ? offerEntity.recuperators.map((val, i) => (
+              {offerEntity.recuperatorDTOs
+                ? offerEntity.recuperatorDTOs.map((val, i) => (
                     <span key={val.id}>
                       <a>{val.name}</a>
-                      {i === offerEntity.recuperators.length - 1 ? '' : ', '}
+                      {i === offerEntity.recuperatorDTOs.length - 1 ? '' : ', '}
                     </span>
                   ))
                 : null}
@@ -79,7 +79,7 @@ export class OfferDetail extends React.Component<IOfferDetailProps> {
             <dt>
               <Translate contentKey="gifuApp.offer.organisation">Organisation</Translate>
             </dt>
-            <dd>{offerEntity.organisationName ? offerEntity.organisationName : ''}</dd>
+            <dd>{offerEntity.enterprise.name ? offerEntity.enterprise.name : ''}</dd>
           </dl>
           <Button tag={Link} to="/entity/offer" replace color="info">
             <FontAwesomeIcon icon="arrow-left" />{' '}
