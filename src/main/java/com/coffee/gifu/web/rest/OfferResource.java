@@ -1,5 +1,6 @@
 package com.coffee.gifu.web.rest;
 
+import com.coffee.gifu.security.AuthoritiesConstants;
 import com.coffee.gifu.service.OfferService;
 import com.coffee.gifu.service.dto.OfferDTO;
 import com.coffee.gifu.service.exception.ManagementRulesException;
@@ -11,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -47,6 +49,7 @@ public class OfferResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/offers")
+    @PreAuthorize("hasRole(\"" + AuthoritiesConstants.COMPANY + "\")")
     public ResponseEntity<OfferDTO> createOffer(@Valid @RequestBody OfferDTO offerDTO) throws URISyntaxException {
         log.debug("REST request to save Offer : {}", offerDTO);
         if (offerDTO.getId() != null) {
@@ -73,6 +76,7 @@ public class OfferResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/offers")
+    @PreAuthorize("hasRole(\"" + AuthoritiesConstants.COMPANY + "\")")
     public ResponseEntity<OfferDTO> updateOffer(@Valid @RequestBody OfferDTO offerDTO) {
         log.debug("REST request to update Offer : {}", offerDTO);
         if (offerDTO.getId() == null) {
@@ -96,6 +100,7 @@ public class OfferResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of offers in body.
      */
     @GetMapping("/offers")
+    @PreAuthorize("hasRole(\"" + AuthoritiesConstants.USER + "\")")
     public List<OfferDTO> getAllOffers(@RequestParam(required = false, defaultValue = "false") boolean eagerload) {
         log.debug("REST request to get all Offers");
         return offerService.findAll();
@@ -108,6 +113,7 @@ public class OfferResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the offerDTO, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/offers/{id}")
+    @PreAuthorize("hasRole(\"" + AuthoritiesConstants.USER + "\")")
     public ResponseEntity<OfferDTO> getOffer(@PathVariable Long id) {
         log.debug("REST request to get Offer : {}", id);
         Optional<OfferDTO> offerDTO = offerService.findOne(id);
@@ -121,6 +127,7 @@ public class OfferResource {
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
     @DeleteMapping("/offers/{id}")
+    @PreAuthorize("hasRole(\"" + AuthoritiesConstants.ADMIN + "\")")
     public ResponseEntity<Void> deleteOffer(@PathVariable Long id) {
         log.debug("REST request to delete Offer : {}", id);
         offerService.delete(id);
@@ -134,6 +141,7 @@ public class OfferResource {
      * or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/offers/selected")
+    @PreAuthorize("hasRole(\"" + AuthoritiesConstants.ASSOCIATION + "\")")
     public List<OfferDTO> searchChosenOffer() {
         log.debug("REST request to get Offer.");
         return offerService.searchChosenOffer();
@@ -145,6 +153,7 @@ public class OfferResource {
      * or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/offers/create")
+    @PreAuthorize("hasRole(\"" + AuthoritiesConstants.COMPANY + "\")")
     public List<OfferDTO> searchCreatedOffer() {
         log.debug("REST request to get Offer.");
         return offerService.searchCreatedOffer();
@@ -157,6 +166,7 @@ public class OfferResource {
      * or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/offers/available/{isColdFilter}")
+    @PreAuthorize("hasRole(\"" + AuthoritiesConstants.USER + "\")")
     public List<OfferDTO> searchAvailableOffer(@PathVariable boolean isColdFilter) {
         log.debug("REST request to get available Offer : {}", isColdFilter);
         return offerService.searchAvailableOffer(isColdFilter);
