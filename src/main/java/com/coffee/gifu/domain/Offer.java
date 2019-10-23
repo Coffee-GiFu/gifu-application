@@ -47,18 +47,17 @@ public class Offer implements Serializable {
     @Column(name = "title", length = 100, nullable = false)
     private String title;
 
-    @OneToOne(optional = false, cascade = CascadeType.ALL)
+    @OneToOne(optional = false, cascade = CascadeType.ALL, orphanRemoval = true)
     @NotNull
     private Location location;
-
     @ManyToMany
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     @JoinTable(name = "offer_recuperators",
-               joinColumns = @JoinColumn(name = "offer_id", referencedColumnName = "id"),
-               inverseJoinColumns = @JoinColumn(name = "recuperators_id", referencedColumnName = "id"))
+            joinColumns = @JoinColumn(name = "offer_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "recuperators_id", referencedColumnName = "id"))
     private Set<Recuperator> recuperators = new HashSet<>();
 
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, cascade = CascadeType.DETACH)
     @NotNull
     private Organisation organisation;
 
@@ -195,12 +194,12 @@ public class Offer implements Serializable {
     @Override
     public String toString() {
         return "Offer{" +
-            "id=" + getId() +
-            ", description='" + getDescription() + "'" +
-            ", isCold='" + isIsCold() + "'" +
-            ", availabilityBegin='" + getAvailabilityBegin() + "'" +
-            ", availabilityEnd='" + getAvailabilityEnd() + "'" +
-            ", title='" + getTitle() + "'" +
-            "}";
+                "id=" + getId() +
+                ", description='" + getDescription() + "'" +
+                ", isCold='" + isIsCold() + "'" +
+                ", availabilityBegin='" + getAvailabilityBegin() + "'" +
+                ", availabilityEnd='" + getAvailabilityEnd() + "'" +
+                ", title='" + getTitle() + "'" +
+                "}";
     }
 }
