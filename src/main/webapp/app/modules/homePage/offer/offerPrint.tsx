@@ -1,5 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
+import './offerPrint.scss'
 import {RouteComponentProps} from 'react-router-dom';
 import {Translate} from 'react-jhipster';
 
@@ -11,7 +12,7 @@ interface IofferPrint {
     showModal: boolean;
     handleClose: Function;
 }
-export interface IOfferPrintProps extends IofferPrint, StateProps, DispatchProps, RouteComponentProps<{ url: string }> {}
+export interface IOfferPrintProps extends IofferPrint, StateProps, DispatchProps {}
 
 export class OfferPrint extends React.Component<IOfferPrintProps> {
   componentDidMount() {
@@ -19,22 +20,22 @@ export class OfferPrint extends React.Component<IOfferPrintProps> {
   }
 
   render() {
-    const { offerList, match } = this.props;
+    const { offerList } = this.props;
     window.console.log(offerList[0])
     return (
-        <div>
-            {
-                offerList && offerList.length > 0 ? (
-                    offerList.map((off,index) => {
-                        return <OfferCard key={index} offer={off} handleClick={(id)=>{window.console.log(id)}} />;
-                    })
-                ) : (
-                    <div className="alert alert-warning">
-                        <Translate contentKey="gifuApp.offer.home.notFound">No Offers found</Translate>
-                    </div>
-                )
-            }
-        </div>
+      <div className="offerPrintBody">
+        {
+          offerList && offerList.length > 0 ? (
+            offerList.map((off,index) => {
+              return <OfferCard key={index} offer={off} handleClick={(id)=>{window.console.log(id)}} />;
+            })
+          ) : (
+            <div className="alert alert-warning">
+              <Translate contentKey="gifuApp.offer.home.notFound">No Offers found</Translate>
+            </div>
+          )
+        }
+      </div>
     );
   }
 }
