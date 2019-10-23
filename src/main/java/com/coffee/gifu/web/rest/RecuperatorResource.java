@@ -5,6 +5,7 @@ import com.coffee.gifu.domain.User;
 import com.coffee.gifu.repository.RecuperatorRepository;
 import com.coffee.gifu.security.AuthoritiesConstants;
 import com.coffee.gifu.security.SecurityUtils;
+import com.coffee.gifu.service.EnterpriseNotFoundException;
 import com.coffee.gifu.service.OrganisationService;
 import com.coffee.gifu.service.RecuperatorService;
 import com.coffee.gifu.service.UserService;
@@ -12,6 +13,7 @@ import com.coffee.gifu.service.dto.OrganisationDTO;
 import com.coffee.gifu.web.rest.errors.BadRequestAlertException;
 import com.coffee.gifu.service.dto.RecuperatorDTO;
 
+import com.coffee.gifu.web.rest.errors.CurrentUserLoginNotFound;
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
@@ -59,11 +61,11 @@ public class RecuperatorResource {
     private Optional<User> getUser() {
         Optional<String> currentUserLogin = SecurityUtils.getCurrentUserLogin();
         if (currentUserLogin.isEmpty()) {
-            //throw new CurrentUserLoginNotFound("currentUserLogin is not found");
+            throw new CurrentUserLoginNotFound("currentUserLogin is not found");
         }
         Optional<User> userWithAuthorities = userService.getUserWithAuthoritiesByLogin(currentUserLogin.get());
         if (userWithAuthorities.isEmpty()) {
-            //throw new CurrentUserLoginNotFound("userWithAuthoritiesByLogin is not found");
+            throw new CurrentUserLoginNotFound("userWithAuthoritiesByLogin is not found");
         }
         return userWithAuthorities;
     }
@@ -71,7 +73,7 @@ public class RecuperatorResource {
         Optional<User> userWithAuthorities = this.getUser();
         Optional<OrganisationDTO> optionalOrganisationDTO = organisationService.findOne(userWithAuthorities.get().getOrganisationID());
         if (optionalOrganisationDTO.isEmpty()) {
-            //throw new EnterpriseNotFoundException("Organisation not found for this id " + optionalOrganisationDTO.get().getId());
+            throw new EnterpriseNotFoundException("Organisation not found for this id " + optionalOrganisationDTO.get().getId());
         }
         return optionalOrganisationDTO;
     }
