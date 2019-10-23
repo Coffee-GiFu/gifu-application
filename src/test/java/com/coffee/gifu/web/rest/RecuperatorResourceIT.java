@@ -4,7 +4,9 @@ import com.coffee.gifu.GifuApp;
 import com.coffee.gifu.domain.Recuperator;
 import com.coffee.gifu.domain.Organisation;
 import com.coffee.gifu.repository.RecuperatorRepository;
+import com.coffee.gifu.service.OrganisationService;
 import com.coffee.gifu.service.RecuperatorService;
+import com.coffee.gifu.service.UserService;
 import com.coffee.gifu.service.dto.RecuperatorDTO;
 import com.coffee.gifu.service.mapper.RecuperatorMapper;
 import com.coffee.gifu.web.rest.errors.ExceptionTranslator;
@@ -53,6 +55,12 @@ public class RecuperatorResourceIT {
     private RecuperatorService recuperatorService;
 
     @Autowired
+    private UserService userService;
+
+    @Autowired
+    private OrganisationService organisationService;
+
+    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -74,7 +82,7 @@ public class RecuperatorResourceIT {
     @BeforeEach
     void setup() {
         MockitoAnnotations.initMocks(this);
-        final RecuperatorResource recuperatorResource = new RecuperatorResource(recuperatorService);
+        final RecuperatorResource recuperatorResource = new RecuperatorResource(recuperatorService, organisationService, userService, recuperatorRepository);
         this.restRecuperatorMockMvc = MockMvcBuilders.standaloneSetup(recuperatorResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)

@@ -1,7 +1,14 @@
 package com.coffee.gifu.web.rest;
 
+import com.coffee.gifu.domain.Recuperator;
+import com.coffee.gifu.domain.User;
+import com.coffee.gifu.repository.RecuperatorRepository;
 import com.coffee.gifu.security.AuthoritiesConstants;
+import com.coffee.gifu.security.SecurityUtils;
+import com.coffee.gifu.service.OrganisationService;
 import com.coffee.gifu.service.RecuperatorService;
+import com.coffee.gifu.service.UserService;
+import com.coffee.gifu.service.dto.OrganisationDTO;
 import com.coffee.gifu.web.rest.errors.BadRequestAlertException;
 import com.coffee.gifu.service.dto.RecuperatorDTO;
 
@@ -21,6 +28,7 @@ import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Optional;
 
+
 /**
  * REST controller for managing {@link com.coffee.gifu.domain.Recuperator}.
  */
@@ -35,10 +43,41 @@ public class RecuperatorResource {
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
 
+    private final UserService userService;
+    private final OrganisationService organisationService;
+    private final RecuperatorRepository recuperatorRepository;
+
+    public RecuperatorResource(RecuperatorService recuperatorService, OrganisationService organisationService,
+                         UserService userService, RecuperatorRepository recuperatorRepository) {
+        this.recuperatorService = recuperatorService;
+        this.organisationService = organisationService;
+        this.userService = userService;
+        this.recuperatorRepository = recuperatorRepository;
+    }
     private final RecuperatorService recuperatorService;
 
-    public RecuperatorResource(RecuperatorService recuperatorService) {
-        this.recuperatorService = recuperatorService;
+    private Optional<User> getUser() {
+        Optional<String> currentUserLogin = SecurityUtils.getCurrentUserLogin();
+        if (currentUserLogin.isEmpty()) {
+            //throw new CurrentUserLoginNotFound("currentUserLogin is not found");
+        }
+        Optional<User> userWithAuthorities = userService.getUserWithAuthoritiesByLogin(currentUserLogin.get());
+        if (userWithAuthorities.isEmpty()) {
+            //throw new CurrentUserLoginNotFound("userWithAuthoritiesByLogin is not found");
+        }
+        return userWithAuthorities;
+    }
+    private Optional<OrganisationDTO> getUserOrganisation() {
+        Optional<User> userWithAuthorities = this.getUser();
+        Optional<OrganisationDTO> optionalOrganisationDTO = organisationService.findOne(userWithAuthorities.get().getOrganisationID());
+        if (optionalOrganisationDTO.isEmpty()) {
+            //throw new EnterpriseNotFoundException("Organisation not found for this id " + optionalOrganisationDTO.get().getId());
+        }
+        return optionalOrganisationDTO;
+    }
+    private boolean allowForEdit(Long id){
+        Optional<Recuperator> recuperator = recuperatorRepository.findById(id);
+        return recuperator.get().getAssociation().getId() == getUserOrganisation().get().getId();
     }
 
     /**
@@ -52,7 +91,7 @@ public class RecuperatorResource {
     @PreAuthorize("hasRole(\"" + AuthoritiesConstants.ASSOCIATION + "\")")
     public ResponseEntity<RecuperatorDTO> createRecuperator(@Valid @RequestBody RecuperatorDTO recuperatorDTO) throws URISyntaxException {
         log.debug("REST request to save Recuperator : {}", recuperatorDTO);
-        if (recuperatorDTO.getId() != null) {
+        if (recuperatorDTO.getId() != null || !allowForEdit(recuperatorDTO.getId())) {
             throw new BadRequestAlertException("A new recuperator cannot already have an ID", ENTITY_NAME, "idexists");
         }
         RecuperatorDTO result = recuperatorService.save(recuperatorDTO);
@@ -74,7 +113,7 @@ public class RecuperatorResource {
     @PreAuthorize("hasRole(\"" + AuthoritiesConstants.ASSOCIATION + "\")")
     public ResponseEntity<RecuperatorDTO> updateRecuperator(@Valid @RequestBody RecuperatorDTO recuperatorDTO) throws URISyntaxException {
         log.debug("REST request to update Recuperator : {}", recuperatorDTO);
-        if (recuperatorDTO.getId() == null) {
+        if (recuperatorDTO.getId() == null || !allowForEdit(recuperatorDTO.getId())) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
         RecuperatorDTO result = recuperatorService.save(recuperatorDTO);
