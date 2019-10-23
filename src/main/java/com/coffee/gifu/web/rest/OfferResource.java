@@ -110,6 +110,7 @@ public class OfferResource {
         offerDTO.setAvailabilityBegin(createOfferRequest.getAvailabilityBegin());
         offerDTO.setAvailabilityEnd(createOfferRequest.getAvailabilityEnd());
         offerDTO.setTitle(createOfferRequest.getTitle());
+        offerDTO.setIsCold(createOfferRequest.isCold());
         offerDTO.setLocationDTO(createOfferRequest.getLocationDTO());
         return offerDTO;
     }
