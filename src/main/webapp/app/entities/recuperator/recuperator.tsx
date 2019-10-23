@@ -19,6 +19,7 @@ export class Recuperator extends React.Component<IRecuperatorProps> {
 
   render() {
     const { recuperatorList, match } = this.props;
+    window.console.log(recuperatorList);
     return (
       <div>
         <h2 id="recuperator-heading">
@@ -60,8 +61,8 @@ export class Recuperator extends React.Component<IRecuperatorProps> {
                     <td>{recuperator.name}</td>
                     <td>{recuperator.phoneNumber}</td>
                     <td>
-                      {recuperator.associationName ? (
-                        <Link to={`organisation/${recuperator.associationId}`}>{recuperator.associationName}</Link>
+                      {recuperator.association ? (
+                        <Link to={`organisation/${recuperator.association.id}`}>{recuperator.association.name}</Link>
                       ) : (
                         ''
                       )}

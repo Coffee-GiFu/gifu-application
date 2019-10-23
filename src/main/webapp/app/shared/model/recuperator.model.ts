@@ -1,8 +1,10 @@
+import { IOrganisation } from './organisation.model';
+
 export interface IRecuperator {
   id?: number;
   name?: string;
   phoneNumber?: string;
-  associationName?: string;
+  associationName?: IOrganisation;
   associationId?: number;
 }
 

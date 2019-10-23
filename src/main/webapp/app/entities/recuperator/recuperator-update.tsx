@@ -123,6 +123,7 @@ export class RecuperatorUpdate extends React.Component<IRecuperatorUpdateProps, 
                     }}
                   />
                 </AvGroup>
+                {/*
                 <AvGroup>
                   <Label for="recuperator-association">
                     <Translate contentKey="gifuApp.recuperator.association">Association</Translate>
@@ -136,8 +137,9 @@ export class RecuperatorUpdate extends React.Component<IRecuperatorUpdateProps, 
                           </option>
                         ))
                       : null}
-                  </AvInput>
+                      </AvInput>
                 </AvGroup>
+                */}
                 <Button tag={Link} id="cancel-save" to="/entity/recuperator" replace color="info">
                   <FontAwesomeIcon icon="arrow-left" />
                   &nbsp;
