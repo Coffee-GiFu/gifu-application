@@ -1,17 +1,21 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {RouteComponentProps} from 'react-router-dom';
 import {Translate} from 'react-jhipster';
 
 import {IRootState} from 'app/shared/reducers';
-import {getEntities, searchAvailableOffer, searchCreatedOffer, searchChosenOffer} from '../../../entities/offer/offer.reducer';
+import {
+  getEntities,
+  searchAvailableOffer,
+  searchChosenOffer,
+  searchCreatedOffer
+} from '../../../entities/offer/offer.reducer';
 import OfferCard from 'app/shared/layout/offer/offerCard';
 
 interface IofferPrint {
     showModal: boolean;
     handleClose: Function;
 }
-export interface IOfferPrintProps extends IofferPrint, StateProps, DispatchProps, RouteComponentProps<{ url: string }> {}
+export interface IOfferPrintProps extends IofferPrint, StateProps, DispatchProps {}
 
 export class OfferPrint extends React.Component<IOfferPrintProps> {
   componentDidMount() {
@@ -19,8 +23,8 @@ export class OfferPrint extends React.Component<IOfferPrintProps> {
   }
 
   render() {
-    const { offerList, match } = this.props;
-    window.console.log(offerList[0])
+    const { offerList } = this.props;
+    window.console.log(offerList[0]);
     return (
         <div>
             {
@@ -45,8 +49,8 @@ const mapStateToProps = ({ offer }: IRootState) => ({
 
 const mapDispatchToProps = {
   getEntities,
-  searchAvailableOffer, 
-  searchCreatedOffer, 
+  searchAvailableOffer,
+  searchCreatedOffer,
   searchChosenOffer
 };
 
