@@ -4,6 +4,7 @@ import com.coffee.gifu.security.AuthoritiesConstants;
 import com.coffee.gifu.service.RecuperatorService;
 import com.coffee.gifu.web.rest.errors.BadRequestAlertException;
 import com.coffee.gifu.service.dto.RecuperatorDTO;
+import com.coffee.gifu.web.rest.errors.CurrentUserLoginNotFound;
 
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;

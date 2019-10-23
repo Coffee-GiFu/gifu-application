@@ -23,19 +23,18 @@ export const HomePage = (props: IHomeProp) => {
     <Row>
       <Col md="12">
         <div>
-            <div className="filterBar">
+          <div className="filterBar">
+            <label className="filterLabel" htmlFor="iscold">
               <div className="filterBlock">
                 <Checkbox name="iscold" defaultValue={coldFilter} action={setcoldFilter}/>
-                <label className="filterLabel" htmlFor="iscold">
+                <span className="filterLabel">
                   <Translate contentKey="home.filter.cold">
                     Without cold storage.
                   </Translate>
-                </label>
+                </span>
               </div>
-            </div>
-            <Translate contentKey="home.logged.message" interpolate={{ username: account.login }}>
-              You are logged in as user {account.login}.
-            </Translate>
+            </label>
+          </div>
         </div>    
         <OfferPrint showModal={show} handleClose={setShow} coldFilter={coldFilter} isAllow={account.authorities.includes("ROLE_COMPANY")}/>
       </Col>

@@ -1,6 +1,4 @@
-/* ==========================================================================
-Main page styles
-========================================================================== */
+@import '../../color.scss';
 .hipster {
   display: inline-block;
   width: 100%;
@@ -11,8 +9,14 @@ Main page styles
 .filterBar {
   .filterBlock {
     display: inline-block;
+    background-color: $color-btn;
+    padding: 10px;
+    border-radius: 23px;
+    height: 54px;
+    min-height: 54px;
     .filterLabel {
       position: relative;
+      margin-left: 5px;
       top: -9px;
     }
   }
