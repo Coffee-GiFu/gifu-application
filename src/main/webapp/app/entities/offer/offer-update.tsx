@@ -12,7 +12,6 @@ import { getEntities as getRecuperators } from 'app/entities/recuperator/recuper
 import { getEntities as getOrganisations } from 'app/entities/organisation/organisation.reducer';
 import { createEntity, getEntity, reset, updateEntity } from './offer.reducer';
 import { convertDateTimeFromServer, convertDateTimeToServer } from 'app/shared/util/date-utils';
-import { mapIdList } from 'app/shared/util/entity-utils';
 import { LocationPage } from '../../modules/locationPage/locationPage';
 
 export interface IOfferUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
@@ -77,7 +76,7 @@ export class OfferUpdate extends React.Component<IOfferUpdateProps, IOfferUpdate
   };
 
   render() {
-    const { offerEntity, locations, recuperators, organisations, loading, updating } = this.props;
+    const { offerEntity, loading, updating } = this.props;
     const { isNew } = this.state;
 
     return (

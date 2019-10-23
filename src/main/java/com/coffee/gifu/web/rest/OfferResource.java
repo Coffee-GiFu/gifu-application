@@ -81,6 +81,9 @@ public class OfferResource {
 
     private Optional<OrganisationDTO> checkIfOrganisationExists
             (@RequestBody @Valid Optional<User> userWithAuthoritiesByLogin) {
+        if (organisationService.findOne(userWithAuthoritiesByLogin.get().getOrganisationID()).isEmpty()) {
+            throw new CurrentUserLoginNotFound("Organisation not found for this id " + userWithAuthoritiesByLogin.get().getId());
+        }
         Optional<OrganisationDTO> optionalOrganisationDTO = organisationService.findOne(userWithAuthoritiesByLogin.get().getOrganisationID());
         if (optionalOrganisationDTO.isEmpty()) {
             throw new EnterpriseNotFoundException("Organisation not found for this id " + optionalOrganisationDTO.get().getId());
@@ -91,6 +94,9 @@ public class OfferResource {
     private OfferDTO createOfferDTO(@RequestBody @Valid CreateOfferRequest
                                             createOfferRequest, Optional<OrganisationDTO> optionalOrganisationDTO) {
         OfferDTO offerDTO = createOfferDTOFromRequest(createOfferRequest);
+        if (optionalOrganisationDTO.isEmpty()) {
+            throw new WrongOrganisationTypeException();
+        }
         OrganisationDTO organisationDTO = optionalOrganisationDTO.get();
         offerDTO.setEnterprise(organisationDTO);
         return offerService.save(offerDTO);

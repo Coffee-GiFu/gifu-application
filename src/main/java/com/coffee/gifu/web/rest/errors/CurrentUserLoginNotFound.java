@@ -1,5 +1,4 @@
 package com.coffee.gifu.web.rest.errors;
-
 import org.zalando.problem.AbstractThrowableProblem;
 
 public class CurrentUserLoginNotFound extends AbstractThrowableProblem {
