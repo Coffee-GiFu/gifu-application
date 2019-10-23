@@ -195,7 +195,7 @@ export class OfferUpdate extends React.Component<IOfferUpdateProps, IOfferUpdate
                     multiple
                     className="form-control"
                     name="recuperators"
-                    value={offerEntity.recuperators && offerEntity.recuperators.map(e => e.id)}
+                    value={offerEntity.recuperatorDTOs && offerEntity.recuperatorDTOs.map(e => e.id)}
                   >
                     <option value="" key="0" />
                     {recuperators
