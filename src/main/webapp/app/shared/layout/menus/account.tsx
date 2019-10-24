@@ -6,7 +6,7 @@ import { NavLink as Link } from 'react-router-dom';
 import { Translate, translate } from 'react-jhipster';
 import { NavDropdown } from './menu-components';
 
-const accountMenuItemsAuthenticated = (
+export const accountMenuItemsAuthenticated = (
   <>
     <MenuItem icon="wrench" to="/account/settings">
       <Translate contentKey="global.menu.account.settings">Settings</Translate>
@@ -20,10 +20,4 @@ const accountMenuItemsAuthenticated = (
   </>
 );
 
-export const AccountMenu = ({ isAuthenticated = false }) => (
-  <NavDropdown icon="user" name={translate('global.menu.account.main')} id="account-menu">
-    {isAuthenticated ? accountMenuItemsAuthenticated : ""}
-  </NavDropdown>
-);
-
-export default AccountMenu;
+export default accountMenuItemsAuthenticated;

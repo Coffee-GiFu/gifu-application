@@ -12,21 +12,13 @@ export const LocationPage = (isNew: boolean) => {
         <React.Fragment>
             <Row className="justify-content-center">
                 <Col>
-                    <h2 id="gifuApp.location.home.createOrEditLabel">
-                        <Translate contentKey="gifuApp.location.home.createOrEditLabel">Create or edit a Location</Translate> Offre
-                  </h2>
+                    <h4 id="gifuApp.location.home.createOrEditLabel">
+                        <Translate contentKey="gifuApp.location.home.createOrEditLabel">Create or edit a Location</Translate>
+                  </h4>
                 </Col>
             </Row>
             <Row className="justify-content-center">
                 <Col>
-                    {!isNew ? (
-                        <AvGroup>
-                            <Label for="location-id">
-                                <Translate contentKey="global.field.id">ID</Translate>
-                            </Label>
-                            <AvInput id="location-id" type="text" className="form-control" name="locationDTO.id" required readOnly />
-                        </AvGroup>
-                    ) : null}
                     <AvGroup>
                         <Label id="streetAddressLabel" for="location-streetAddress">
                             <Translate contentKey="gifuApp.location.streetAddress">Street Address</Translate>
@@ -34,6 +26,7 @@ export const LocationPage = (isNew: boolean) => {
                         <AvField
                             id="location-streetAddress"
                             type="text"
+                            className="input"
                             name="locationDTO.streetAddress"
                             validate={{
                                 required: { value: true, errorMessage: translate('entity.validation.required') },
@@ -49,6 +42,7 @@ export const LocationPage = (isNew: boolean) => {
                         <AvField
                             id="location-postalCode"
                             type="text"
+                            className="input"
                             name="locationDTO.postalCode"
                             validate={{
                                 required: { value: true, errorMessage: translate('entity.validation.required') },
@@ -64,6 +58,7 @@ export const LocationPage = (isNew: boolean) => {
                         <AvField
                             id="location-city"
                             type="text"
+                            className="input"
                             name="locationDTO.city"
                             validate={{
                                 required: { value: true, errorMessage: translate('entity.validation.required') },

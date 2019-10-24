@@ -117,7 +117,6 @@ export const createEntity: ICrudPutAction<IOffer> = entity => async dispatch => 
     type: ACTION_TYPES.CREATE_OFFER,
     payload: axios.post(apiUrl, cleanEntity(entity))
   });
-  dispatch(getEntities());
   return result;
 };
 
@@ -126,7 +125,6 @@ export const updateEntity: ICrudPutAction<IOffer> = entity => async dispatch => 
     type: ACTION_TYPES.UPDATE_OFFER,
     payload: axios.put(apiUrl, cleanEntity(entity))
   });
-  dispatch(getEntities());
   return result;
 };
 

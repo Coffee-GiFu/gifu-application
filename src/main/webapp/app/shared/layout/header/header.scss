@@ -37,6 +37,11 @@ Developement Ribbon
 /* ==========================================================================
 Navbar styles
 ========================================================================== */
+#header-tabs {
+  background-color: $color-main-light;
+  padding-bottom: 0;
+  margin-bottom: 0.5em;
+}
 .jh-navbar {
   background-color: $color-main-light;
   padding: 0.2em 1em;

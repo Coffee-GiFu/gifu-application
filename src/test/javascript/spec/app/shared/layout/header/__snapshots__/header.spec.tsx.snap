@@ -69,8 +69,44 @@ exports[`Header Renders a Header component in dev profile with LoadingBar, Navba
           onClick={[Function]}
         />
         <Component
-          isAuthenticated={true}
-        />
+          icon="user"
+          id="account-menu"
+          name={null}
+        >
+          <MenuItem
+            icon="wrench"
+            to="/account/settings"
+          >
+            <Translate
+              component="span"
+              contentKey="global.menu.account.settings"
+            >
+              Settings
+            </Translate>
+          </MenuItem>
+          <MenuItem
+            icon="lock"
+            to="/account/password"
+          >
+            <Translate
+              component="span"
+              contentKey="global.menu.account.password"
+            >
+              Password
+            </Translate>
+          </MenuItem>
+          <MenuItem
+            icon="sign-out-alt"
+            to="/logout"
+          >
+            <Translate
+              component="span"
+              contentKey="global.menu.account.logout"
+            >
+              Sign out
+            </Translate>
+          </MenuItem>
+        </Component>
       </Nav>
     </Collapse>
   </Navbar>
@@ -134,8 +170,44 @@ exports[`Header Renders a Header component in prod profile with LoadingBar, Navb
           onClick={[Function]}
         />
         <Component
-          isAuthenticated={true}
-        />
+          icon="user"
+          id="account-menu"
+          name={null}
+        >
+          <MenuItem
+            icon="wrench"
+            to="/account/settings"
+          >
+            <Translate
+              component="span"
+              contentKey="global.menu.account.settings"
+            >
+              Settings
+            </Translate>
+          </MenuItem>
+          <MenuItem
+            icon="lock"
+            to="/account/password"
+          >
+            <Translate
+              component="span"
+              contentKey="global.menu.account.password"
+            >
+              Password
+            </Translate>
+          </MenuItem>
+          <MenuItem
+            icon="sign-out-alt"
+            to="/logout"
+          >
+            <Translate
+              component="span"
+              contentKey="global.menu.account.logout"
+            >
+              Sign out
+            </Translate>
+          </MenuItem>
+        </Component>
       </Nav>
     </Collapse>
   </Navbar>

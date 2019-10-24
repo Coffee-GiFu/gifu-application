@@ -4,26 +4,28 @@
       "home": {
         "title": "Offers",
         "createLabel": "Create a new Offer",
+        "editLabel": "Edit an Offer",
+        "vueLabel": "Consult an Offer",
         "createOrEditLabel": "Create or edit a Offer",
         "notFound": "No Offers found"
       },
-      "created": "A new Offer is created with identifier {{ param }}",
-      "updated": "A Offer is updated with identifier {{ param }}",
-      "deleted": "A Offer is deleted with identifier {{ param }}",
+      "created": "A new Offer is created",
+      "updated": "A Offer is updated",
+      "deleted": "A Offer is deleted",
       "delete": {
-        "question": "Are you sure you want to delete Offer {{ id }}?"
+        "question": "Are you sure you want to delete This Offer ?"
       },
       "detail": {
         "title": "Offer"
       },
       "description": "Description",
-      "isCold": "Is Cold",
-      "availabilityBegin": "Availability Begin",
-      "availabilityEnd": "Availability End",
+      "isCold": "Cold transport ?",
+      "availabilityBegin": "Available from",
+      "availabilityEnd": "To",
       "title": "Title",
       "location": "Location",
       "recuperators": "Recuperators",
-      "organisation": "Organisation"
+      "organisation": "Enterprise"
     }
   }
 }

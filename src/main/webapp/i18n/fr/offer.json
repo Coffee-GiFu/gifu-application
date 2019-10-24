@@ -3,27 +3,29 @@
     "offer": {
       "home": {
         "title": "Offers",
-        "createLabel": "Créer un nouveau Offer",
+        "createLabel": "Créer une nouvelle Offre",
+        "editLabel": "Editer une Offre",
+        "vueLabel": "Consulter une Offre",
         "createOrEditLabel": "Créer ou éditer un Offer",
         "notFound": "Aucune offre trouvé."
       },
-      "created": "Un nouveau Offer a été créé avec l'identifiant {{ param }}",
-      "updated": "Le Offer avec l'identifiant {{ param }} a été mis à jour",
-      "deleted": "Le Offer avec l'identifiant {{ param }} a été supprimé",
+      "created": "Un nouveau Offer a été créé ",
+      "updated": "Le Offer avec a été mis à jour",
+      "deleted": "Le Offer avec a été supprimé",
       "delete": {
-        "question": "Etes-vous certain de vouloir supprimer le Offer {{ id }} ?"
+        "question": "Etes-vous certain de vouloir supprimer le Offer ?"
       },
       "detail": {
         "title": "Offer"
       },
       "description": "Description",
-      "isCold": "Is Cold",
-      "availabilityBegin": "Availability Begin",
-      "availabilityEnd": "Availability End",
-      "title": "Title",
-      "location": "Location",
-      "recuperators": "Recuperators",
-      "organisation": "Organisation"
+      "isCold": "Transport réfrigiré",
+      "availabilityBegin": "Disponible de",
+      "availabilityEnd": "à",
+      "title": "Titre",
+      "location": "Localisation",
+      "recuperators": "Récupérateurs",
+      "organisation": "Entreprise"
     }
   }
 }
