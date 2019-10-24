@@ -1,7 +1,6 @@
 package com.coffee.gifu.web.rest;
 
 import com.coffee.gifu.config.Constants;
-import com.coffee.gifu.domain.Organisation;
 import com.coffee.gifu.domain.User;
 import com.coffee.gifu.repository.OrganisationRepository;
 import com.coffee.gifu.repository.UserRepository;
@@ -14,7 +13,6 @@ import com.coffee.gifu.web.rest.errors.BadRequestAlertException;
 import com.coffee.gifu.web.rest.errors.EmailAlreadyUsedException;
 import com.coffee.gifu.web.rest.errors.IdentificationCodeAlreadyUsedException;
 import com.coffee.gifu.web.rest.errors.LoginAlreadyUsedException;
-
 import com.coffee.gifu.web.rest.wrapper.CreateUserRequest;
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.PaginationUtil;
@@ -94,7 +92,7 @@ public class UserResource {
      * mail with an activation link.
      * The user needs to be activated on creation.
      *
-     * @param userDTO the user to create.
+     * @param createUserRequest the request to create a user.
      * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new user, or with status {@code 400 (Bad Request)} if the login or email is already in use.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      * @throws BadRequestAlertException {@code 400 (Bad Request)} if the login or email is already in use.
@@ -102,7 +100,7 @@ public class UserResource {
     @PostMapping("/users")
     @PreAuthorize("hasRole(\"" + AuthoritiesConstants.ADMIN + "\")")
     public ResponseEntity<User> createUser( @RequestBody CreateUserRequest createUserRequest) throws URISyntaxException {
-        UserDTO userDTO = createUserRequest.getUserDTO();
+        UserDTO userDTO = createUserRequest.getManagedUserVM();
         OrganisationDTO organisationDTO = createUserRequest.getOrganisationDTO();
 
         log.debug("REST request to save User : {}", userDTO);

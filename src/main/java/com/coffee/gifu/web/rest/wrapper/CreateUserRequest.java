@@ -1,37 +1,38 @@
 package com.coffee.gifu.web.rest.wrapper;
 
 import com.coffee.gifu.service.dto.OrganisationDTO;
-import com.coffee.gifu.service.dto.UserDTO;
+import com.coffee.gifu.web.rest.vm.ManagedUserVM;
 
+import javax.validation.Valid;
 import java.io.Serializable;
 import java.util.Objects;
 
 public class CreateUserRequest implements Serializable {
 
-    private UserDTO userDTO;
+    private @Valid ManagedUserVM managedUserVM;
 
-    private OrganisationDTO organisationDTO;
+    private @Valid OrganisationDTO organisationDTO;
 
     public CreateUserRequest() {}
 
-    public CreateUserRequest(UserDTO userDTO, OrganisationDTO organisationDTO) {
-        this.userDTO = userDTO;
+    public CreateUserRequest(@Valid ManagedUserVM managedUserVM, @Valid OrganisationDTO organisationDTO) {
+        this.managedUserVM = managedUserVM;
         this.organisationDTO = organisationDTO;
     }
 
-    public UserDTO getUserDTO() {
-        return userDTO;
+    public ManagedUserVM getManagedUserVM() {
+        return managedUserVM;
     }
 
-    public void setUserDTO(UserDTO userDTO) {
-        this.userDTO = userDTO;
+    public void setUserDTO(@Valid ManagedUserVM managedUserVM) {
+        this.managedUserVM = managedUserVM;
     }
 
     public OrganisationDTO getOrganisationDTO() {
         return organisationDTO;
     }
 
-    public void setOrganisationDTO(OrganisationDTO organisationDTO) {
+    public void setOrganisationDTO(@Valid OrganisationDTO organisationDTO) {
         this.organisationDTO = organisationDTO;
     }
 
@@ -40,19 +41,19 @@ public class CreateUserRequest implements Serializable {
         if (this == o) return true;
         if (!(o instanceof CreateUserRequest)) return false;
         CreateUserRequest that = (CreateUserRequest) o;
-        return Objects.equals(getUserDTO(), that.getUserDTO()) &&
+        return Objects.equals(getManagedUserVM(), that.getManagedUserVM()) &&
             Objects.equals(getOrganisationDTO(), that.getOrganisationDTO());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getUserDTO(), getOrganisationDTO());
+        return Objects.hash(getManagedUserVM(), getOrganisationDTO());
     }
 
     @Override
     public String toString() {
         return "CreateUserRequest{" +
-            "userDTO=" + userDTO +
+            "managedUserVM=" + managedUserVM +
             ", organisationDTO=" + organisationDTO +
             '}';
     }

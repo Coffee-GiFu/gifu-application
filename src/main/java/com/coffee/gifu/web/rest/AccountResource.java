@@ -2,19 +2,20 @@ package com.coffee.gifu.web.rest;
 
 
 import com.coffee.gifu.domain.User;
+import com.coffee.gifu.repository.OrganisationRepository;
 import com.coffee.gifu.repository.UserRepository;
 import com.coffee.gifu.security.SecurityUtils;
 import com.coffee.gifu.service.MailService;
 import com.coffee.gifu.service.UserService;
 import com.coffee.gifu.service.dto.PasswordChangeDTO;
 import com.coffee.gifu.service.dto.UserDTO;
-import com.coffee.gifu.web.rest.errors.EmailAlreadyUsedException;
-import com.coffee.gifu.web.rest.errors.EmailNotFoundException;
-import com.coffee.gifu.web.rest.errors.InvalidPasswordException;
-import com.coffee.gifu.web.rest.errors.LoginAlreadyUsedException;
+import com.coffee.gifu.web.rest.errors.*;
 import com.coffee.gifu.web.rest.vm.KeyAndPasswordVM;
 import com.coffee.gifu.web.rest.vm.ManagedUserVM;
+import com.coffee.gifu.web.rest.wrapper.CreateUserRequest;
+import javassist.NotFoundException;
 import org.apache.commons.lang3.StringUtils;
+import org.json.simple.parser.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -22,6 +23,9 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.io.IOException;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
 import java.util.Optional;
 
 /**
@@ -41,32 +45,41 @@ public class AccountResource {
 
     private final UserRepository userRepository;
 
+    private final OrganisationRepository organisationRepository;
+
     private final UserService userService;
 
     private final MailService mailService;
 
-    public AccountResource(UserRepository userRepository, UserService userService, MailService mailService) {
+    public AccountResource(UserRepository userRepository, UserService userService, MailService mailService,
+                           OrganisationRepository organisationRepository) {
 
         this.userRepository = userRepository;
         this.userService = userService;
         this.mailService = mailService;
+        this.organisationRepository = organisationRepository;
     }
 
     /**
      * {@code POST  /register} : register the user.
      *
-     * @param managedUserVM the managed user View Model.
+     * @param createUserRequest
      * @throws InvalidPasswordException {@code 400 (Bad Request)} if the password is incorrect.
      * @throws EmailAlreadyUsedException {@code 400 (Bad Request)} if the email is already used.
      * @throws LoginAlreadyUsedException {@code 400 (Bad Request)} if the login is already used.
      */
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
-    public void registerAccount(@Valid @RequestBody ManagedUserVM managedUserVM) {
-        if (!checkPasswordLength(managedUserVM.getPassword())) {
+    public void registerAccount(@Valid @RequestBody CreateUserRequest createUserRequest) throws InterruptedException, ParseException, NoSuchAlgorithmException, IOException, KeyManagementException, NotFoundException {
+        if (!checkPasswordLength(createUserRequest.getManagedUserVM().getPassword())) {
             throw new InvalidPasswordException();
+        } else if (organisationRepository.findByIdentificationCode(createUserRequest.getOrganisationDTO()
+            .getIdentificationCode()).isPresent()) {
+            throw new IdentificationCodeAlreadyUsedException();
         }
-        User user = userService.registerUser(managedUserVM, managedUserVM.getPassword());
+        User user = null;
+            user = userService.registerUser(createUserRequest.getManagedUserVM(),
+                createUserRequest.getManagedUserVM().getPassword(), createUserRequest.getOrganisationDTO());
         mailService.sendActivationEmail(user);
     }
 

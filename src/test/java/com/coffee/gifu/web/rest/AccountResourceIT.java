@@ -3,19 +3,23 @@ package com.coffee.gifu.web.rest;
 import com.coffee.gifu.GifuApp;
 import com.coffee.gifu.config.Constants;
 import com.coffee.gifu.domain.Authority;
+import com.coffee.gifu.domain.OrganisationType;
 import com.coffee.gifu.domain.User;
 import com.coffee.gifu.repository.AuthorityRepository;
+import com.coffee.gifu.repository.OrganisationRepository;
 import com.coffee.gifu.repository.UserRepository;
 import com.coffee.gifu.security.AuthoritiesConstants;
 import com.coffee.gifu.service.MailService;
 import com.coffee.gifu.service.UserService;
+import com.coffee.gifu.service.dto.LocationDTO;
+import com.coffee.gifu.service.dto.OrganisationDTO;
 import com.coffee.gifu.service.dto.PasswordChangeDTO;
 import com.coffee.gifu.service.dto.UserDTO;
 import com.coffee.gifu.web.rest.errors.ExceptionTranslator;
 import com.coffee.gifu.web.rest.vm.KeyAndPasswordVM;
 import com.coffee.gifu.web.rest.vm.ManagedUserVM;
+import com.coffee.gifu.web.rest.wrapper.CreateUserRequest;
 import org.apache.commons.lang3.RandomStringUtils;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -31,13 +35,17 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
-import java.util.*;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Optional;
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /**
@@ -48,6 +56,9 @@ public class AccountResourceIT {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private OrganisationRepository organisationRepository;
 
     @Autowired
     private AuthorityRepository authorityRepository;
@@ -79,10 +90,10 @@ public class AccountResourceIT {
         MockitoAnnotations.initMocks(this);
         doNothing().when(mockMailService).sendActivationEmail(any());
         AccountResource accountResource =
-            new AccountResource(userRepository, userService, mockMailService);
+            new AccountResource(userRepository, userService, mockMailService, organisationRepository);
 
         AccountResource accountUserMockResource =
-            new AccountResource(userRepository, mockUserService, mockMailService);
+            new AccountResource(userRepository, mockUserService, mockMailService, organisationRepository);
         this.restMvc = MockMvcBuilders.standaloneSetup(accountResource)
             .setMessageConverters(httpMessageConverters)
             .setControllerAdvice(exceptionTranslator)
@@ -156,10 +167,29 @@ public class AccountResourceIT {
         validUser.setAuthorities(Collections.singleton(AuthoritiesConstants.USER));
         assertThat(userRepository.findOneByLogin("test-register-valid").isPresent()).isFalse();
 
+        LocationDTO locationDTO = new LocationDTO();
+        locationDTO.setPostalCode("01234");
+        locationDTO.setCity("test");
+        locationDTO.setStreetAddress("test");
+
+        OrganisationDTO organisationDTO = new OrganisationDTO();
+        organisationDTO.setContactMail("bob@example.com");
+        organisationDTO.setDescription("test");
+        organisationDTO.setIdentificationCode("0123456789");
+        organisationDTO.setPhoneNumber("0123456789");
+        organisationDTO.setType(OrganisationType.ENTERPRISE);
+        organisationDTO.setName("test");
+        organisationDTO.setLogo("test");
+        organisationDTO.setLocationDTO(locationDTO);
+
+        CreateUserRequest validUserRequest = new CreateUserRequest();
+        validUserRequest.setOrganisationDTO(organisationDTO);
+        validUserRequest.setUserDTO(validUser);
+
         restMvc.perform(
             post("/api/register")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
-                .content(TestUtil.convertObjectToJsonBytes(validUser)))
+                .content(TestUtil.convertObjectToJsonBytes(validUserRequest)))
             .andExpect(status().isCreated());
 
         assertThat(userRepository.findOneByLogin("test-register-valid").isPresent()).isTrue();
@@ -176,10 +206,29 @@ public class AccountResourceIT {
         invalidUser.setLangKey(Constants.DEFAULT_LANGUAGE);
         invalidUser.setAuthorities(Collections.singleton(AuthoritiesConstants.USER));
 
+        LocationDTO locationDTO = new LocationDTO();
+        locationDTO.setPostalCode("01234");
+        locationDTO.setCity("test");
+        locationDTO.setStreetAddress("test");
+
+        OrganisationDTO organisationDTO = new OrganisationDTO();
+        organisationDTO.setContactMail("bob@example.com");
+        organisationDTO.setDescription("test");
+        organisationDTO.setIdentificationCode("0123456789");
+        organisationDTO.setPhoneNumber("0123456789");
+        organisationDTO.setType(OrganisationType.ENTERPRISE);
+        organisationDTO.setName("test");
+        organisationDTO.setLogo("test");
+        organisationDTO.setLocationDTO(locationDTO);
+
+        CreateUserRequest invalidUserRequest = new CreateUserRequest();
+        invalidUserRequest.setOrganisationDTO(organisationDTO);
+        invalidUserRequest.setUserDTO(invalidUser);
+
         restUserMockMvc.perform(
             post("/api/register")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
-                .content(TestUtil.convertObjectToJsonBytes(invalidUser)))
+                .content(TestUtil.convertObjectToJsonBytes(invalidUserRequest)))
             .andExpect(status().isBadRequest());
 
         Optional<User> user = userRepository.findOneByEmailIgnoreCase("funky@example.com");
@@ -197,10 +246,29 @@ public class AccountResourceIT {
         invalidUser.setLangKey(Constants.DEFAULT_LANGUAGE);
         invalidUser.setAuthorities(Collections.singleton(AuthoritiesConstants.USER));
 
+        LocationDTO locationDTO = new LocationDTO();
+        locationDTO.setPostalCode("01234");
+        locationDTO.setCity("test");
+        locationDTO.setStreetAddress("test");
+
+        OrganisationDTO organisationDTO = new OrganisationDTO();
+        organisationDTO.setContactMail("bob@example.com");
+        organisationDTO.setDescription("test");
+        organisationDTO.setIdentificationCode("0123456789");
+        organisationDTO.setPhoneNumber("0123456789");
+        organisationDTO.setType(OrganisationType.ENTERPRISE);
+        organisationDTO.setName("test");
+        organisationDTO.setLogo("test");
+        organisationDTO.setLocationDTO(locationDTO);
+
+        CreateUserRequest invalidUserRequest = new CreateUserRequest();
+        invalidUserRequest.setOrganisationDTO(organisationDTO);
+        invalidUserRequest.setUserDTO(invalidUser);
+
         restUserMockMvc.perform(
             post("/api/register")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
-                .content(TestUtil.convertObjectToJsonBytes(invalidUser)))
+                .content(TestUtil.convertObjectToJsonBytes(invalidUserRequest)))
             .andExpect(status().isBadRequest());
 
         Optional<User> user = userRepository.findOneByLogin("bob");
@@ -218,10 +286,29 @@ public class AccountResourceIT {
         invalidUser.setLangKey(Constants.DEFAULT_LANGUAGE);
         invalidUser.setAuthorities(Collections.singleton(AuthoritiesConstants.USER));
 
+        LocationDTO locationDTO = new LocationDTO();
+        locationDTO.setPostalCode("01234");
+        locationDTO.setCity("test");
+        locationDTO.setStreetAddress("test");
+
+        OrganisationDTO organisationDTO = new OrganisationDTO();
+        organisationDTO.setContactMail("bob@example.com");
+        organisationDTO.setDescription("test");
+        organisationDTO.setIdentificationCode("0123456789");
+        organisationDTO.setPhoneNumber("0123456789");
+        organisationDTO.setType(OrganisationType.ENTERPRISE);
+        organisationDTO.setName("test");
+        organisationDTO.setLogo("test");
+        organisationDTO.setLocationDTO(locationDTO);
+
+        CreateUserRequest invalidUserRequest = new CreateUserRequest();
+        invalidUserRequest.setOrganisationDTO(organisationDTO);
+        invalidUserRequest.setUserDTO(invalidUser);
+
         restUserMockMvc.perform(
             post("/api/register")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
-                .content(TestUtil.convertObjectToJsonBytes(invalidUser)))
+                .content(TestUtil.convertObjectToJsonBytes(invalidUserRequest)))
             .andExpect(status().isBadRequest());
 
         Optional<User> user = userRepository.findOneByLogin("bob");
@@ -239,10 +326,29 @@ public class AccountResourceIT {
         invalidUser.setLangKey(Constants.DEFAULT_LANGUAGE);
         invalidUser.setAuthorities(Collections.singleton(AuthoritiesConstants.USER));
 
+        LocationDTO locationDTO = new LocationDTO();
+        locationDTO.setPostalCode("01234");
+        locationDTO.setCity("test");
+        locationDTO.setStreetAddress("test");
+
+        OrganisationDTO organisationDTO = new OrganisationDTO();
+        organisationDTO.setContactMail("bob@example.com");
+        organisationDTO.setDescription("test");
+        organisationDTO.setIdentificationCode("0123456789");
+        organisationDTO.setPhoneNumber("0123456789");
+        organisationDTO.setType(OrganisationType.ENTERPRISE);
+        organisationDTO.setName("test");
+        organisationDTO.setLogo("test");
+        organisationDTO.setLocationDTO(locationDTO);
+
+        CreateUserRequest invalidUserRequest = new CreateUserRequest();
+        invalidUserRequest.setOrganisationDTO(organisationDTO);
+        invalidUserRequest.setUserDTO(invalidUser);
+
         restUserMockMvc.perform(
             post("/api/register")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
-                .content(TestUtil.convertObjectToJsonBytes(invalidUser)))
+                .content(TestUtil.convertObjectToJsonBytes(invalidUserRequest)))
             .andExpect(status().isBadRequest());
 
         Optional<User> user = userRepository.findOneByLogin("bob");
@@ -260,6 +366,25 @@ public class AccountResourceIT {
         firstUser.setLangKey(Constants.DEFAULT_LANGUAGE);
         firstUser.setAuthorities(Collections.singleton(AuthoritiesConstants.USER));
 
+        LocationDTO locationDTO = new LocationDTO();
+        locationDTO.setPostalCode("01234");
+        locationDTO.setCity("test");
+        locationDTO.setStreetAddress("test");
+
+        OrganisationDTO organisationDTO = new OrganisationDTO();
+        organisationDTO.setContactMail("bob@example.com");
+        organisationDTO.setDescription("test");
+        organisationDTO.setIdentificationCode("0123456789");
+        organisationDTO.setPhoneNumber("0123456789");
+        organisationDTO.setType(OrganisationType.ENTERPRISE);
+        organisationDTO.setName("test");
+        organisationDTO.setLogo("test");
+        organisationDTO.setLocationDTO(locationDTO);
+
+        CreateUserRequest firstUserRequest = new CreateUserRequest();
+        firstUserRequest.setOrganisationDTO(organisationDTO);
+        firstUserRequest.setUserDTO(firstUser);
+
         // Duplicate login, different email
         ManagedUserVM secondUser = new ManagedUserVM();
         secondUser.setLogin(firstUser.getLogin());
@@ -272,18 +397,32 @@ public class AccountResourceIT {
         secondUser.setLastModifiedDate(firstUser.getLastModifiedDate());
         secondUser.setAuthorities(new HashSet<>(firstUser.getAuthorities()));
 
+        OrganisationDTO organisationDTO2 = new OrganisationDTO();
+        organisationDTO2.setContactMail("bob@example.com");
+        organisationDTO2.setDescription("test");
+        organisationDTO2.setIdentificationCode("01234567892");
+        organisationDTO2.setPhoneNumber("0123456789");
+        organisationDTO2.setType(OrganisationType.ENTERPRISE);
+        organisationDTO2.setName("test");
+        organisationDTO2.setLogo("test");
+        organisationDTO2.setLocationDTO(locationDTO);
+
+        CreateUserRequest secondUserRequest = new CreateUserRequest();
+        secondUserRequest.setOrganisationDTO(organisationDTO2);
+        secondUserRequest.setUserDTO(secondUser);
+
         // First user
         restMvc.perform(
             post("/api/register")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
-                .content(TestUtil.convertObjectToJsonBytes(firstUser)))
+                .content(TestUtil.convertObjectToJsonBytes(firstUserRequest)))
             .andExpect(status().isCreated());
 
         // Second (non activated) user
         restMvc.perform(
             post("/api/register")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
-                .content(TestUtil.convertObjectToJsonBytes(secondUser)))
+                .content(TestUtil.convertObjectToJsonBytes(secondUserRequest)))
             .andExpect(status().isCreated());
 
         Optional<User> testUser = userRepository.findOneByEmailIgnoreCase("alice2@example.com");
@@ -295,7 +434,7 @@ public class AccountResourceIT {
         restMvc.perform(
             post("/api/register")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
-                .content(TestUtil.convertObjectToJsonBytes(secondUser)))
+                .content(TestUtil.convertObjectToJsonBytes(secondUserRequest)))
             .andExpect(status().is4xxClientError());
     }
 
@@ -310,11 +449,30 @@ public class AccountResourceIT {
         firstUser.setLangKey(Constants.DEFAULT_LANGUAGE);
         firstUser.setAuthorities(Collections.singleton(AuthoritiesConstants.USER));
 
+        LocationDTO locationDTO = new LocationDTO();
+        locationDTO.setPostalCode("01234");
+        locationDTO.setCity("test");
+        locationDTO.setStreetAddress("test");
+
+        OrganisationDTO organisationDTO = new OrganisationDTO();
+        organisationDTO.setContactMail("bob@example.com");
+        organisationDTO.setDescription("test");
+        organisationDTO.setIdentificationCode("0123456789");
+        organisationDTO.setPhoneNumber("0123456789");
+        organisationDTO.setType(OrganisationType.ENTERPRISE);
+        organisationDTO.setName("test");
+        organisationDTO.setLogo("test");
+        organisationDTO.setLocationDTO(locationDTO);
+
+        CreateUserRequest firstUserRequest = new CreateUserRequest();
+        firstUserRequest.setOrganisationDTO(organisationDTO);
+        firstUserRequest.setUserDTO(firstUser);
+
         // Register first user
         restMvc.perform(
             post("/api/register")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
-                .content(TestUtil.convertObjectToJsonBytes(firstUser)))
+                .content(TestUtil.convertObjectToJsonBytes(firstUserRequest)))
             .andExpect(status().isCreated());
 
         Optional<User> testUser1 = userRepository.findOneByLogin("test-register-duplicate-email");
@@ -328,11 +486,25 @@ public class AccountResourceIT {
         secondUser.setLangKey(firstUser.getLangKey());
         secondUser.setAuthorities(new HashSet<>(firstUser.getAuthorities()));
 
+        OrganisationDTO organisationDTO2 = new OrganisationDTO();
+        organisationDTO2.setContactMail("bob@example.com");
+        organisationDTO2.setDescription("test");
+        organisationDTO2.setIdentificationCode("01234567892");
+        organisationDTO2.setPhoneNumber("0123456789");
+        organisationDTO2.setType(OrganisationType.ENTERPRISE);
+        organisationDTO2.setName("test");
+        organisationDTO2.setLogo("test");
+        organisationDTO2.setLocationDTO(locationDTO);
+
+        CreateUserRequest secondUserRequest = new CreateUserRequest();
+        secondUserRequest.setOrganisationDTO(organisationDTO2);
+        secondUserRequest.setUserDTO(secondUser);
+
         // Register second (non activated) user
         restMvc.perform(
             post("/api/register")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
-                .content(TestUtil.convertObjectToJsonBytes(secondUser)))
+                .content(TestUtil.convertObjectToJsonBytes(secondUserRequest)))
             .andExpect(status().isCreated());
 
         Optional<User> testUser2 = userRepository.findOneByLogin("test-register-duplicate-email");
@@ -350,11 +522,25 @@ public class AccountResourceIT {
         userWithUpperCaseEmail.setLangKey(firstUser.getLangKey());
         userWithUpperCaseEmail.setAuthorities(new HashSet<>(firstUser.getAuthorities()));
 
+        OrganisationDTO organisationDTO3 = new OrganisationDTO();
+        organisationDTO3.setContactMail("bob@example.com");
+        organisationDTO3.setDescription("test");
+        organisationDTO3.setIdentificationCode("012345678923");
+        organisationDTO3.setPhoneNumber("0123456789");
+        organisationDTO3.setType(OrganisationType.ENTERPRISE);
+        organisationDTO3.setName("test");
+        organisationDTO3.setLogo("test");
+        organisationDTO3.setLocationDTO(locationDTO);
+
+        CreateUserRequest userWithUpperCaseEmailRequest = new CreateUserRequest();
+        userWithUpperCaseEmailRequest.setOrganisationDTO(organisationDTO3);
+        userWithUpperCaseEmailRequest.setUserDTO(userWithUpperCaseEmail);
+
         // Register third (not activated) user
         restMvc.perform(
             post("/api/register")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
-                .content(TestUtil.convertObjectToJsonBytes(userWithUpperCaseEmail)))
+                .content(TestUtil.convertObjectToJsonBytes(userWithUpperCaseEmailRequest)))
             .andExpect(status().isCreated());
 
         Optional<User> testUser4 = userRepository.findOneByLogin("test-register-duplicate-email-3");
@@ -368,7 +554,7 @@ public class AccountResourceIT {
         restMvc.perform(
             post("/api/register")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
-                .content(TestUtil.convertObjectToJsonBytes(secondUser)))
+                .content(TestUtil.convertObjectToJsonBytes(secondUserRequest)))
             .andExpect(status().is4xxClientError());
     }
 
@@ -383,10 +569,29 @@ public class AccountResourceIT {
         validUser.setLangKey(Constants.DEFAULT_LANGUAGE);
         validUser.setAuthorities(Collections.singleton(AuthoritiesConstants.ADMIN));
 
+        LocationDTO locationDTO = new LocationDTO();
+        locationDTO.setPostalCode("01234");
+        locationDTO.setCity("test");
+        locationDTO.setStreetAddress("test");
+
+        OrganisationDTO organisationDTO = new OrganisationDTO();
+        organisationDTO.setContactMail("bob@example.com");
+        organisationDTO.setDescription("test");
+        organisationDTO.setIdentificationCode("0123456789");
+        organisationDTO.setPhoneNumber("0123456789");
+        organisationDTO.setType(OrganisationType.ENTERPRISE);
+        organisationDTO.setName("test");
+        organisationDTO.setLogo("test");
+        organisationDTO.setLocationDTO(locationDTO);
+
+        CreateUserRequest validUserRequest = new CreateUserRequest();
+        validUserRequest.setOrganisationDTO(organisationDTO);
+        validUserRequest.setUserDTO(validUser);
+
         restMvc.perform(
             post("/api/register")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
-                .content(TestUtil.convertObjectToJsonBytes(validUser)))
+                .content(TestUtil.convertObjectToJsonBytes(validUserRequest)))
             .andExpect(status().isCreated());
 
         Optional<User> userDup = userRepository.findOneByLogin("badguy");
