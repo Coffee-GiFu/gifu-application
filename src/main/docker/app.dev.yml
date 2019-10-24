@@ -1,6 +1,6 @@
 version: '2'
 services:
-  gifu:
+  gifu-dev:
     image: gifu-dev
     environment:
       - _JAVA_OPTIONS=-Xmx512m -Xms256m

@@ -4,10 +4,10 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.coffee.gifu</groupId>
-    <artifactId>gifu-backend</artifactId>
+    <artifactId>gifu</artifactId>
     <version>0.0.2</version>
     <packaging>jar</packaging>
-    <name>Gifu-backend</name>
+    <name>Gifu</name>
 
     <repositories>
         <!-- jhipster-needle-maven-repository -->
