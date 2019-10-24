@@ -24,7 +24,7 @@ public class CreateUserRequest implements Serializable {
         return managedUserVM;
     }
 
-    public void setUserDTO(@Valid ManagedUserVM managedUserVM) {
+    public void setManagedUserVM(@Valid ManagedUserVM managedUserVM) {
         this.managedUserVM = managedUserVM;
     }
 
