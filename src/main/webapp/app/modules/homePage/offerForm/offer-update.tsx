@@ -96,6 +96,7 @@ export class OfferUpdate extends React.Component<IOfferUpdateProps, IOfferUpdate
                         <AvField
                           id="offer-description"
                           type="text"
+                          className="input"
                           name="description"
                           validate={{
                             required: { value: true, errorMessage: translate('entity.validation.required') },
@@ -117,7 +118,7 @@ export class OfferUpdate extends React.Component<IOfferUpdateProps, IOfferUpdate
                         <AvInput
                           id="offer-availabilityBegin"
                           type="datetime-local"
-                          className="form-control"
+                          className="form-control input"
                           name="availabilityBegin"
                           placeholder={'YYYY-MM-DD HH:mm'}
                           value={isNew ? null : convertDateTimeFromServer(this.props.offerEntity.availabilityBegin)}
@@ -133,7 +134,7 @@ export class OfferUpdate extends React.Component<IOfferUpdateProps, IOfferUpdate
                         <AvInput
                           id="offer-availabilityEnd"
                           type="datetime-local"
-                          className="form-control"
+                          className="form-control input"
                           name="availabilityEnd"
                           placeholder={'YYYY-MM-DD HH:mm'}
                           value={isNew ? null : convertDateTimeFromServer(this.props.offerEntity.availabilityEnd)}
@@ -149,6 +150,7 @@ export class OfferUpdate extends React.Component<IOfferUpdateProps, IOfferUpdate
                         <AvField
                           id="offer-title"
                           type="text"
+                          className="input"
                           name="title"
                           validate={{
                             required: { value: true, errorMessage: translate('entity.validation.required') },
@@ -163,7 +165,7 @@ export class OfferUpdate extends React.Component<IOfferUpdateProps, IOfferUpdate
                     </Col>
                   </Row>
                 &nbsp;
-                <Button color="primary" id="save-entity" type="submit" disabled={updating}>
+                <Button  className="button" id="save-entity" type="submit" disabled={updating}>
                   <FontAwesomeIcon icon="save" />
                   &nbsp;
                   <Translate contentKey="entity.action.save">Save</Translate>

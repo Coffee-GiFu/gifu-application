@@ -32,7 +32,7 @@ export const OfferFormModal = (props: IOfferFormModalProps) => {
               <OfferUpdate id ={offerId} handleClose={handleClose} isNew={props.isNew}/>
           </ModalBody>
           <ModalFooter>
-            <Button color="secondary" onClick={handleClose} tabIndex="1">
+            <Button color="secondary" onClick={handleClose} tabIndex="1" className="button-back">
               <Translate contentKey="entity.action.cancel">Cancel</Translate>
             </Button>
           </ModalFooter>
