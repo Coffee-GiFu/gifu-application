@@ -42,7 +42,7 @@ spring:
     type: com.zaxxer.hikari.HikariDataSource
     url: jdbc:postgresql://gifu-postgresql.cyxifmrzkulx.eu-west-1.rds.amazonaws.com:5432/postgres
     username: coffee_gifu
-    password: coffee_gifu
+    password: tU96WG1lYPUQblk07G6l
     hikari:
       poolName: Hikari
       auto-commit: false
