@@ -1,0 +1,24 @@
+.modal-dialog {
+  margin-left: 10vh;
+}
+.modal-content {
+  width: 80vw;
+}
+.modal-body {
+  height: 70vh;
+  overflow-x: hidden;
+}
+.jh-entity-details {
+  margin-left: 17px;
+  dt {
+    margin-right: 10px;
+  }
+  dd {
+    margin-bottom: 20px;
+  }
+  dd,
+  dt {
+    margin-right: 10px;
+    display: inline-block;
+  }
+}

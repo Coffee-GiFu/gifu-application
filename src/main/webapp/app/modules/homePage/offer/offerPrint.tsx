@@ -4,9 +4,7 @@ import {Translate} from 'react-jhipster';
 
 import {IRootState} from 'app/shared/reducers';
 import {
-  getEntities,
   searchAvailableOffer,
-  searchChosenOffer,
   searchCreatedOffer,
   searchAvailableOfferCold
 } from '../../../entities/offer/offer.reducer';
@@ -14,67 +12,81 @@ import OfferCard from 'app/shared/layout/offer/offerCard';
 import OfferCardAdd from 'app/shared/layout/offer/offerCardAdd';
 
 interface IofferPrint {
-    isAllow: boolean;
+    isCompagny: boolean;
+    isAssos: boolean;
     showModal: boolean;
-    handleClose: Function;
     coldFilter: boolean;
+    openCreate: Function;
+    selectOffer: Function;
 }
-export interface IOfferPrintProps extends IofferPrint, StateProps, DispatchProps {}
+export interface IOfferPrintProps extends IofferPrint, StatePropsS, DispatchPropsS {}
 
 export class OfferPrint extends React.Component<IOfferPrintProps> {
   componentDidMount() {
-    this.props.searchAvailableOffer();
+    if(this.props.isAssos){
+      this.props.searchAvailableOffer();
+    }else{
+      this.props.searchCreatedOffer();
+    }
   }
   componentDidUpdate(prevProps, prevState) {
-    if (prevProps.coldFilter !== this.props.coldFilter) {
-      if(this.props.coldFilter){
-        this.props.searchAvailableOfferCold()
-      } else {
-        this.props.searchAvailableOffer();
+    window.console.log(prevProps)
+    if (prevProps.coldFilter !== this.props.coldFilter||prevProps.showModal !== this.props.showModal) {
+      if(this.props.isAssos){
+        if(this.props.coldFilter){
+          this.props.searchAvailableOfferCold()
+        } else {
+          this.props.searchAvailableOffer();
+        }
+      }else{
+        this.props.searchCreatedOffer();
       }
     }
   }
   render() {
-    const { offerList } = this.props;
+    const { offerListPrint } = this.props;
     return (
       <div className="offerPrintBody">
         {
-            (this.props.isAllow)?(
-              <OfferCardAdd handleClick={()=>{window.console.log("createoffer")}}/>
-            ):("")
-          }   
-        {
-          offerList && offerList.length > 0 ? (
-            offerList.map((off,index) => {
-              return <OfferCard key={index} offer={off} handleClick={(id)=>{window.console.log(id)}} />;
-            })
-          ) : (
+          
+          offerListPrint && offerListPrint.length === 0 ? (
             <div className="alert alert-warning">
               <Translate contentKey="gifuApp.offer.home.notFound">No Offers found</Translate>
             </div>
-          )
+          ):("")
+        }
+        {
+          (this.props.isCompagny)?(
+            <OfferCardAdd openCreate={this.props.openCreate}/>
+          ):("")
+        }   
+        {
+          offerListPrint && offerListPrint.length > 0 ? (
+            offerListPrint.map((off,index) => {
+              return <OfferCard key={index} offer={off} 
+                handleClick={()=>{this.props.selectOffer(off)}} />;
+            })
+          ):("")
         }
       </div>
     );
   }
 }
 
-const mapStateToProps = ({ offer }: IRootState) => ({
-  offerList: offer.entities
+const mapStateToPropsS = ({ offer }: IRootState) => ({
+  offerListPrint: offer.entities
 });
 
-const mapDispatchToProps = {
-  getEntities,
+const mapDispatchToPropsS = {
   searchAvailableOffer,
-  searchCreatedOffer,
-  searchChosenOffer,
-  searchAvailableOfferCold
+  searchAvailableOfferCold,
+  searchCreatedOffer
 };
 
-type StateProps = ReturnType<typeof mapStateToProps>;
-type DispatchProps = typeof mapDispatchToProps;
+type StatePropsS = ReturnType<typeof mapStateToPropsS>;
+type DispatchPropsS = typeof mapDispatchToPropsS;
 
 export default connect(
-  mapStateToProps,
-  mapDispatchToProps
+  mapStateToPropsS,
+  mapDispatchToPropsS
 )(OfferPrint);

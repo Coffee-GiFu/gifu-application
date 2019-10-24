@@ -4,7 +4,7 @@
       "home": {
         "title": "Locations",
         "createLabel": "Create a new Location",
-        "createOrEditLabel": "Create or edit a Location",
+        "createOrEditLabel": "Location",
         "notFound": "No Locations found"
       },
       "created": "A new Location is created with identifier {{ param }}",

@@ -2,13 +2,14 @@ import React from 'react';
 import './offerCardStyle.scss'
 
 export interface OfferCardAddProps {
-    handleClick: Function
+  openCreate: Function
 }
-export const OfferCardAdd = ({ handleClick }: OfferCardAddProps) => {
+export const OfferCardAdd = ({ openCreate }: OfferCardAddProps) => {
   const pictures = [];
   const autoPlay = true;
+  const fnc=()=>{openCreate();}
   return (    
-    <div className="styledOfferCardAdd" onClick={handleClick()} >
+    <div className="styledOfferCardAdd" onClick={fnc} >
         <div className="circle">
             <span className="plus">+</span>
         </div>

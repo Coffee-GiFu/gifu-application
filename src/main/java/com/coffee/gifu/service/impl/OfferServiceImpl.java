@@ -111,9 +111,9 @@ public class OfferServiceImpl implements OfferService {
      * @return an entity list.
      */
     @Transactional(readOnly = true)
-    public List<OfferDTO> searchCreatedOffer() {
+    public List<OfferDTO> searchCreatedOffer(Long idcorp) {
         log.debug("Request to get Offer by account");
-        return offerRepository.searchCreatedOffer().stream()
+        return offerRepository.searchCreatedOffer(idcorp).stream()
             .map(offerMapper::toDto)
             .collect(Collectors.toCollection(LinkedList::new));
     }
