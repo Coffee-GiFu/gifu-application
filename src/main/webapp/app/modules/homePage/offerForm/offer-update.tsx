@@ -13,6 +13,7 @@ import { getEntities as getOrganisations } from 'app/entities/organisation/organ
 import { createEntity, getEntity, reset, updateEntity } from '../../../entities/offer/offer.reducer';
 import { convertDateTimeFromServer, convertDateTimeToServer } from 'app/shared/util/date-utils';
 import { LocationPage } from '../../locationPage/locationPage';
+import Checkbox from 'app/shared/layout/checkbox/checkbox';
 
 
 export interface IOfferUpdateProps extends IOfferUpdatePropsCustom, StateProps, DispatchProps {}
@@ -46,9 +47,7 @@ export class OfferUpdate extends React.Component<IOfferUpdateProps, IOfferUpdate
   }
 
   componentDidMount() {
-    if (this.state.isNew) {
-      this.props.reset();
-    } else {
+    if (!this.state.isNew) {
       this.props.getEntity(this.props.id);
     }
 
@@ -90,14 +89,6 @@ export class OfferUpdate extends React.Component<IOfferUpdateProps, IOfferUpdate
                 <AvForm model={isNew ? {} : offerEntity} onSubmit={this.saveEntity}>
                   <Row>
                     <Col>
-                      {!isNew ? (
-                        <AvGroup>
-                          <Label for="offer-id">
-                            <Translate contentKey="global.field.id">ID</Translate>
-                          </Label>
-                          <AvInput id="offer-id" type="text" className="form-control" name="id" required readOnly />
-                        </AvGroup>
-                      ) : null}
                       <AvGroup>
                         <Label id="descriptionLabel" for="offer-description">
                           <Translate contentKey="gifuApp.offer.description">Description</Translate>

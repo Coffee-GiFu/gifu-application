@@ -15,6 +15,7 @@ export type IHomeProp = StateProps;
 export const HomePage = (props: IHomeProp) => {
   const { account } = props;
   const [isNew, setIsNew] = useState(false);
+  const [refresh, setrefresh] = useState(false);
   const [show, setShow] = useState(false);
   const [offer, setOffer] = useState<IOffer>();
   const [coldFilter, setcoldFilter] = useState(false);
@@ -28,6 +29,7 @@ export const HomePage = (props: IHomeProp) => {
   }
   const openCreate = function () {
     setShow(true);
+    setOffer(null);
     setIsNew(true);
   }
   
@@ -49,7 +51,7 @@ export const HomePage = (props: IHomeProp) => {
             </label>
           </div>
         </div>    
-        <OfferPrint showModal={show} openCreate={openCreate}
+        <OfferPrint showModal={show} openCreate={openCreate} refresh={refresh}
         coldFilter={coldFilter} isAllow={account.authorities.includes("ROLE_COMPANY")}
         selectOffer={openEdit}/>
       </Col>

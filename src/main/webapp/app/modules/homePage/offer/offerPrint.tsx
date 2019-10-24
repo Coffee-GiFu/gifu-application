@@ -20,14 +20,15 @@ interface IofferPrint {
     openCreate: Function;
     selectOffer: Function;
 }
-export interface IOfferPrintProps extends IofferPrint, StateProps, DispatchProps {}
+export interface IOfferPrintProps extends IofferPrint, StatePropsS, DispatchPropsS {}
 
 export class OfferPrint extends React.Component<IOfferPrintProps> {
   componentDidMount() {
     this.props.searchAvailableOffer();
   }
   componentDidUpdate(prevProps, prevState) {
-    if (prevProps.coldFilter !== this.props.coldFilter) {
+    window.console.log(prevProps)
+    if (prevProps.coldFilter !== this.props.coldFilter||prevProps.showModal !== this.props.showModal) {
       if(this.props.coldFilter){
         this.props.searchAvailableOfferCold()
       } else {
@@ -61,21 +62,19 @@ export class OfferPrint extends React.Component<IOfferPrintProps> {
   }
 }
 
-const mapStateToProps = ({ offer }: IRootState) => ({
+const mapStateToPropsS = ({ offer }: IRootState) => ({
   offerListPrint: offer.entities
 });
 
-const mapDispatchToProps = {
+const mapDispatchToPropsS = {
   searchAvailableOffer,
-  searchCreatedOffer,
-  searchChosenOffer,
   searchAvailableOfferCold
 };
 
-type StateProps = ReturnType<typeof mapStateToProps>;
-type DispatchProps = typeof mapDispatchToProps;
+type StatePropsS = ReturnType<typeof mapStateToPropsS>;
+type DispatchPropsS = typeof mapDispatchToPropsS;
 
 export default connect(
-  mapStateToProps,
-  mapDispatchToProps
+  mapStateToPropsS,
+  mapDispatchToPropsS
 )(OfferPrint);

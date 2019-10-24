@@ -19,14 +19,6 @@ export const LocationPage = (isNew: boolean) => {
             </Row>
             <Row className="justify-content-center">
                 <Col>
-                    {!isNew ? (
-                        <AvGroup>
-                            <Label for="location-id">
-                                <Translate contentKey="global.field.id">ID</Translate>
-                            </Label>
-                            <AvInput id="location-id" type="text" className="form-control" name="locationDTO.id" required readOnly />
-                        </AvGroup>
-                    ) : null}
                     <AvGroup>
                         <Label id="streetAddressLabel" for="location-streetAddress">
                             <Translate contentKey="gifuApp.location.streetAddress">Street Address</Translate>
