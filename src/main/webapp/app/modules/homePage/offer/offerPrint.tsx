@@ -30,7 +30,6 @@ export class OfferPrint extends React.Component<IOfferPrintProps> {
     }
   }
   componentDidUpdate(prevProps, prevState) {
-    window.console.log(prevProps)
     if (prevProps.coldFilter !== this.props.coldFilter||prevProps.showModal !== this.props.showModal) {
       if(this.props.isAssos){
         if(this.props.coldFilter){
