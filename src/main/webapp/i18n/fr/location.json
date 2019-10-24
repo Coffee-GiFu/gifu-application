@@ -14,11 +14,11 @@
         "question": "Etes-vous certain de vouloir supprimer le Location {{ id }} ?"
       },
       "detail": {
-        "title": "Location"
+        "title": "Localisation"
       },
-      "streetAddress": "Street Address",
-      "postalCode": "Postal Code",
-      "city": "City"
+      "streetAddress": "Adresse",
+      "postalCode": "Code postal",
+      "city": "Ville"
     }
   }
 }

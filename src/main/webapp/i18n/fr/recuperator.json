@@ -16,8 +16,8 @@
       "detail": {
         "title": "Recuperator"
       },
-      "name": "Name",
-      "phoneNumber": "Phone Number",
+      "name": "Nom",
+      "phoneNumber": "Numéro de téléphone",
       "association": "Association"
     }
   }

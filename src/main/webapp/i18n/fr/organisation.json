@@ -16,14 +16,14 @@
       "detail": {
         "title": "Organisation"
       },
-      "name": "Name",
-      "phoneNumber": "Phone Number",
-      "contactMail": "Contact Mail",
+      "name": "Nom",
+      "phoneNumber": "Numérod de téléphone",
+      "contactMail": "E-mail de contact",
       "logo": "Logo",
       "description": "Description",
-      "identificationCode": "Identification Code",
+      "identificationCode": "Code d'identification",
       "type": "Type",
-      "location": "Location"
+      "location": "Localisation"
     }
   }
 }
