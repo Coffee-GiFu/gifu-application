@@ -62,5 +62,5 @@ public interface OfferService {
      *
      * @return the list of available entities.
      */
-    List<OfferDTO> searchCreatedOffer();
+    List<OfferDTO> searchCreatedOffer(Long idcorp);
 }

@@ -1,7 +1,7 @@
 import './header.scss';
 
 import React, { useState } from 'react';
-import { Translate, Storage } from 'react-jhipster';
+import { Translate, Storage, translate } from 'react-jhipster';
 import { Navbar, Nav, NavbarToggler, NavbarBrand, Collapse } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
@@ -9,7 +9,8 @@ import { NavLink as Link } from 'react-router-dom';
 import LoadingBar from 'react-redux-loading-bar';
 
 import { Home, Brand } from './header-components';
-import { AdminMenu, EntitiesMenu, AccountMenu, LocaleMenu } from '../menus';
+import { AdminMenu, EntitiesMenu, accountMenuItemsAuthenticated, LocaleMenu } from '../menus';
+import { NavDropdown } from '../menus/menu-components';
 
 export interface IHeaderProps {
   isAuthenticated: boolean;
@@ -58,7 +59,12 @@ const Header = (props: IHeaderProps) => {
               <AdminMenu showSwagger={props.isSwaggerEnabled} showDatabase={!props.isInProduction} />
             )}
             <LocaleMenu currentLocale={props.currentLocale} onClick={handleLocaleChange} />
-            <AccountMenu isAuthenticated={props.isAuthenticated} />
+            
+            {props.isAuthenticated && (
+              <NavDropdown icon="user" name={translate('global.menu.account.main')} id="account-menu">
+                {accountMenuItemsAuthenticated}
+              </NavDropdown>
+            )}
           </Nav>
         </Collapse>
       </Navbar>

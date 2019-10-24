@@ -4,6 +4,8 @@
       "home": {
         "title": "Offers",
         "createLabel": "Create a new Offer",
+        "editLabel": "Edit an Offer",
+        "vueLabel": "Consult an Offer",
         "createOrEditLabel": "Create or edit a Offer",
         "notFound": "No Offers found"
       },

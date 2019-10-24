@@ -3,7 +3,9 @@
     "offer": {
       "home": {
         "title": "Offers",
-        "createLabel": "Créer un nouveau Offer",
+        "createLabel": "Créer une nouvelle Offre",
+        "editLabel": "Editer une Offre",
+        "vueLabel": "Consulter une Offre",
         "createOrEditLabel": "Créer ou éditer un Offer",
         "notFound": "Aucune offre trouvé."
       },

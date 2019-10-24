@@ -19,10 +19,9 @@ import java.util.Optional;
 @Repository
 public interface OfferRepository extends JpaRepository<Offer, Long> {
     @Query("SELECT o FROM Offer o " +
-            "ORDER BY " +
-            //"CASE WHEN o.recuperators IS NULL THEN 1 ELSE 0 END DESC," +//TODO selection par l'entreprise de l'assos ( offre fermer )
-            "o.availabilityEnd ASC")
-    List<Offer> searchCreatedOffer();
+            "WHERE o.organisation.id = :idcorp " +
+            "ORDER BY o.availabilityEnd desc ")
+    List<Offer> searchCreatedOffer(@Param("idcorp") Long idcorp);
 
     @Query("SELECT o FROM Offer o " +
         "ORDER BY o.availabilityEnd ASC")

@@ -94,6 +94,14 @@ public class OfferResource {
         return optionalOrganisationDTO;
     }
 
+    private Optional<OrganisationDTO> getUserOrganisation() {
+        Optional<User> userWithAuthorities = this.checkIfUserExists();
+        Optional<OrganisationDTO> optionalOrganisationDTO = organisationService.findOne(userWithAuthorities.get().getOrganisationID());
+        if (optionalOrganisationDTO.isEmpty()) {
+            throw new com.coffee.gifu.service.EnterpriseNotFoundException("Organisation not found for this id " + optionalOrganisationDTO.get().getId());
+        }
+        return optionalOrganisationDTO;
+    }
     private OfferDTO createOfferDTO(@RequestBody @Valid CreateOfferRequest
                                             createOfferRequest, Optional<OrganisationDTO> optionalOrganisationDTO) {
         OfferDTO offerDTO = createOfferDTOFromRequest(createOfferRequest);
@@ -221,8 +229,9 @@ public class OfferResource {
     @GetMapping("/offers/create")
     @PreAuthorize("hasRole(\"" + AuthoritiesConstants.COMPANY + "\")")
     public List<OfferDTO> searchCreatedOffer() {
+        Long idcorp = getUserOrganisation().get().getId();
         log.debug("REST request to get Offer.");
-        return offerService.searchCreatedOffer();
+        return offerService.searchCreatedOffer(idcorp);
     }
 
     /**
