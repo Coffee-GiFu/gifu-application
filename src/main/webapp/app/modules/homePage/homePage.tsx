@@ -35,7 +35,7 @@ export const HomePage = (props: IHomeProp) => {
   
   return (
     <Row>
-      <OfferFormModal showModal={show} handleClose={setShow} isNew={isNew} offer={offer}/>
+      <OfferFormModal consultation={account.authorities.includes("ROLE_ASSOCIATION")} showModal={show} handleClose={setShow} isNew={isNew} offer={offer}/>
       <Col md="12">
         {
           account.authorities.includes("ROLE_ASSOCIATION")?(
@@ -55,7 +55,7 @@ export const HomePage = (props: IHomeProp) => {
             </div>
           ):("")
         }
-        <OfferPrint showModal={show} openCreate={openCreate} refresh={refresh}
+        <OfferPrint showModal={show} openCreate={openCreate}
         coldFilter={coldFilter} isCompagny={account.authorities.includes("ROLE_COMPANY")}
         selectOffer={openEdit} isAssos={account.authorities.includes("ROLE_ASSOCIATION")}/>
       </Col>

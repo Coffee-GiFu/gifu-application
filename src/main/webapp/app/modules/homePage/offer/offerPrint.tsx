@@ -48,21 +48,25 @@ export class OfferPrint extends React.Component<IOfferPrintProps> {
     return (
       <div className="offerPrintBody">
         {
-            (this.props.isCompagny)?(
-              <OfferCardAdd openCreate={this.props.openCreate}/>
-            ):("")
-          }   
+          
+          offerListPrint && offerListPrint.length === 0 ? (
+            <div className="alert alert-warning">
+              <Translate contentKey="gifuApp.offer.home.notFound">No Offers found</Translate>
+            </div>
+          ):("")
+        }
+        {
+          (this.props.isCompagny)?(
+            <OfferCardAdd openCreate={this.props.openCreate}/>
+          ):("")
+        }   
         {
           offerListPrint && offerListPrint.length > 0 ? (
             offerListPrint.map((off,index) => {
               return <OfferCard key={index} offer={off} 
                 handleClick={()=>{this.props.selectOffer(off)}} />;
             })
-          ) : (
-            <div className="alert alert-warning">
-              <Translate contentKey="gifuApp.offer.home.notFound">No Offers found</Translate>
-            </div>
-          )
+          ):("")
         }
       </div>
     );
