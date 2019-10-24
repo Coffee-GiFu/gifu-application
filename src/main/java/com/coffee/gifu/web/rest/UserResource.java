@@ -1,7 +1,6 @@
 package com.coffee.gifu.web.rest;
 
 import com.coffee.gifu.config.Constants;
-import com.coffee.gifu.domain.Organisation;
 import com.coffee.gifu.domain.User;
 import com.coffee.gifu.repository.OrganisationRepository;
 import com.coffee.gifu.repository.UserRepository;
@@ -15,7 +14,7 @@ import com.coffee.gifu.web.rest.errors.EmailAlreadyUsedException;
 import com.coffee.gifu.web.rest.errors.IdentificationCodeAlreadyUsedException;
 import com.coffee.gifu.web.rest.errors.LoginAlreadyUsedException;
 
-import com.coffee.gifu.web.rest.wrapper.CreateUserRequest;
+import com.coffee.gifu.web.rest.request.object.CreateUserRequest;
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.PaginationUtil;
 import io.github.jhipster.web.util.ResponseUtil;

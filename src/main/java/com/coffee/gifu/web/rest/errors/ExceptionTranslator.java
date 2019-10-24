@@ -1,8 +1,9 @@
 package com.coffee.gifu.web.rest.errors;
 
+import com.coffee.gifu.service.EnterpriseNotFoundException;
+import io.github.jhipster.web.util.HeaderUtil;
 import javassist.NotFoundException;
 import org.json.simple.parser.ParseException;
-import io.github.jhipster.web.util.HeaderUtil;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.ConcurrencyFailureException;
 import org.springframework.http.ResponseEntity;
@@ -14,7 +15,6 @@ import org.springframework.web.context.request.NativeWebRequest;
 import org.zalando.problem.DefaultProblem;
 import org.zalando.problem.Problem;
 import org.zalando.problem.ProblemBuilder;
-import java.io.IOException;
 import org.zalando.problem.Status;
 import org.zalando.problem.spring.web.advice.ProblemHandling;
 import org.zalando.problem.spring.web.advice.security.SecurityAdviceTrait;
@@ -23,6 +23,7 @@ import org.zalando.problem.violations.ConstraintViolationProblem;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
@@ -55,20 +56,20 @@ public class ExceptionTranslator implements ProblemHandling, SecurityAdviceTrait
             return entity;
         }
         ProblemBuilder builder = Problem.builder()
-            .withType(Problem.DEFAULT_TYPE.equals(problem.getType()) ? ErrorConstants.DEFAULT_TYPE : problem.getType())
-            .withStatus(problem.getStatus())
-            .withTitle(problem.getTitle())
-            .with(PATH_KEY, request.getNativeRequest(HttpServletRequest.class).getRequestURI());
+                .withType(Problem.DEFAULT_TYPE.equals(problem.getType()) ? ErrorConstants.DEFAULT_TYPE : problem.getType())
+                .withStatus(problem.getStatus())
+                .withTitle(problem.getTitle())
+                .with(PATH_KEY, request.getNativeRequest(HttpServletRequest.class).getRequestURI());
 
         if (problem instanceof ConstraintViolationProblem) {
             builder
-                .with(VIOLATIONS_KEY, ((ConstraintViolationProblem) problem).getViolations())
-                .with(MESSAGE_KEY, ErrorConstants.ERR_VALIDATION);
+                    .with(VIOLATIONS_KEY, ((ConstraintViolationProblem) problem).getViolations())
+                    .with(MESSAGE_KEY, ErrorConstants.ERR_VALIDATION);
         } else {
             builder
-                .withCause(((DefaultProblem) problem).getCause())
-                .withDetail(problem.getDetail())
-                .withInstance(problem.getInstance());
+                    .withCause(((DefaultProblem) problem).getCause())
+                    .withDetail(problem.getDetail())
+                    .withInstance(problem.getInstance());
             problem.getParameters().forEach(builder::with);
             if (!problem.getParameters().containsKey(MESSAGE_KEY) && problem.getStatus() != null) {
                 builder.with(MESSAGE_KEY, "error.http." + problem.getStatus().getStatusCode());
@@ -81,43 +82,45 @@ public class ExceptionTranslator implements ProblemHandling, SecurityAdviceTrait
     public ResponseEntity<Problem> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, @Nonnull NativeWebRequest request) {
         BindingResult result = ex.getBindingResult();
         List<FieldErrorVM> fieldErrors = result.getFieldErrors().stream()
-            .map(f -> new FieldErrorVM(f.getObjectName().replaceFirst("DTO$", ""), f.getField(), f.getCode()))
-            .collect(Collectors.toList());
+                .map(f -> new FieldErrorVM(f.getObjectName().replaceFirst("DTO$", ""), f.getField(), f.getCode()))
+                .collect(Collectors.toList());
 
         Problem problem = Problem.builder()
-            .withType(ErrorConstants.CONSTRAINT_VIOLATION_TYPE)
-            .withTitle("Method argument not valid")
-            .withStatus(defaultConstraintViolationStatus())
-            .with(MESSAGE_KEY, ErrorConstants.ERR_VALIDATION)
-            .with(FIELD_ERRORS_KEY, fieldErrors)
-            .build();
+                .withType(ErrorConstants.CONSTRAINT_VIOLATION_TYPE)
+                .withTitle("Method argument not valid")
+                .withStatus(defaultConstraintViolationStatus())
+                .with(MESSAGE_KEY, ErrorConstants.ERR_VALIDATION)
+                .with(FIELD_ERRORS_KEY, fieldErrors)
+                .build();
         return create(ex, problem, request);
     }
 
     @ExceptionHandler
     public ResponseEntity<Problem> handleNoSuchElementException(NoSuchElementException ex, NativeWebRequest request) {
         Problem problem = Problem.builder()
-            .withStatus(Status.NOT_FOUND)
-            .with(MESSAGE_KEY, ErrorConstants.ENTITY_NOT_FOUND_TYPE)
-            .build();
+                .withStatus(Status.NOT_FOUND)
+                .with(MESSAGE_KEY, ErrorConstants.ENTITY_NOT_FOUND_TYPE)
+                .build();
         return create(ex, problem, request);
     }
+
     @ExceptionHandler
     public ResponseEntity<Problem> handleEmailAreadyUsedException(com.coffee.gifu.service.EmailAlreadyUsedException ex, NativeWebRequest request) {
         EmailAlreadyUsedException problem = new EmailAlreadyUsedException();
-        return create(problem, request, HeaderUtil.createFailureAlert(applicationName,  true, problem.getEntityName(), problem.getErrorKey(), problem.getMessage()));
+        return create(problem, request, HeaderUtil.createFailureAlert(applicationName, true, problem.getEntityName(), problem.getErrorKey(), problem.getMessage()));
     }
 
     @ExceptionHandler
     public ResponseEntity<Problem> handleUsernameAreadyUsedException(com.coffee.gifu.service.UsernameAlreadyUsedException ex, NativeWebRequest request) {
         LoginAlreadyUsedException problem = new LoginAlreadyUsedException();
-        return create(problem, request, HeaderUtil.createFailureAlert(applicationName,  true, problem.getEntityName(), problem.getErrorKey(), problem.getMessage()));
+        return create(problem, request, HeaderUtil.createFailureAlert(applicationName, true, problem.getEntityName(), problem.getErrorKey(), problem.getMessage()));
     }
 
     @ExceptionHandler
     public ResponseEntity<Problem> handleInvalidPasswordException(com.coffee.gifu.service.InvalidPasswordException ex, NativeWebRequest request) {
         return create(new InvalidPasswordException(), request);
     }
+
     @ExceptionHandler
     public ResponseEntity<Problem> handleBadRequestAlertException(BadRequestAlertException ex, NativeWebRequest request) {
         return create(ex, request, HeaderUtil.createFailureAlert(applicationName, true, ex.getEntityName(), ex.getErrorKey(), ex.getMessage()));
@@ -126,41 +129,65 @@ public class ExceptionTranslator implements ProblemHandling, SecurityAdviceTrait
     @ExceptionHandler
     public ResponseEntity<Problem> handleConcurrencyFailure(ConcurrencyFailureException ex, NativeWebRequest request) {
         Problem problem = Problem.builder()
-            .withStatus(Status.CONFLICT)
-            .with(MESSAGE_KEY, ErrorConstants.ERR_CONCURRENCY_FAILURE)
-            .build();
+                .withStatus(Status.CONFLICT)
+                .with(MESSAGE_KEY, ErrorConstants.ERR_CONCURRENCY_FAILURE)
+                .build();
         return create(ex, problem, request);
     }
+
     @ExceptionHandler
     public ResponseEntity<Problem> handleNotFoundException(NotFoundException ex, NativeWebRequest request) {
         Problem problem = Problem.builder()
-            .withStatus(Status.NOT_FOUND)
-            .with(MESSAGE_KEY, ErrorConstants.ENTITY_NOT_FOUND_TYPE)
-            .build();
+                .withStatus(Status.NOT_FOUND)
+                .with(MESSAGE_KEY, ErrorConstants.ENTITY_NOT_FOUND_TYPE)
+                .build();
         return create(ex, problem, request);
     }
+
+    @ExceptionHandler
+    public ResponseEntity<Problem> handleEnterpriseNotFoundException(EnterpriseNotFoundException ex, NativeWebRequest request) {
+        com.coffee.gifu.web.rest.errors.EnterpriseNotFoundException enterpriseNotFoundException = new com.coffee.gifu.web.rest.errors.EnterpriseNotFoundException(ex.getMessage());
+        Problem problem = Problem.builder()
+                .withStatus(Status.NOT_FOUND)
+                .with(MESSAGE_KEY, ErrorConstants.ENTITY_NOT_FOUND_TYPE)
+                .build();
+        return create(enterpriseNotFoundException, problem, request);
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<Problem> handleCurrentUserLoginNotFoundException(CurrentUserLoginNotFound ex, NativeWebRequest request) {
+        com.coffee.gifu.web.rest.errors.CurrentUserLoginNotFound currentUserLoginNotFound = new com.coffee.gifu.web.rest.errors.CurrentUserLoginNotFound(ex.getMessage());
+        Problem problem = Problem.builder()
+                .withStatus(Status.NOT_FOUND)
+                .with(MESSAGE_KEY, ErrorConstants.ENTITY_NOT_FOUND_TYPE)
+                .build();
+        return create(currentUserLoginNotFound, problem, request);
+    }
+
     @ExceptionHandler
     public ResponseEntity<Problem> handleInterruptedException(InterruptedException ex, NativeWebRequest request) {
         Problem problem = Problem.builder()
-            .withStatus(Status.INTERNAL_SERVER_ERROR)
-            .with(MESSAGE_KEY, ErrorConstants.ENTITY_NOT_FOUND_TYPE)
-            .build();
+                .withStatus(Status.INTERNAL_SERVER_ERROR)
+                .with(MESSAGE_KEY, ErrorConstants.ENTITY_NOT_FOUND_TYPE)
+                .build();
         return create(ex, problem, request);
     }
+
     @ExceptionHandler
     public ResponseEntity<Problem> handleIOException(IOException ex, NativeWebRequest request) {
         Problem problem = Problem.builder()
-            .withStatus(Status.INTERNAL_SERVER_ERROR)
-            .with(MESSAGE_KEY, ErrorConstants.ENTITY_NOT_FOUND_TYPE)
-            .build();
+                .withStatus(Status.INTERNAL_SERVER_ERROR)
+                .with(MESSAGE_KEY, ErrorConstants.ENTITY_NOT_FOUND_TYPE)
+                .build();
         return create(ex, problem, request);
     }
+
     @ExceptionHandler
     public ResponseEntity<Problem> handleParseException(ParseException ex, NativeWebRequest request) {
         Problem problem = Problem.builder()
-            .withStatus(Status.INTERNAL_SERVER_ERROR)
-            .with(MESSAGE_KEY, ErrorConstants.INTERNAL_ERROR)
-            .build();
+                .withStatus(Status.INTERNAL_SERVER_ERROR)
+                .with(MESSAGE_KEY, ErrorConstants.INTERNAL_ERROR)
+                .build();
         return create(ex, problem, request);
     }
 }

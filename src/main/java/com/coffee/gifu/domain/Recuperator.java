@@ -32,9 +32,8 @@ public class Recuperator implements Serializable {
     @Column(name = "phone_number", length = 10, nullable = false)
     private String phoneNumber;
 
-    @OneToOne(optional = false)    @NotNull
-
-    @JoinColumn(unique = true)
+    @OneToOne(optional = false)
+    @NotNull
     private Organisation association;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove

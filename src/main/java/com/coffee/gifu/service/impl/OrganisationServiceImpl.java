@@ -51,7 +51,7 @@ public class OrganisationServiceImpl implements OrganisationService {
      * @return the entity.
      */
     @Override
-    @Transactional(readOnly = true)
+    @Transactional()
     public Optional<OrganisationDTO> findOne(Long id) {
         log.debug("Request to get Organisation : {}", id);
         return organisationRepository.findById(id)

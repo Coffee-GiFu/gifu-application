@@ -1,10 +1,20 @@
 package com.coffee.gifu.web.rest;
 
+import com.coffee.gifu.domain.Recuperator;
+import com.coffee.gifu.domain.User;
+import com.coffee.gifu.repository.RecuperatorRepository;
 import com.coffee.gifu.security.AuthoritiesConstants;
+import com.coffee.gifu.security.SecurityUtils;
+import com.coffee.gifu.service.EnterpriseNotFoundException;
+import com.coffee.gifu.service.OrganisationService;
 import com.coffee.gifu.service.RecuperatorService;
+import com.coffee.gifu.service.UserService;
+import com.coffee.gifu.service.dto.OrganisationDTO;
 import com.coffee.gifu.web.rest.errors.BadRequestAlertException;
 import com.coffee.gifu.service.dto.RecuperatorDTO;
+import com.coffee.gifu.web.rest.errors.CurrentUserLoginNotFound;
 
+import com.coffee.gifu.web.rest.errors.CurrentUserLoginNotFound;
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
@@ -21,6 +31,7 @@ import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Optional;
 
+
 /**
  * REST controller for managing {@link com.coffee.gifu.domain.Recuperator}.
  */
@@ -35,10 +46,42 @@ public class RecuperatorResource {
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
 
+    private final UserService userService;
+    private final OrganisationService organisationService;
+    private final RecuperatorRepository recuperatorRepository;
+
+    public RecuperatorResource(RecuperatorService recuperatorService, OrganisationService organisationService,
+                         UserService userService, RecuperatorRepository recuperatorRepository) {
+        this.recuperatorService = recuperatorService;
+        this.organisationService = organisationService;
+        this.userService = userService;
+        this.recuperatorRepository = recuperatorRepository;
+    }
     private final RecuperatorService recuperatorService;
 
-    public RecuperatorResource(RecuperatorService recuperatorService) {
-        this.recuperatorService = recuperatorService;
+    private Optional<User> getUser() {
+        Optional<String> currentUserLogin = SecurityUtils.getCurrentUserLogin();
+        if (currentUserLogin.isEmpty()) {
+            throw new CurrentUserLoginNotFound("currentUserLogin is not found");
+        }
+        Optional<User> userWithAuthorities = userService.getUserWithAuthoritiesByLogin(currentUserLogin.get());
+        if (userWithAuthorities.isEmpty()) {
+            throw new CurrentUserLoginNotFound("userWithAuthoritiesByLogin is not found");
+        }
+        return userWithAuthorities;
+    }
+    private Optional<OrganisationDTO> getUserOrganisation() {
+        Optional<User> userWithAuthorities = this.getUser();
+        Optional<OrganisationDTO> optionalOrganisationDTO = organisationService.findOne(userWithAuthorities.get().getOrganisationID());
+        if (optionalOrganisationDTO.isEmpty()) {
+            throw new EnterpriseNotFoundException("Organisation not found for this id " + optionalOrganisationDTO.get().getId());
+        }
+        return optionalOrganisationDTO;
+    }
+
+    private boolean allowForEdit(Long id){
+        Optional<Recuperator> recuperator = recuperatorRepository.findById(id);
+        return recuperator.get().getAssociation().getId() == getUserOrganisation().get().getId();
     }
 
     /**
@@ -55,6 +98,27 @@ public class RecuperatorResource {
         if (recuperatorDTO.getId() != null) {
             throw new BadRequestAlertException("A new recuperator cannot already have an ID", ENTITY_NAME, "idexists");
         }
+        CheckUser checkUser = new CheckUser(userService);
+        Optional<User> userWithAuthoritiesByLogin = checkUser.checkIfUserExists();
+
+        if (userWithAuthoritiesByLogin.isEmpty()) {
+            throw new CurrentUserLoginNotFound("User not found");
+        }
+
+        if (organisationService.findOne(userWithAuthoritiesByLogin.get().getOrganisationID()).isEmpty()) {
+            throw new CurrentUserLoginNotFound("Organisation not found for this id User " + userWithAuthoritiesByLogin.get().getId());
+        }
+
+        Optional<OrganisationDTO> optionalOrganisationDTO = organisationService.findOne(userWithAuthoritiesByLogin.get().getOrganisationID());
+        if (optionalOrganisationDTO.isEmpty()) {
+            throw new com.coffee.gifu.web.rest.errors.EnterpriseNotFoundException("Organisation not found for this id " + userWithAuthoritiesByLogin.get().getId());
+        }
+        log.debug("REST request to save optionalOrganisationDTO : {}", optionalOrganisationDTO);
+
+        recuperatorDTO.setAssociation(optionalOrganisationDTO.get());
+
+        log.debug("REST request to save getAssociation : {}", recuperatorDTO.getAssociation());
+        log.debug("REST : {}", recuperatorDTO);
         RecuperatorDTO result = recuperatorService.save(recuperatorDTO);
         return ResponseEntity.created(new URI("/api/recuperators/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
@@ -74,7 +138,7 @@ public class RecuperatorResource {
     @PreAuthorize("hasRole(\"" + AuthoritiesConstants.ASSOCIATION + "\")")
     public ResponseEntity<RecuperatorDTO> updateRecuperator(@Valid @RequestBody RecuperatorDTO recuperatorDTO) throws URISyntaxException {
         log.debug("REST request to update Recuperator : {}", recuperatorDTO);
-        if (recuperatorDTO.getId() == null) {
+        if (recuperatorDTO.getId() == null || !allowForEdit(recuperatorDTO.getId())) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
         RecuperatorDTO result = recuperatorService.save(recuperatorDTO);
