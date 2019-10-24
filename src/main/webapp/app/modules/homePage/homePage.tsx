@@ -8,26 +8,32 @@ import { Redirect } from 'react-router';
 import  OfferPrint  from './offer/offerPrint'
 import Checkbox from 'app/shared/layout/checkbox/checkbox';
 import { IOffer } from 'app/shared/model/offer.model';
+import OfferFormModal from './offerForm/offerForm';
 
 export type IHomeProp = StateProps;
 
 export const HomePage = (props: IHomeProp) => {
   const { account } = props;
+  const [isNew, setIsNew] = useState(false);
   const [show, setShow] = useState(false);
   const [offer, setOffer] = useState<IOffer>();
   const [coldFilter, setcoldFilter] = useState(false);
   if(!(account && account.login)){
     return (<Redirect to="/login" />);
   }
-  const openEdit = function (offer:IOffer) {
-    console.log('lol',offer.id);
+  const openEdit = function (off:IOffer) {
     setShow(true);
-    setOffer(offer);
+    setOffer(off);
+    setIsNew(false);
+  }
+  const openCreate = function () {
+    setShow(true);
+    setIsNew(true);
   }
   
-  window.console.log(coldFilter,show);
   return (
     <Row>
+      <OfferFormModal showModal={show} handleClose={setShow} isNew={isNew} offer={offer}/>
       <Col md="12">
         <div>
           <div className="filterBar">
@@ -43,7 +49,7 @@ export const HomePage = (props: IHomeProp) => {
             </label>
           </div>
         </div>    
-        <OfferPrint showModal={show}
+        <OfferPrint showModal={show} openCreate={openCreate}
         coldFilter={coldFilter} isAllow={account.authorities.includes("ROLE_COMPANY")}
         selectOffer={openEdit}/>
       </Col>

@@ -13,7 +13,7 @@ export const LocationPage = (isNew: boolean) => {
             <Row className="justify-content-center">
                 <Col>
                     <h2 id="gifuApp.location.home.createOrEditLabel">
-                        <Translate contentKey="gifuApp.location.home.createOrEditLabel">Create or edit a Location</Translate> Offre
+                        <Translate contentKey="gifuApp.location.home.createOrEditLabel">Create or edit a Location</Translate>
                   </h2>
                 </Col>
             </Row>

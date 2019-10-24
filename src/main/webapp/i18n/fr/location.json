@@ -4,7 +4,7 @@
       "home": {
         "title": "Locations",
         "createLabel": "Créer un nouveau Location",
-        "createOrEditLabel": "Créer ou éditer un Location",
+        "createOrEditLabel": "Location",
         "notFound": "Aucun Location trouvé"
       },
       "created": "Un nouveau Location a été créé avec l'identifiant {{ param }}",

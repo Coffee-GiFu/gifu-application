@@ -17,6 +17,7 @@ interface IofferPrint {
     isAllow: boolean;
     showModal: boolean;
     coldFilter: boolean;
+    openCreate: Function;
     selectOffer: Function;
 }
 export interface IOfferPrintProps extends IofferPrint, StateProps, DispatchProps {}
@@ -35,19 +36,19 @@ export class OfferPrint extends React.Component<IOfferPrintProps> {
     }
   }
   render() {
-    const { offerList } = this.props;
+    const { offerListPrint } = this.props;
     return (
       <div className="offerPrintBody">
         {
             (this.props.isAllow)?(
-              <OfferCardAdd handleClick={()=>{window.console.log("createoffer")}}/>
+              <OfferCardAdd openCreate={this.props.openCreate}/>
             ):("")
           }   
         {
-          offerList && offerList.length > 0 ? (
-            offerList.map((off,index) => {
+          offerListPrint && offerListPrint.length > 0 ? (
+            offerListPrint.map((off,index) => {
               return <OfferCard key={index} offer={off} 
-                handleClick={(off)=>{this.props.selectOffer(off)}} />;
+                handleClick={()=>{this.props.selectOffer(off)}} />;
             })
           ) : (
             <div className="alert alert-warning">
@@ -61,11 +62,10 @@ export class OfferPrint extends React.Component<IOfferPrintProps> {
 }
 
 const mapStateToProps = ({ offer }: IRootState) => ({
-  offerList: offer.entities
+  offerListPrint: offer.entities
 });
 
 const mapDispatchToProps = {
-  getEntities,
   searchAvailableOffer,
   searchCreatedOffer,
   searchChosenOffer,
