@@ -12,6 +12,7 @@ import com.coffee.gifu.service.UserService;
 import com.coffee.gifu.service.dto.OrganisationDTO;
 import com.coffee.gifu.web.rest.errors.BadRequestAlertException;
 import com.coffee.gifu.service.dto.RecuperatorDTO;
+import com.coffee.gifu.web.rest.errors.CurrentUserLoginNotFound;
 
 import com.coffee.gifu.web.rest.errors.CurrentUserLoginNotFound;
 import io.github.jhipster.web.util.HeaderUtil;

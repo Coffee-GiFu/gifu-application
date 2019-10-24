@@ -150,9 +150,13 @@ export const searchCreatedOffer: ICrudGetAllAction<IOffer> = (page, size, sort) 
   payload: axios.get<IOffer>(`${apiUrl}/create`)
 });
 
-export const searchAvailableOffer: ICrudGetAllAction<IOffer> = (page, size, sort) => ({
+export const searchAvailableOfferCold: ICrudGetAllAction<IOffer> = (page, size, sort) => ({
   type: ACTION_TYPES.FETCH_OFFER_LIST,
   payload: axios.get<IOffer>(`${apiUrl}/available/true`)
+});
+export const searchAvailableOffer: ICrudGetAllAction<IOffer> = (page, size, sort) => ({
+  type: ACTION_TYPES.FETCH_OFFER_LIST,
+  payload: axios.get<IOffer>(`${apiUrl}/available/false`)
 });
 
 export const reset = () => ({

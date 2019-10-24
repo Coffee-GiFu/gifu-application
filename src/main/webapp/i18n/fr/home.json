@@ -2,6 +2,9 @@
   "home": {
     "title": "Bienvenue, sur Gi-FU !",
     "subtitle": "Ceci est votre page d'accueil",
+    "filter": {
+      "cold": "Sans stockage froid."
+    },
     "logged": {
       "message": "Vous êtes connecté en tant que \"{{username}}\"."
     }
