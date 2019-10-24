@@ -18,7 +18,7 @@ export const OfferCard = ({ offer, handleClick }: OfferCardProps) => {
     >
     <OfferCarousel pictures={pictures} autoPlay={autoPlay}/>
       <div className="styledOfferCardOrganisation">
-        <img src="http://lorempixel.com/output/cats-q-c-640-480-1.jpg" />
+        <img src="../../../content/images/default.png" />
         <div>
           <h3 title={offer.enterprise.name} >{offer.enterprise.name}</h3>
           <h5 title={offer.locationDTO.city+" - "+offer.locationDTO.postalCode} >{offer.locationDTO.city} - {offer.locationDTO.postalCode}</h5>

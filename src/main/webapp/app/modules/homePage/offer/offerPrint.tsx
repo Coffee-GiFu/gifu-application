@@ -16,8 +16,8 @@ import OfferCardAdd from 'app/shared/layout/offer/offerCardAdd';
 interface IofferPrint {
     isAllow: boolean;
     showModal: boolean;
-    handleClose: Function;
     coldFilter: boolean;
+    selectOffer: Function;
 }
 export interface IOfferPrintProps extends IofferPrint, StateProps, DispatchProps {}
 
@@ -46,7 +46,8 @@ export class OfferPrint extends React.Component<IOfferPrintProps> {
         {
           offerList && offerList.length > 0 ? (
             offerList.map((off,index) => {
-              return <OfferCard key={index} offer={off} handleClick={(id)=>{window.console.log(id)}} />;
+              return <OfferCard key={index} offer={off} 
+                handleClick={(off)=>{this.props.selectOffer(off)}} />;
             })
           ) : (
             <div className="alert alert-warning">

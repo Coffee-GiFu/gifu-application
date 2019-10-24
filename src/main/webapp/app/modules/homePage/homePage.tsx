@@ -7,15 +7,22 @@ import { Row, Col, Alert } from 'reactstrap';
 import { Redirect } from 'react-router';
 import  OfferPrint  from './offer/offerPrint'
 import Checkbox from 'app/shared/layout/checkbox/checkbox';
+import { IOffer } from 'app/shared/model/offer.model';
 
 export type IHomeProp = StateProps;
 
 export const HomePage = (props: IHomeProp) => {
   const { account } = props;
   const [show, setShow] = useState(false);
+  const [offer, setOffer] = useState<IOffer>();
   const [coldFilter, setcoldFilter] = useState(false);
   if(!(account && account.login)){
     return (<Redirect to="/login" />);
+  }
+  const openEdit = function (offer:IOffer) {
+    console.log('lol',offer.id);
+    setShow(true);
+    setOffer(offer);
   }
   
   window.console.log(coldFilter,show);
@@ -36,7 +43,9 @@ export const HomePage = (props: IHomeProp) => {
             </label>
           </div>
         </div>    
-        <OfferPrint showModal={show} handleClose={setShow} coldFilter={coldFilter} isAllow={account.authorities.includes("ROLE_COMPANY")}/>
+        <OfferPrint showModal={show}
+        coldFilter={coldFilter} isAllow={account.authorities.includes("ROLE_COMPANY")}
+        selectOffer={openEdit}/>
       </Col>
     </Row>
   );
