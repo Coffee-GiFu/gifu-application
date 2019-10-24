@@ -13,7 +13,8 @@ import com.coffee.gifu.web.rest.errors.BadRequestAlertException;
 import com.coffee.gifu.web.rest.errors.EmailAlreadyUsedException;
 import com.coffee.gifu.web.rest.errors.IdentificationCodeAlreadyUsedException;
 import com.coffee.gifu.web.rest.errors.LoginAlreadyUsedException;
-import com.coffee.gifu.web.rest.wrapper.CreateUserRequest;
+
+import com.coffee.gifu.web.rest.request.object.CreateUserRequest;
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.PaginationUtil;
 import io.github.jhipster.web.util.ResponseUtil;

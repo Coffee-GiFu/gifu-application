@@ -42,7 +42,7 @@ public class OfferServiceImpl implements OfferService {
      * @return the persisted entity.
      */
     @Override
-    public OfferDTO save(OfferDTO offerDTO) throws ManagementRulesException {
+    public OfferDTO save(OfferDTO offerDTO)  {
         if (offerDTO.getEnterprise().getType() != OrganisationType.ENTERPRISE) {
             throw new ManagementRulesException("An offer need an Enterprise Type to be created/updated !");
         }

@@ -15,7 +15,7 @@ import com.coffee.gifu.service.dto.UserDTO;
 import com.coffee.gifu.service.mapper.UserMapper;
 import com.coffee.gifu.web.rest.errors.ExceptionTranslator;
 import com.coffee.gifu.web.rest.vm.ManagedUserVM;
-import com.coffee.gifu.web.rest.wrapper.CreateUserRequest;
+import com.coffee.gifu.web.rest.request.object.CreateUserRequest;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

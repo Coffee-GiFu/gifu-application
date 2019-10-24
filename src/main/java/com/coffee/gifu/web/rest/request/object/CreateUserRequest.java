@@ -1,4 +1,4 @@
-package com.coffee.gifu.web.rest.wrapper;
+package com.coffee.gifu.web.rest.request.object;
 
 import com.coffee.gifu.service.dto.OrganisationDTO;
 import com.coffee.gifu.web.rest.vm.ManagedUserVM;
