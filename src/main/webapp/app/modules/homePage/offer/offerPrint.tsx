@@ -4,9 +4,7 @@ import {Translate} from 'react-jhipster';
 
 import {IRootState} from 'app/shared/reducers';
 import {
-  getEntities,
   searchAvailableOffer,
-  searchChosenOffer,
   searchCreatedOffer,
   searchAvailableOfferCold
 } from '../../../entities/offer/offer.reducer';
@@ -14,7 +12,8 @@ import OfferCard from 'app/shared/layout/offer/offerCard';
 import OfferCardAdd from 'app/shared/layout/offer/offerCardAdd';
 
 interface IofferPrint {
-    isAllow: boolean;
+    isCompagny: boolean;
+    isAssos: boolean;
     showModal: boolean;
     coldFilter: boolean;
     openCreate: Function;
@@ -24,15 +23,23 @@ export interface IOfferPrintProps extends IofferPrint, StatePropsS, DispatchProp
 
 export class OfferPrint extends React.Component<IOfferPrintProps> {
   componentDidMount() {
-    this.props.searchAvailableOffer();
+    if(this.props.isAssos){
+      this.props.searchAvailableOffer();
+    }else{
+      this.props.searchCreatedOffer();
+    }
   }
   componentDidUpdate(prevProps, prevState) {
     window.console.log(prevProps)
     if (prevProps.coldFilter !== this.props.coldFilter||prevProps.showModal !== this.props.showModal) {
-      if(this.props.coldFilter){
-        this.props.searchAvailableOfferCold()
-      } else {
-        this.props.searchAvailableOffer();
+      if(this.props.isAssos){
+        if(this.props.coldFilter){
+          this.props.searchAvailableOfferCold()
+        } else {
+          this.props.searchAvailableOffer();
+        }
+      }else{
+        this.props.searchCreatedOffer();
       }
     }
   }
@@ -41,7 +48,7 @@ export class OfferPrint extends React.Component<IOfferPrintProps> {
     return (
       <div className="offerPrintBody">
         {
-            (this.props.isAllow)?(
+            (this.props.isCompagny)?(
               <OfferCardAdd openCreate={this.props.openCreate}/>
             ):("")
           }   
@@ -68,7 +75,8 @@ const mapStateToPropsS = ({ offer }: IRootState) => ({
 
 const mapDispatchToPropsS = {
   searchAvailableOffer,
-  searchAvailableOfferCold
+  searchAvailableOfferCold,
+  searchCreatedOffer
 };
 
 type StatePropsS = ReturnType<typeof mapStateToPropsS>;

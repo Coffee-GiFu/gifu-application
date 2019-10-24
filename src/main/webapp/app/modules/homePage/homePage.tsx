@@ -37,23 +37,27 @@ export const HomePage = (props: IHomeProp) => {
     <Row>
       <OfferFormModal showModal={show} handleClose={setShow} isNew={isNew} offer={offer}/>
       <Col md="12">
-        <div>
-          <div className="filterBar">
-            <label className="filterLabel" htmlFor="iscold">
-              <div className="filterBlock">
-                <Checkbox name="iscold" defaultValue={coldFilter} action={setcoldFilter}/>
-                <span className="filterLabel">
-                  <Translate contentKey="home.filter.cold">
-                    Without cold storage.
-                  </Translate>
-                </span>
+        {
+          account.authorities.includes("ROLE_ASSOCIATION")?(
+            <div>
+              <div className="filterBar">
+                <label className="filterLabel" htmlFor="iscold">
+                  <div className="filterBlock">
+                    <Checkbox name="iscold" defaultValue={coldFilter} action={setcoldFilter}/>
+                    <span className="filterLabel">
+                      <Translate contentKey="home.filter.cold">
+                        Without cold storage.
+                      </Translate>
+                    </span>
+                  </div>
+                </label>
               </div>
-            </label>
-          </div>
-        </div>    
+            </div>
+          ):("")
+        }
         <OfferPrint showModal={show} openCreate={openCreate} refresh={refresh}
-        coldFilter={coldFilter} isAllow={account.authorities.includes("ROLE_COMPANY")}
-        selectOffer={openEdit}/>
+        coldFilter={coldFilter} isCompagny={account.authorities.includes("ROLE_COMPANY")}
+        selectOffer={openEdit} isAssos={account.authorities.includes("ROLE_ASSOCIATION")}/>
       </Col>
     </Row>
   );
