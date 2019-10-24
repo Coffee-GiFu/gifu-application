@@ -5,7 +5,7 @@ import ErrorBoundaryRoute from 'app/shared/error/error-boundary-route';
 
 import Recuperator from './recuperator';
 import RecuperatorDetail from './recuperator-detail';
-import RecuperatorUpdate from './recuperator-update';
+import RecuperatorUpdate from '../../modules/recuperatorForm/recuperator-update';
 import RecuperatorDeleteDialog from './recuperator-delete-dialog';
 
 const Routes = ({ match }) => (
