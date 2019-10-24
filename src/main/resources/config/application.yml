@@ -154,7 +154,7 @@ jhipster:
     default-include-pattern: /api/.*
     title: Gifu API
     description: Gifu API documentation
-    version: 0.0.1
+    version: 0.0.2
     terms-of-service-url:
     contact-name:
     contact-url:
