@@ -42,7 +42,7 @@ spring:
     type: com.zaxxer.hikari.HikariDataSource
     url: jdbc:postgresql://gifu-postgresql.cyxifmrzkulx.eu-west-1.rds.amazonaws.com:5432/postgres
     username: coffee_gifu
-    password: coffee_gifu
+    password: tU96WG1lYPUQblk07G6l
     hikari:
       poolName: Hikari
       auto-commit: false
@@ -134,7 +134,7 @@ jhipster:
         token-validity-in-seconds: 86400
         token-validity-in-seconds-for-remember-me: 2592000
   mail: # specific JHipster mail property, for standard properties see MailProperties
-    base-url: http://my-server-url-to-change # Modify according to your server's URL
+    base-url: http://gifu-prod.eu-west-1.elasticbeanstalk.com # Modify according to your server's URL
   metrics:
     logs: # Reports metrics in the logs
       enabled: false
