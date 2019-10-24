@@ -40,9 +40,9 @@ spring:
       enabled: false
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
-    url: jdbc:postgresql://localhost:5432/Gifu
-    username: Gifu
-    password:
+    url: jdbc:postgresql://gifu-postgresql.cyxifmrzkulx.eu-west-1.rds.amazonaws.com:5432/postgres
+    username: coffee_gifu
+    password: coffee_gifu
     hikari:
       poolName: Hikari
       auto-commit: false
