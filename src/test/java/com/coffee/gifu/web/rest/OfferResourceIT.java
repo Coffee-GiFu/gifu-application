@@ -4,6 +4,7 @@ import com.coffee.gifu.GifuApp;
 import com.coffee.gifu.domain.*;
 import com.coffee.gifu.repository.AuthorityRepository;
 import com.coffee.gifu.repository.OfferRepository;
+import com.coffee.gifu.repository.OrganisationRepository;
 import com.coffee.gifu.repository.UserRepository;
 import com.coffee.gifu.security.AuthoritiesConstants;
 import com.coffee.gifu.service.MailService;
@@ -38,7 +39,10 @@ import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
-import java.util.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 import static com.coffee.gifu.web.rest.TestUtil.createFormattingConversionService;
 import static com.coffee.gifu.web.rest.TestUtil.sameInstant;
@@ -90,6 +94,9 @@ public class OfferResourceIT {
 
     @Autowired
     private OrganisationService organisationService;
+
+    @Autowired
+    private OrganisationRepository organisationRepository;
 
     @Autowired
     private UserService userService;
@@ -148,10 +155,10 @@ public class OfferResourceIT {
         MockitoAnnotations.initMocks(this);
         doNothing().when(mockMailService).sendActivationEmail(any());
         AccountResource accountResource =
-                new AccountResource(userRepository, userService, mockMailService);
+                new AccountResource(userRepository, userService, mockMailService, organisationRepository);
 
         AccountResource accountUserMockResource =
-                new AccountResource(userRepository, mockUserService, mockMailService);
+                new AccountResource(userRepository, mockUserService, mockMailService, organisationRepository);
         this.restMvc = MockMvcBuilders.standaloneSetup(accountResource)
                 .setMessageConverters(httpMessageConverters)
                 .setControllerAdvice(exceptionTranslator)

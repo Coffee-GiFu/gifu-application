@@ -2,7 +2,7 @@ package com.coffee.gifu.service;
 
 import com.coffee.gifu.config.Constants;
 import com.coffee.gifu.domain.Authority;
-import com.coffee.gifu.domain.Organisation;
+import com.coffee.gifu.domain.OrganisationType;
 import com.coffee.gifu.domain.User;
 import com.coffee.gifu.repository.AuthorityRepository;
 import com.coffee.gifu.repository.UserRepository;
@@ -11,9 +11,11 @@ import com.coffee.gifu.security.SecurityUtils;
 import com.coffee.gifu.service.dto.OrganisationDTO;
 import com.coffee.gifu.service.dto.UserDTO;
 import com.coffee.gifu.service.util.RandomUtil;
+import javassist.NotFoundException;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.CacheManager;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -22,6 +24,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
@@ -40,6 +43,10 @@ public class UserService {
 
     private final OrganisationService organisationService;
 
+    private final DataGouvRNAService dataGouvRNAService;
+
+    private final DataGouvSIRETService dataGouvSiretService;
+
     private final PasswordEncoder passwordEncoder;
 
     private final AuthorityRepository authorityRepository;
@@ -48,12 +55,15 @@ public class UserService {
 
     public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder,
                        AuthorityRepository authorityRepository, CacheManager cacheManager,
-                       OrganisationService organisationService) {
+                       OrganisationService organisationService, DataGouvRNAService dataGouvRNAService,
+                       DataGouvSIRETService dataGouvSIRETService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.authorityRepository = authorityRepository;
         this.cacheManager = cacheManager;
         this.organisationService = organisationService;
+        this.dataGouvRNAService = dataGouvRNAService;
+        this.dataGouvSiretService = dataGouvSIRETService;
     }
 
     public Optional<User> activateRegistration(String key) {
@@ -93,7 +103,17 @@ public class UserService {
             });
     }
 
-    public User registerUser(UserDTO userDTO, String password) {
+    public User registerUser(UserDTO userDTO, String password,  OrganisationDTO organisationDTO) throws InterruptedException, NotFoundException, ParseException, IOException {
+        OrganisationDTO organisationFromDatabase = organisationService.save(organisationDTO);
+        JSONObject result = new JSONObject();
+        if (organisationFromDatabase.getType().equals(OrganisationType.ASSOCIATION)) {
+            result = dataGouvRNAService.callApi(organisationFromDatabase.getIdentificationCode());
+        } else {
+            result = dataGouvSiretService.callApi(organisationFromDatabase.getIdentificationCode());
+        }
+        if(result.isEmpty()){
+            throw new IdentificationCodeNotFoundException();
+        }
         userRepository.findOneByLogin(userDTO.getLogin().toLowerCase()).ifPresent(existingUser -> {
             boolean removed = removeNonActivatedUser(existingUser);
             if (!removed) {
@@ -113,6 +133,7 @@ public class UserService {
         newUser.setPassword(encryptedPassword);
         newUser.setEmail(userDTO.getEmail().toLowerCase());
         newUser.setLangKey(userDTO.getLangKey());
+        newUser.setOrganisationID(organisationFromDatabase.getId());
         // new user is not active
         newUser.setActivated(false);
         // new user gets registration key
